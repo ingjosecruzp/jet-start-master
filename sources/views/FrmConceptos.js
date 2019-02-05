@@ -26,7 +26,7 @@ export class FrmConceptos extends FrmBase {
                 { view: "combo", name: "Naturaleza", labelWidth: 105, label: "Naturaleza", options: getNaturaleza() },
                 {
                     view: "combo",
-                    name: "TipoConcepto.Nombre",
+                    name: "TipoConcepto._id",
                     labelWidth: 105,
                     id: "cmbTipoConcepto" + id,
                     label: "Tipo Concepto",
@@ -49,8 +49,8 @@ export class FrmConceptos extends FrmBase {
                 },
             ],
             rules: {
-                //$all: webix.rules.isNotEmpty,
-                //"TipoConcepto.Nombre": webix.rules.isNotEmpty
+                $all: webix.rules.isNotEmpty,
+                "TipoConcepto._id": webix.rules.isNotEmpty
             }
         };
 
@@ -61,17 +61,9 @@ export class FrmConceptos extends FrmBase {
     init(view) {
         webix.extend($$(this.Ventana), webix.ProgressBar);
     }
-    guardar() {
-        let TipoConceptoId = this.$$("cmbTipoConcepto" + this.id).getValue();
 
-        let data = this.$$(this.Formulario).getValues();
-
-        console.log(this.$$(this.Formulario).getValues());
-        data.TipoConcepto = this.$$("cmbTipoConcepto" + this.id).getPopup().getList().getItem(TipoConceptoId);
-
-        super.guardar(data);
-    }
     cargarCombos(data) {
         this.cargarCombo(this.$$("cmbTipoConcepto" + this.id), data.TipoConcepto);
     }
+
 }

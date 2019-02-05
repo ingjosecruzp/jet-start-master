@@ -124,6 +124,7 @@ export class FrmBase extends JetView {
         });
     }
     update(data) {
+        console.log(data);
         this.Modelo.updateData(data).then((realdata) => {
             this.hiddenProgressBar();
 
@@ -183,6 +184,7 @@ export class FrmBase extends JetView {
 
         //Selecciona el item
         combo.setValue(data.id);
+        //combo.setValue(data._id);
     }
     showProgressBar() {
         $$(this.Ventana).showProgress({
