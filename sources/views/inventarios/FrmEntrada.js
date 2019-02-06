@@ -30,7 +30,7 @@ export class FrmEntrada extends FrmBase {
                                 },
                                 {
                                     view: "combo",
-                                    name: "Concepto.id",
+                                    name: "Concepto._id",
                                     labelWidth: 50,
                                     id: "cmbConcepto" + id,
                                     label: "Concepto",
@@ -46,7 +46,7 @@ export class FrmEntrada extends FrmBase {
                                 },
                                 {
                                     view: "combo",
-                                    name: "Almacen.id",
+                                    name: "Almacen._id",
                                     labelWidth: 50,
                                     id: "cmbAlmacen" + id,
                                     label: "Almacen",
@@ -64,7 +64,7 @@ export class FrmEntrada extends FrmBase {
                         },
                         {
                             rows: [
-                                { view: "textarea", height: 112, label: "Descripción:", labelPosition: "top" }
+                                { view: "textarea", height: 112, name: "Descripcion", label: "Descripción:", labelPosition: "top" }
                             ]
                         }
                     ]
@@ -89,9 +89,9 @@ export class FrmEntrada extends FrmBase {
                             //select: "row",
                             //navigation: true,
                             suggest: { // suggest
-                                //template: "#Nombre#",
+                                template: "#value#",
                                 body: { // list
-                                    template: "#Nombre#",
+                                    template: "#value#",
                                     dataFeed: function(text) {
                                         let articulo = new articulos();
                                         this.load(articulo.searchCombo(text));
@@ -104,17 +104,21 @@ export class FrmEntrada extends FrmBase {
                         { id: "Costo", editor: "text", header: "Costo", format: webix.i18n.priceFormat, width: 100, css: { "text-align": "center" } },
                         { id: "CostoTotal", header: "Costo Total", format: webix.i18n.priceFormat, width: 100, css: { "text-align": "center" } }
                     ],
+                    rules: {
+                        $all: webix.rules.isNotEmpty
+                    },
+                    liveValidation: true,
                     editable: true,
                     autowidth: true,
-                    data: [
-                        {},
-                        {}
-                    ]
+                    data: [{}]
                 }
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty,
-                //"TipoConcepto.Nombre": webix.rules.isNotEmpty
+                "Folio": webix.rules.isNotEmpty,
+                "Concepto._id": webix.rules.isNotEmpty,
+                "Almacen._id": webix.rules.isNotEmpty,
+                "Fecha": webix.rules.isNotEmpty,
             }
         };
 
@@ -142,11 +146,6 @@ export class FrmEntrada extends FrmBase {
                 this.getItem(editor.row)["Clave"] = item.Clave;
                 this.getItem(editor.row)["Unidad"] = item.UnidadInventario.Abreviatura;
 
-                /*console.log(grid);
-                console.log(self.$$('gridArticulos' + this.id));
-                grid.editCell(editor.row, "Cantidad");
-                //grid.editNext();*/
-
             } else if (editor.column == "Cantidad" || editor.column == "Costo") {
                 if (this.getItem(editor.row)["Cantidad"] == undefined || this.getItem(editor.row)["Costo"] == undefined)
                     return;
@@ -154,8 +153,6 @@ export class FrmEntrada extends FrmBase {
                 let Costo = this.getItem(editor.row)["Cantidad"] * this.getItem(editor.row)["Costo"];
                 this.getItem(editor.row)["CostoTotal"] = Costo;
             }
-
-            //webix.UIManager.setFocus($$("gridArticulos" + this.id));
 
         });
         this.$$("gridArticulos" + this.id).attachEvent("onBeforeEditStop", function(change, editor) {
@@ -169,17 +166,6 @@ export class FrmEntrada extends FrmBase {
                     if (!column.collection.exists(item.id)) {
                         column.collection.add(item);
                         self.LstArticulos = column.collection;
-
-                        //var now = this.getEditor();
-                        //console.log(now);
-                        //$$("gridArticulos" + this.id).editNext();
-                        //$$("gridArticulos" + this.id).focusEditor({ row: 1, column: "Cantidad" });
-
-                        //console.log($$("gridArticulos" + this.id));
-                        //editor.focus();
-                        //$$("gridArticulos" + this.id).select(1, "Cantidad", false);
-                        //$$("gridArticulos" + this.id).moveSelection("left");
-                        //$$("gridArticulos" + this.id).moveSelection("left");
                     }
                 } catch (err) {
                     console.log(err);
@@ -188,59 +174,49 @@ export class FrmEntrada extends FrmBase {
         });
 
         this.$$("gridArticulos" + this.id).attachEvent("onKeyPress", function(code, e) {
-            console.log(code);
-            //console.log($$("gridArticulos" + this.id).getColumnIndex());
             if (code == 46) {
                 console.log("eliminar");
                 let id = $$("gridArticulos" + self.id).getSelectedId();
-                if (id)
-                    $$("gridArticulos" + self.id).remove(id);
+                if (id) $$("gridArticulos" + self.id).remove(id);
+
             } else if (code == 13) {
-                console.log("enter");
                 var editor = this.getEditor();
-                let thisParent = this;
                 setTimeout(function() {
                     //grid.editCell(editor.row, "Cantidad");
-                    console.log(editor);
-                    //thisParent.editNext(true, editor);
+                    if (editor.column == "Costo" && editor.row == grid.getLastId()) {
+                        grid.add({});
+                    }
                     grid.editNext(true, editor);
                 }, 50);
             }
         });
     }
     guardar() {
-        /*this.$$('gridArticulos' + this.id).editStop()
-        console.log($$('gridArticulos' + this.id));*/
-
-        //this.$$('gridArticulos' + this.id).editRow(2);
-        //this.$$("gridArticulos" + this.id).focusEditor({ row: 1, column: "Cantidad" });
-        //this.$$('gridArticulos' + this.id).editColumn("Cantidad");
-        //this.$$('gridArticulos' + this.id).editCell(1, "Cantidad", true, true);
-
-        //$$("gridArticulos" + this.id).add({});
-
-        let ConceptoId = this.$$("cmbConcepto" + this.id).getValue();
-        let AlmacenId = this.$$("cmbAlmacen" + this.id).getValue();
+        console.log($$("gridArticulos" + this.id).validate());
+        if (!$$("gridArticulos" + this.id).validate()) return;
 
         let data = this.$$(this.Formulario).getValues();
-        /*console.log(data);
-        return;*/
-        data.Concepto = this.$$("cmbConcepto" + this.id).getPopup().getList().getItem(ConceptoId);
-        data.Almacen = this.$$("cmbAlmacen" + this.id).getPopup().getList().getItem(AlmacenId);
 
-        let detalle_entrada = [];
+        data.Fecha = this.convertToJSONDate(data.Fecha);
+
+        let Detalles_ES = [];
+
         //Obtiene los valores del grid
         $$("gridArticulos" + this.id).eachRow((row) => {
             let record = $$("gridArticulos" + this.id).getItem(row);
 
-            record.Articulo = this.LstArticulos.getItem(record.Articulo);
-            detalle_entrada.push(record);
+            //record.Articulo = this.LstArticulos.getItem(record.Articulo);
+            let articulo = {
+                _id: record.Articulo
+            };
+            record.Articulo = articulo;
+            record.Unidad = null;
+            Detalles_ES.push(record);
         });
 
-        data.detalle_entrada = detalle_entrada;
+        data.Detalles_ES = Detalles_ES;
         console.log(data);
 
-        return;
         super.guardar(data);
     }
     cargarCombos(data) {
