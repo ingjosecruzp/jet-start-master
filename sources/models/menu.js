@@ -17,6 +17,16 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridConceptos",
                     icon: "mdi mdi-cube",
                     value: "Conceptos"
+                },
+                {
+                    id: "GridTipoComponente",
+                    icon: "mdi mdi-package-variant",
+                    value: "Tipo Componentes"
+                },
+                {
+                    id: "GridGrupoComponente",
+                    icon: "mdi mdi-package-variant-closed",
+                    value: "Grupo Componentes"
                 }
             ]
         },
