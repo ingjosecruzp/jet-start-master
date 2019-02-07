@@ -197,4 +197,10 @@ export class FrmBase extends JetView {
         $$(this.Ventana).enable();
         $$(this.Ventana).hideProgress();
     }
+
+    convertToJSONDate(strDate) {
+        var dt = new Date(strDate);
+        var newDate = new Date(Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes(), dt.getSeconds(), dt.getMilliseconds()));
+        return '/Date(' + newDate.getTime() + ')/';
+    }
 }
