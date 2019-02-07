@@ -27,7 +27,13 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridGrupoComponente",
                     icon: "mdi mdi-package-variant-closed",
                     value: "Grupo Componentes"
+                },
+                {
+                    id: "GridSubgrupoComponente",
+                    icon: "mdi mdi-group",
+                    value: "Subgrupo Componentes"
                 }
+
             ]
         },
         {

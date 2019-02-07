@@ -4,7 +4,8 @@ import { FrmUnidades } from "views/FrmUnidades";
 import { FrmConceptos } from "views/FrmConceptos";
 import { FrmEntrada } from "views/inventarios/FrmEntrada";
 import { FrmTipoComponente } from "views/inventarios/FrmTipoComponente";
-import { FrmGrupoComponente } from "views/inventarios/FrmGrupoComponente"
+import { FrmGrupoComponente } from "views/inventarios/FrmGrupoComponente";
+import { FrmSubgrupoComponente } from "views/inventarios/FrmSubgrupoComponente";
 
 
 export default class TopView extends JetView {
@@ -89,6 +90,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridGrupoComponente") {
                                     this.FrmGrupoComponente = this.ui(FrmGrupoComponente);
                                     this.FrmGrupoComponente.showWindow();
+                                } else if (this.getUrl()[1].page == "GridSubgrupoComponente") {
+                                    this.FrmSubgrupoComponente = this.ui(FrmSubgrupoComponente);
+                                    this.FrmSubgrupoComponente.showWindow();
                                 }
                             }
                         },
