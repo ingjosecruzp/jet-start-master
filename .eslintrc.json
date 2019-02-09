@@ -3,10 +3,12 @@
         "browser": true,
         "es6": true
     },
-    "globals":{
-        "webix":true,
-        "scheduler":true,
-        "APPNAME":true, "VERSION":true, "PRODUCTION":true
+    "globals": {
+        "webix": true,
+        "scheduler": true,
+        "APPNAME": true,
+        "VERSION": true,
+        "PRODUCTION": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -14,9 +16,9 @@
     },
     "rules": {
         "indent": [
-            "error",
+            5,
             "tab",
-            {"SwitchCase":1}
+            { "SwitchCase": 1 }
         ],
         "quotes": [
             "error",
