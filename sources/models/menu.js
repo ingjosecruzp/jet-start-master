@@ -32,6 +32,11 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridSubgrupoComponente",
                     icon: "mdi mdi-group",
                     value: "Subgrupo Componentes"
+                },
+                {
+                    id: "GridMarca",
+                    icon: "mdi mdi-registered-trademark",
+                    value: "Marcas"
                 }
 
             ]
