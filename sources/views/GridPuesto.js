@@ -11,9 +11,9 @@ export default class GridPuesto extends GridBase {
             { id: "Departamento", template: (obj) => { return obj.Departamento.Nombre }, header: ["Departamento", { content: "textFilter" }], fillspace: true },
         ];
 
-        let puest = new puesto();
+        let puto = new puesto();
 
-        super(app, name, columns, puest);
+        super(app, name, columns, puto);
     }
     init(view) {
         this.$$(this.Grid).attachEvent("onItemDblClick", (id, e, node) => {
