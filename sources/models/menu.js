@@ -42,6 +42,11 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridDepartamento",
                     icon: "mdi mdi-codepen",
                     value: "Departamentos"
+                },
+                {
+                    id: "GridPuesto",
+                    icon: "mdi mdi-worker",
+                    value: "Puestos"
                 }
 
             ]
