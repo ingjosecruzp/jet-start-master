@@ -37,6 +37,11 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridMarca",
                     icon: "mdi mdi-registered-trademark",
                     value: "Marcas"
+                },
+                {
+                    id: "GridDepartamento",
+                    icon: "mdi mdi-codepen",
+                    value: "Departamentos"
                 }
 
             ]

@@ -7,6 +7,7 @@ import { FrmTipoComponente } from "views/inventarios/FrmTipoComponente";
 import { FrmGrupoComponente } from "views/inventarios/FrmGrupoComponente";
 import { FrmSubgrupoComponente } from "views/inventarios/FrmSubgrupoComponente";
 import { FrmMarca } from "views/inventarios/FrmMarca";
+import { FrmDepartamento } from "views/FrmDepartamento";
 
 
 export default class TopView extends JetView {
@@ -97,6 +98,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridMarca") {
                                     this.FrmMarca = this.ui(FrmMarca);
                                     this.FrmMarca.showWindow();
+                                } else if (this.getUrl()[1].page == "GridDepartamento") {
+                                    this.FrmDepartamento = this.ui(FrmDepartamento);
+                                    this.FrmDepartamento.showWindow();
                                 }
                             }
                         },
