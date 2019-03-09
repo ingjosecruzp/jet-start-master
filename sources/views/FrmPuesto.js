@@ -47,6 +47,6 @@ export class FrmPuesto extends FrmBase {
 
     cargarCombos(data) {
         console.log(data);
-        this.cargarCombo(this.$$("cmbDepartamento" + this.id), data.departamento);
+        this.cargarCombo(this.$$("cmbDepartamento" + this.id), data.Departamento);
     }
 }
