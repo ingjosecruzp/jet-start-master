@@ -47,6 +47,11 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridPuesto",
                     icon: "mdi mdi-worker",
                     value: "Puestos"
+                },
+                {
+                    id: "GridPureza",
+                    icon: "mdi mdi-hexagon-slice-6",
+                    value: "Purezas"
                 }
 
             ]

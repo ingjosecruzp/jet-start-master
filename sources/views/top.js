@@ -9,6 +9,7 @@ import { FrmSubgrupoComponente } from "views/inventarios/FrmSubgrupoComponente";
 import { FrmMarca } from "views/inventarios/FrmMarca";
 import { FrmDepartamento } from "views/FrmDepartamento";
 import { FrmPuesto } from "views/FrmPuesto";
+import { FrmPureza } from "views/inventarios/FrmPureza"
 
 
 export default class TopView extends JetView {
@@ -105,6 +106,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridPuesto") {
                                     this.FrmPuesto = this.ui(FrmPuesto);
                                     this.FrmPuesto.showWindow();
+                                } else if (this.getUrl()[1].page == "GridPureza") {
+                                    this.FrmPureza = this.ui(FrmPureza);
+                                    this.FrmPureza.showWindow();
                                 }
                             }
                         },
