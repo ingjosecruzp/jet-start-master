@@ -10,6 +10,7 @@ import { FrmMarca } from "views/inventarios/FrmMarca";
 import { FrmDepartamento } from "views/FrmDepartamento";
 import { FrmPuesto } from "views/FrmPuesto";
 import { FrmPureza } from "views/inventarios/FrmPureza"
+import { FrmPeso } from "views/inventarios/FrmPeso"
 
 
 export default class TopView extends JetView {
@@ -109,6 +110,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridPureza") {
                                     this.FrmPureza = this.ui(FrmPureza);
                                     this.FrmPureza.showWindow();
+                                } else if (this.getUrl()[1].page == "GridPeso") {
+                                    this.FrmPeso = this.ui(FrmPeso);
+                                    this.FrmPeso.showWindow();
                                 }
                             }
                         },

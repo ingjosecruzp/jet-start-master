@@ -52,6 +52,11 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridPureza",
                     icon: "mdi mdi-hexagon-slice-6",
                     value: "Purezas"
+                },
+                {
+                    id: "GridPeso",
+                    icon: "mdi mdi-weight-kilogram",
+                    value: "Pesos"
                 }
 
             ]
