@@ -1,9 +1,9 @@
 import { JetView } from "webix-jet";
 import { ModeloBase } from "../ModeloBase";
 
-export class paises extends ModeloBase {
+export class marca extends ModeloBase {
     constructor() {
-        let servicio = "Servicios/Inventarios/WcfTipoComponente.svc/";
+        let servicio = "Servicios/Generales/WcfMarcas.svc/";
         super(servicio);
     }
 }
