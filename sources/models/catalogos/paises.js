@@ -3,7 +3,7 @@ import { ModeloBase } from "../ModeloBase";
 
 export class paises extends ModeloBase {
     constructor() {
-        let servicio = "Servicios/Inventarios/WcfTipoComponente.svc/";
+        let servicio = "Servicios/Generales/WcfPaises.svc/";
         super(servicio);
     }
 }
