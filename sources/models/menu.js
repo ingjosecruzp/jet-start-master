@@ -58,12 +58,11 @@ export const menu_data_multi = new webix.DataCollection({
         },
         {
             id: "tools",
-            icon: "mdi mdi-calendar",
-            value: "Tools",
+            icon: "mdi mdi-book",
+            value: "Movimientos",
             data: [
-                { id: "kanban", icon: "mdi mdi-circle", value: "Kanban Board" },
-                { id: "pivot", icon: "mdi mdi-circle", value: "Pivot Chart" },
-                { id: "scheduler", icon: "mdi mdi-circle", value: "Calendar" }
+                { id: "GridEntradas", icon: "mdi mdi-circle", value: "Entrada" },
+                { id: "GridSalida", icon: "mdi mdi-circle", value: "Salida" }
             ]
         },
         {
@@ -116,7 +115,6 @@ export const menu_data_multi = new webix.DataCollection({
                     ]
                 }
             ]
-        },
-        { id: "demo", icon: "mdi mdi-book", value: "Documentation" }
+        }
     ]
 });
