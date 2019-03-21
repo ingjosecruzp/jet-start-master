@@ -3,7 +3,6 @@ import { JetView } from "webix-jet";
 
 export class GridBase extends JetView {
     constructor(app, name, columns, model, formulario) {
-        console.log("constructor");
         super(app, name);
 
         this.Grid = "Grid" + new Date().getTime();

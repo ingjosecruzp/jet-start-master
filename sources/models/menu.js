@@ -4,12 +4,12 @@ export const menu_data_multi = new webix.DataCollection({
             icon: "mdi mdi-folder-multiple",
             value: "Catalogos",
             data: [{
-                    id: "start",
+                    id: "GridUnidades",
                     icon: "mdi mdi-circle",
                     value: "Unidades"
                 },
                 {
-                    id: "GridUnidades",
+                    id: "GridUnidadesss",
                     icon: "mdi mdi-cube",
                     value: "Grupos Componentes"
                 },
@@ -17,6 +17,11 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridConceptos",
                     icon: "mdi mdi-cube",
                     value: "Conceptos"
+                },
+                {
+                    id: "GridArticulos",
+                    icon: "mdi mdi-ring",
+                    value: "Articulos"
                 },
                 {
                     id: "GridTipoComponente",
@@ -52,6 +57,16 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridPureza",
                     icon: "mdi mdi-hexagon-slice-6",
                     value: "Purezas"
+                },
+                {
+                    id: "GridPeso",
+                    icon: "mdi mdi-weight-kilogram",
+                    value: "Pesos"
+                },
+                {
+                    id: "GridProcedencia",
+                    icon: "mdi mdi-earth",
+                    value: "Procedencia"
                 }
 
             ]

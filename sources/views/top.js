@@ -4,6 +4,7 @@ import { FrmUnidades } from "views/FrmUnidades";
 import { FrmConceptos } from "views/FrmConceptos";
 import { FrmEntrada } from "views/inventarios/FrmEntrada";
 import { FrmSalida } from "views/inventarios/FrmSalida";
+import { FrmArticulos } from "views/generales/FrmArticulos";
 import { FrmTipoComponente } from "views/inventarios/FrmTipoComponente";
 import { FrmGrupoComponente } from "views/inventarios/FrmGrupoComponente";
 import { FrmSubgrupoComponente } from "views/inventarios/FrmSubgrupoComponente";
@@ -11,6 +12,8 @@ import { FrmMarca } from "views/inventarios/FrmMarca";
 import { FrmDepartamento } from "views/FrmDepartamento";
 import { FrmPuesto } from "views/FrmPuesto";
 import { FrmPureza } from "views/inventarios/FrmPureza";
+import { FrmPeso } from "views/inventarios/FrmPeso";
+import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 
 
 export default class TopView extends JetView {
@@ -87,6 +90,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridConceptos") {
                                     this.FrmConceptos = this.ui(FrmConceptos);
                                     this.FrmConceptos.showWindow();
+                                } else if (this.getUrl()[1].page == "GridArticulos") {
+                                    this.FrmArticulos = this.ui(FrmArticulos);
+                                    this.FrmArticulos.showWindow();
                                 } else if (this.getUrl()[1].page == "GridTipoComponente") {
                                     this.FrmTipoComponente = this.ui(FrmTipoComponente);
                                     this.FrmTipoComponente.showWindow();
@@ -114,6 +120,12 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridSalida") {
                                     this.FrmSalida = this.ui(FrmSalida);
                                     this.FrmSalida.showWindow();
+                                } else if (this.getUrl()[1].page == "GridPeso") {
+                                    this.FrmPeso = this.ui(FrmPeso);
+                                    this.FrmPeso.showWindow();
+                                } else if (this.getUrl()[1].page == "GridProcedencia") {
+                                    this.FrmProcedencia = this.ui(FrmProcedencia);
+                                    this.FrmProcedencia.showWindow();
                                 }
 
                             }
@@ -147,7 +159,7 @@ export default class TopView extends JetView {
                                     onAfterSelect: (id) => {
                                         //webix.message("Selected: " + this.getItem(id).value);
                                         //webix.message("Selected: " + this.getItem(id).url);
-
+                                        console.log(id);
                                         this.app.show("/top/" + id);
                                     }
                                 }

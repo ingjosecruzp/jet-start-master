@@ -184,6 +184,7 @@ export class FrmEntrada extends FrmBase {
             }
 
         });
+
         this.$$("gridArticulos" + this.id).attachEvent("onBeforeEditStop", function(change, editor) {
             var column = editor.config;
 
