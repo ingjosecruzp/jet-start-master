@@ -153,6 +153,7 @@ export default class TopView extends JetView {
                                 view: "sidebar",
                                 css: "webix_dark",
                                 name: "sidebar1",
+                                scroll: "auto",
                                 width: 300,
                                 data: menu_data_multi,
                                 on: {
