@@ -13,3 +13,11 @@ export function getNaturaleza() {
     ];
     return Naturaleza;
 };
+
+export function getTipoAlmacen() {
+    var TipoAlmacen = [
+        { id: "PRINCIPAL", value: "PRINCIPAL" },
+        { id: "AUXILIAR", value: "AUXILIAR" },
+    ];
+    return TipoAlmacen;
+};
