@@ -49,12 +49,14 @@ export class FrmBase extends JetView {
                     width: this.form.width,
                     complexData: true,
                     rules: this.form.rules,
-                    elements: this.form.elements
+                    elements: this.form.elements,
+                    elementsConfig: {
+                        attributes: { autocomplete: "off" }
+                    }
                 }]
             }
         };
     }
-
     showWindow(id) {
         this._id = id;
 
@@ -63,6 +65,7 @@ export class FrmBase extends JetView {
             this.showProgressBar();
 
             this.Modelo.getData(this._id).then((realdata) => {
+                //console.log(realdata.json());
                 this.$$(this.Formulario).setValues(realdata.json());
                 this.cargarCombos(realdata.json());
 

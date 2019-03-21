@@ -155,6 +155,7 @@ export class FrmEntrada extends FrmBase {
             }
 
         });
+
         this.$$("gridArticulos" + this.id).attachEvent("onBeforeEditStop", function(change, editor) {
             var column = editor.config;
 
@@ -209,6 +210,7 @@ export class FrmEntrada extends FrmBase {
             let articulo = {
                 _id: record.Articulo
             };
+
             record.Articulo = articulo;
             record.Unidad = null;
             Detalles_ES.push(record);

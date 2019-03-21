@@ -3,6 +3,7 @@ import { menu_data_multi } from "models/menu";
 import { FrmUnidades } from "views/FrmUnidades";
 import { FrmConceptos } from "views/FrmConceptos";
 import { FrmEntrada } from "views/inventarios/FrmEntrada";
+import { FrmArticulos } from "views/generales/FrmArticulos";
 
 
 export default class TopView extends JetView {
@@ -74,13 +75,16 @@ export default class TopView extends JetView {
                             click: () => {
                                 console.log(this.getUrl()[1].page);
                                 if (this.getUrl()[1].page == "GridUnidades") {
-                                    /*this.FrmUnidades = this.ui(FrmUnidades);
-                                    this.FrmUnidades.showWindow();*/
-                                    this.FrmEntrada = this.ui(FrmEntrada);
-                                    this.FrmEntrada.showWindow();
+                                    this.FrmUnidades = this.ui(FrmUnidades);
+                                    this.FrmUnidades.showWindow();
+                                    /*this.FrmEntrada = this.ui(FrmEntrada);
+                                    this.FrmEntrada.showWindow();*/
                                 } else if (this.getUrl()[1].page == "GridConceptos") {
                                     this.FrmConceptos = this.ui(FrmConceptos);
                                     this.FrmConceptos.showWindow();
+                                } else if (this.getUrl()[1].page == "GridArticulos") {
+                                    this.FrmArticulos = this.ui(FrmArticulos);
+                                    this.FrmArticulos.showWindow();
                                 }
                             }
                         },
@@ -113,7 +117,7 @@ export default class TopView extends JetView {
                                     onAfterSelect: (id) => {
                                         //webix.message("Selected: " + this.getItem(id).value);
                                         //webix.message("Selected: " + this.getItem(id).url);
-
+                                        console.log(id);
                                         this.app.show("/top/" + id);
                                     }
                                 }
