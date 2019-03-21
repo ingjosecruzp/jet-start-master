@@ -3,13 +3,14 @@ import { menu_data_multi } from "models/menu";
 import { FrmUnidades } from "views/FrmUnidades";
 import { FrmConceptos } from "views/FrmConceptos";
 import { FrmEntrada } from "views/inventarios/FrmEntrada";
+import { FrmSalida } from "views/inventarios/FrmSalida";
 import { FrmTipoComponente } from "views/inventarios/FrmTipoComponente";
 import { FrmGrupoComponente } from "views/inventarios/FrmGrupoComponente";
 import { FrmSubgrupoComponente } from "views/inventarios/FrmSubgrupoComponente";
 import { FrmMarca } from "views/inventarios/FrmMarca";
 import { FrmDepartamento } from "views/FrmDepartamento";
 import { FrmPuesto } from "views/FrmPuesto";
-import { FrmPureza } from "views/inventarios/FrmPureza"
+import { FrmPureza } from "views/inventarios/FrmPureza";
 
 
 export default class TopView extends JetView {
@@ -81,10 +82,8 @@ export default class TopView extends JetView {
                             click: () => {
                                 console.log(this.getUrl()[1].page);
                                 if (this.getUrl()[1].page == "GridUnidades") {
-                                    /*this.FrmUnidades = this.ui(FrmUnidades);
-                                    this.FrmUnidades.showWindow();*/
-                                    this.FrmEntrada = this.ui(FrmEntrada);
-                                    this.FrmEntrada.showWindow();
+                                    this.FrmUnidades = this.ui(FrmUnidades);
+                                    this.FrmUnidades.showWindow();
                                 } else if (this.getUrl()[1].page == "GridConceptos") {
                                     this.FrmConceptos = this.ui(FrmConceptos);
                                     this.FrmConceptos.showWindow();
@@ -109,7 +108,14 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridPureza") {
                                     this.FrmPureza = this.ui(FrmPureza);
                                     this.FrmPureza.showWindow();
+                                } else if (this.getUrl()[1].page == "GridEntradas") {
+                                    this.FrmEntrada = this.ui(FrmEntrada);
+                                    this.FrmEntrada.showWindow();
+                                } else if (this.getUrl()[1].page == "GridSalida") {
+                                    this.FrmSalida = this.ui(FrmSalida);
+                                    this.FrmSalida.showWindow();
                                 }
+
                             }
                         },
                         {

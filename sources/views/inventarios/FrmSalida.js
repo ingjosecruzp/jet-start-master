@@ -5,7 +5,7 @@ import { articulos } from "models/catalogos/articulos";
 import { almacenes } from "models/catalogos/almacenes";
 import { movimientosES } from "models/inventarios/movimientosES";
 
-export class FrmEntrada extends FrmBase {
+export class FrmSalida extends FrmBase {
     constructor(app, name) {
         //Genera un idetificador unico para la ventana con el 
         //objetivo de poder generar varias instancias
