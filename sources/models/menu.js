@@ -22,7 +22,53 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridArticulos",
                     icon: "mdi mdi-ring",
                     value: "Articulos"
+                },
+                {
+                    id: "GridTipoComponente",
+                    icon: "mdi mdi-package-variant",
+                    value: "Tipo Componentes"
+                },
+                {
+                    id: "GridGrupoComponente",
+                    icon: "mdi mdi-package-variant-closed",
+                    value: "Grupo Componentes"
+                },
+                {
+                    id: "GridSubgrupoComponente",
+                    icon: "mdi mdi-group",
+                    value: "Subgrupo Componentes"
+                },
+                {
+                    id: "GridMarca",
+                    icon: "mdi mdi-registered-trademark",
+                    value: "Marcas"
+                },
+                {
+                    id: "GridDepartamento",
+                    icon: "mdi mdi-codepen",
+                    value: "Departamentos"
+                },
+                {
+                    id: "GridPuesto",
+                    icon: "mdi mdi-worker",
+                    value: "Puestos"
+                },
+                {
+                    id: "GridPureza",
+                    icon: "mdi mdi-hexagon-slice-6",
+                    value: "Purezas"
+                },
+                {
+                    id: "GridPeso",
+                    icon: "mdi mdi-weight-kilogram",
+                    value: "Pesos"
+                },
+                {
+                    id: "GridProcedencia",
+                    icon: "mdi mdi-earth",
+                    value: "Procedencia"
                 }
+
             ]
         },
         {

@@ -4,6 +4,15 @@ import { FrmUnidades } from "views/FrmUnidades";
 import { FrmConceptos } from "views/FrmConceptos";
 import { FrmEntrada } from "views/inventarios/FrmEntrada";
 import { FrmArticulos } from "views/generales/FrmArticulos";
+import { FrmTipoComponente } from "views/inventarios/FrmTipoComponente";
+import { FrmGrupoComponente } from "views/inventarios/FrmGrupoComponente";
+import { FrmSubgrupoComponente } from "views/inventarios/FrmSubgrupoComponente";
+import { FrmMarca } from "views/inventarios/FrmMarca";
+import { FrmDepartamento } from "views/FrmDepartamento";
+import { FrmPuesto } from "views/FrmPuesto";
+import { FrmPureza } from "views/inventarios/FrmPureza";
+import { FrmPeso } from "views/inventarios/FrmPeso";
+import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 
 
 export default class TopView extends JetView {
@@ -85,6 +94,33 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridArticulos") {
                                     this.FrmArticulos = this.ui(FrmArticulos);
                                     this.FrmArticulos.showWindow();
+                                } else if (this.getUrl()[1].page == "GridTipoComponente") {
+                                    this.FrmTipoComponente = this.ui(FrmTipoComponente);
+                                    this.FrmTipoComponente.showWindow();
+                                } else if (this.getUrl()[1].page == "GridGrupoComponente") {
+                                    this.FrmGrupoComponente = this.ui(FrmGrupoComponente);
+                                    this.FrmGrupoComponente.showWindow();
+                                } else if (this.getUrl()[1].page == "GridSubgrupoComponente") {
+                                    this.FrmSubgrupoComponente = this.ui(FrmSubgrupoComponente);
+                                    this.FrmSubgrupoComponente.showWindow();
+                                } else if (this.getUrl()[1].page == "GridMarca") {
+                                    this.FrmMarca = this.ui(FrmMarca);
+                                    this.FrmMarca.showWindow();
+                                } else if (this.getUrl()[1].page == "GridDepartamento") {
+                                    this.FrmDepartamento = this.ui(FrmDepartamento);
+                                    this.FrmDepartamento.showWindow();
+                                } else if (this.getUrl()[1].page == "GridPuesto") {
+                                    this.FrmPuesto = this.ui(FrmPuesto);
+                                    this.FrmPuesto.showWindow();
+                                } else if (this.getUrl()[1].page == "GridPureza") {
+                                    this.FrmPureza = this.ui(FrmPureza);
+                                    this.FrmPureza.showWindow();
+                                } else if (this.getUrl()[1].page == "GridPeso") {
+                                    this.FrmPeso = this.ui(FrmPeso);
+                                    this.FrmPeso.showWindow();
+                                } else if (this.getUrl()[1].page == "GridProcedencia") {
+                                    this.FrmProcedencia = this.ui(FrmProcedencia);
+                                    this.FrmProcedencia.showWindow();
                                 }
                             }
                         },

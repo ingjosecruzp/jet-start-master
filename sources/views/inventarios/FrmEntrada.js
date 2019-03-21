@@ -105,7 +105,7 @@ export class FrmEntrada extends FrmBase {
                         { id: "CostoTotal", header: "Costo Total", format: webix.i18n.priceFormat, width: 100, css: { "text-align": "center" } }
                     ],
                     rules: {
-                        $all: webix.rules.isNotEmpty
+                        //   $all: webix.rules.isNotEmpty
                     },
                     liveValidation: true,
                     editable: true,
@@ -115,10 +115,10 @@ export class FrmEntrada extends FrmBase {
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty,
-                "Folio": webix.rules.isNotEmpty,
-                "Concepto._id": webix.rules.isNotEmpty,
-                "Almacen._id": webix.rules.isNotEmpty,
-                "Fecha": webix.rules.isNotEmpty,
+                /*  "Folio": webix.rules.isNotEmpty,
+                  "Concepto._id": webix.rules.isNotEmpty,
+                  "Almacen._id": webix.rules.isNotEmpty,
+                  "Fecha": webix.rules.isNotEmpty,*/
             }
         };
 
