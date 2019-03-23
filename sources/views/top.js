@@ -14,6 +14,7 @@ import { FrmPuesto } from "views/FrmPuesto";
 import { FrmPureza } from "views/inventarios/FrmPureza";
 import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
+import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 
 
 export default class TopView extends JetView {
@@ -126,6 +127,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridProcedencia") {
                                     this.FrmProcedencia = this.ui(FrmProcedencia);
                                     this.FrmProcedencia.showWindow();
+                                } else if (this.getUrl()[1].page == "GridAlmacen") {
+                                    this.FrmAlmacen = this.ui(FrmAlmacen);
+                                    this.FrmAlmacen.showWindow();
                                 }
 
                             }
