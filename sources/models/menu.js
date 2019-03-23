@@ -67,6 +67,11 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridProcedencia",
                     icon: "mdi mdi-earth",
                     value: "Procedencia"
+                },
+                {
+                    id: "GridAlmacen",
+                    icon: "mdi mdi-home",
+                    value: "Almacenes"
                 }
 
             ]
