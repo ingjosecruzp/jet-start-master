@@ -9,8 +9,8 @@ export class FrmProcedencia extends FrmBase {
             width: 350,
             elements: [
                 { view: "text", name: "_id", hidden: true },
-                { view: "text", name: "Nombre", label: "Nombre" },
-                { view: "text", name: "Abreviatura", label: "Abreviatura" }
+                { view: "text", name: "Nombre", labelWidth: 120, label: "Nombre" },
+                { view: "text", name: "Abreviatura", labelWidth: 120, label: "Abreviatura" }
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty

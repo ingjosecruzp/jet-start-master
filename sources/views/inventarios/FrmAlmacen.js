@@ -12,14 +12,14 @@ export class FrmAlmacen extends FrmBase {
             width: 400,
             elements: [
                 { view: "text", name: "_id", hidden: true },
-                { view: "text", name: "Clave", label: "Clave", labelWidth: 120 },
-                { view: "text", name: "Nombre", label: "Nombre", labelWidth: 120 },
-                { view: "combo", name: "TipoAlmacen", labelWidth: 105, label: "Tipo Almacen", options: getTipoAlmacen() },
-                { view: "combo", name: "Activo", labelWidth: 105, label: "Activo", options: getSiNo() },
+                { view: "text", name: "Clave", label: "Clave", labelWidth: 140 },
+                { view: "text", name: "Nombre", label: "Nombre", labelWidth: 140 },
+                { view: "combo", name: "TipoAlmacen", labelWidth: 140, label: "Tipo Almacen", options: getTipoAlmacen() },
+                { view: "combo", name: "Activo", labelWidth: 140, label: "Activo", options: getSiNo() },
                 {
                     view: "combo",
                     name: "TipoComponente._id",
-                    labelWidth: 120,
+                    labelWidth: 140,
                     id: "cmbTipoComponente" + id,
                     label: "Tipo Componente",
                     options: {
