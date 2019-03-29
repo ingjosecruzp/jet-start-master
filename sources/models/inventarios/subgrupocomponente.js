@@ -4,6 +4,7 @@ import { ModeloBase } from "../ModeloBase";
 export class subgrupocomponente extends ModeloBase {
     constructor() {
         let servicio = "Servicios/Inventarios/WcfSubgruposComponentes.svc/";
-        super(servicio);
+        let campos = "_id,Nombre,GrupoComponente.Nombre,GrupoComponente.TipoComponente.Nombre";
+        super(servicio, campos);
     }
 }

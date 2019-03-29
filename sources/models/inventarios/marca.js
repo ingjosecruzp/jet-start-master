@@ -4,6 +4,8 @@ import { ModeloBase } from "../ModeloBase";
 export class marca extends ModeloBase {
     constructor() {
         let servicio = "Servicios/Generales/WcfMarcas.svc/";
-        super(servicio);
+        let campos = "_id,Nombre";
+
+        super(servicio, campos);
     }
 }

@@ -11,11 +11,11 @@ export class FrmPureza extends FrmBase {
             width: 400,
             elements: [
                 { view: "text", name: "_id", hidden: true },
-                { view: "text", name: "Nombre", label: "Nombre", labelWidth: 120 },
+                { view: "text", name: "Nombre", label: "Nombre", labelWidth: 140 },
                 {
                     view: "combo",
                     name: "GrupoComponente._id",
-                    labelWidth: 120,
+                    labelWidth: 140,
                     id: "cmbGrupoComponente" + id,
                     label: "Grupo Componente",
                     options: {

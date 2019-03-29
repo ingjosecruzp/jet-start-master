@@ -4,6 +4,8 @@ import { ModeloBase } from "../ModeloBase";
 export class almacen extends ModeloBase {
     constructor() {
         let servicio = "Servicios/Inventarios/WcfAlmacenes.svc/";
-        super(servicio);
+        let campos = "_id,Clave,Nombre,TipoAlmacen,Activo,TipoComponente.Nombre";
+
+        super(servicio, campos);
     }
 }
