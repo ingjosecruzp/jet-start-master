@@ -13,7 +13,7 @@ export default class GridSalida extends GridBase {
             { id: "Concepto", template: (obj) => { return obj.Concepto.Nombre }, header: ["Concepto", { content: "textFilter" }], fillspace: true }
         ];
 
-        let movimientos = new movimientosES();
+        let movimientos = new movimientosES("SALIDA");
 
         super(app, name, columns, movimientos);
     }

@@ -1,12 +1,14 @@
 import { JetView } from "webix-jet";
 
 export class ModeloBase {
-    constructor(servicio, campos) {
+    constructor(servicio, campos, naturaleza) {
+        if (naturaleza) this.naturaleza = naturaleza;
         this.url = "http://localhost:60493/" + servicio;
         this.fields = "campos/" + campos;
     }
 
     getAllData() {
+        console.log("getAllDataBase");
         return webix.ajax(this.url + this.fields);
     }
 
