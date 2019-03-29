@@ -21,3 +21,11 @@ export function getTipoAlmacen() {
     ];
     return TipoAlmacen;
 };
+
+export function getValoracion() {
+    var Valoracion = [
+        { id: "1", value: "ULTIMO COSTO" },
+        { id: "2", value: "PROMEDIO PONDERADO" },
+    ];
+    return Valoracion;
+};

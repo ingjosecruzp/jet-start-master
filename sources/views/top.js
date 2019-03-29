@@ -15,6 +15,10 @@ import { FrmPureza } from "views/inventarios/FrmPureza";
 import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 
+/*********REPORTES******************/
+import { RptExistencias } from "views/reportes/RptExistencias";
+/**********************************/
+
 
 export default class TopView extends JetView {
     config() {
@@ -160,8 +164,12 @@ export default class TopView extends JetView {
                                     onAfterSelect: (id) => {
                                         //webix.message("Selected: " + this.getItem(id).value);
                                         //webix.message("Selected: " + this.getItem(id).url);
-                                        console.log(id);
-                                        this.app.show("/top/" + id);
+                                        if (id == "RptExistencia") {
+                                            this.RptExistencias = this.ui(RptExistencias);
+                                            this.RptExistencias.showWindow();
+                                        } else {
+                                            this.app.show("/top/" + id);
+                                        }
                                     }
                                 }
                             }]

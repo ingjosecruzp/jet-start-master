@@ -81,6 +81,14 @@ export const menu_data_multi = new webix.DataCollection({
             ]
         },
         {
+            id: "reportes",
+            icon: "mdi mdi-chart-bar",
+            value: "Reportes",
+            data: [
+                { id: "RptExistencia", icon: "mdi mdi-book", value: "Existencias" }
+            ]
+        },
+        {
             id: "forms",
             icon: "mdi mdi-pencil",
             value: "Forms",
