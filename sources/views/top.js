@@ -192,5 +192,12 @@ export default class TopView extends JetView {
         //this.use(plugins.Menu, "top:menu");
         //this.use(plugins.SideBar, "top:menu");
         //this.FrmUnidades = this.ui(FrmUnidades);
+
+        webix.attachEvent("onBeforeAjax",
+            function(mode, url, data, request, headers, files, promise) {
+                //headers["Content-type"] = "application/json";
+                headers["token"] = localStorage.getItem("token");
+            }
+        );
     }
 }

@@ -8,7 +8,6 @@ export class ModeloBase {
     }
 
     getAllData() {
-        console.log("getAllDataBase");
         return webix.ajax(this.url + this.fields);
     }
 
