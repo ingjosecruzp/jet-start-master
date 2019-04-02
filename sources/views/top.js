@@ -85,8 +85,8 @@ export default class TopView extends JetView {
                             type: "icon",
                             width: 45,
                             css: "app_button",
-                            icon: "mdi mdi-comment",
-                            badge: 4,
+                            icon: "mdi mdi-plus-circle",
+                            //badge: 4,
                             click: () => {
                                 console.log(this.getUrl()[1].page);
                                 if (this.getUrl()[1].page == "GridUnidades") {
@@ -143,14 +143,22 @@ export default class TopView extends JetView {
                             type: "icon",
                             width: 45,
                             css: "app_button",
-                            icon: "mdi mdi-bell",
-                            badge: 10,
+                            icon: "mdi mdi-exit-to-app",
+                            //badge: 10,
                             click: () => {
-                                //$$('grid').clearAll();
-                                //$$('grid').refresh();
-                                console.log("refrescar");
-                                this.refresh();
-                                //$$('grid').loadNext(-1, 0);
+                                webix.confirm({
+                                    title: "Salir",
+                                    ok: "Si",
+                                    cancel: "No",
+                                    text: "¿Estas seguro de cerrar sesión?",
+                                    callback: (result) => {
+                                        if (result == false)
+                                            return;
+
+                                        localStorage.removeItem("token");
+                                        this.app.show("/FrmLogin");
+                                    }
+                                });
                             }
                         }
                     ]
