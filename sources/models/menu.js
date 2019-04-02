@@ -1,6 +1,27 @@
 export const menu_data_multi = new webix.DataCollection({
     data: [{
-            id: "structure",
+            id: "administracion",
+            icon: "mdi mdi-nut",
+            value: "Administración",
+            data: [{
+                    id: "GridUsuarios",
+                    icon: "mdi mdi-account",
+                    value: "Usarios"
+                },
+                {
+                    id: "GridRoles",
+                    icon: "mdi mdi-account-group",
+                    value: "Roles"
+                },
+                {
+                    id: "GridEmpresas",
+                    icon: "mdi mdi-factory",
+                    value: "Empresas"
+                },
+            ]
+        },
+        {
+            id: "catalogos",
             icon: "mdi mdi-folder-multiple",
             value: "Catalogos",
             data: [{
