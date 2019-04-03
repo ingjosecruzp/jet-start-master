@@ -22,6 +22,23 @@ export function getTipoAlmacen() {
     return TipoAlmacen;
 };
 
+export function getEstatus() {
+    var Estatus = [
+        { id: "ACTIVO", value: "ACTIVO" },
+        { id: "INACTIVO", value: "INACTIVO" },
+    ];
+    return Estatus;
+};
+
+export function getMetodoCosteo() {
+    var Estatus = [
+        { id: "PEPS", value: "PEPS" },
+        { id: "UEPS", value: "UEPS" },
+        { id: "PROMEDIO PONDERADO", value: "PROMEDIO PONDERADO" },
+    ];
+    return Estatus;
+};
+
 export function getValoracion() {
     var Valoracion = [
         { id: "1", value: "ULTIMO COSTO" },

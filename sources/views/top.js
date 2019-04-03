@@ -16,9 +16,14 @@ import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 
-/*********REPORTES******************/
+
+/*********ADMINISTRACION******************/
+import { FrmEmpresa } from "views/administracion/FrmEmpresa";
+/*******************************************/
+
+/*********REPORTES**************************/
 import { RptExistencias } from "views/reportes/RptExistencias";
-/**********************************/
+/*******************************************/
 
 
 export default class TopView extends JetView {
@@ -134,6 +139,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridAlmacen") {
                                     this.FrmAlmacen = this.ui(FrmAlmacen);
                                     this.FrmAlmacen.showWindow();
+                                } else if (this.getUrl()[1].page == "GridEmpresa") {
+                                    this.FrmEmpresa = this.ui(FrmEmpresa);
+                                    this.FrmEmpresa.showWindow();
                                 }
 
                             }
