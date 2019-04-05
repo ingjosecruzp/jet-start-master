@@ -78,5 +78,13 @@ export class FrmEmpresa extends FrmBase {
     init(view) {
         webix.extend($$(this.Ventana), webix.ProgressBar);
     }
+    guardar() {
+        let data = this.$$(this.Formulario).getValues();
+
+        data.InicioPeriodo = this.convertToJSONDate(data.InicioPeriodo);
+        data.FinPeriodo = this.convertToJSONDate(data.FinPeriodo);
+
+        super.guardar(data);
+    }
 
 }
