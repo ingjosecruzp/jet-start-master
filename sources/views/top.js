@@ -19,6 +19,7 @@ import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
+import { FrmUsuarios } from "views/administracion/FrmUsuarios";
 /*******************************************/
 
 /*********REPORTES**************************/
@@ -142,6 +143,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridEmpresa") {
                                     this.FrmEmpresa = this.ui(FrmEmpresa);
                                     this.FrmEmpresa.showWindow();
+                                } else if (this.getUrl()[1].page == "GridUsuarios") {
+                                    this.FrmUsuarios = this.ui(FrmUsuarios);
+                                    this.FrmUsuarios.showWindow();
                                 }
 
                             }
