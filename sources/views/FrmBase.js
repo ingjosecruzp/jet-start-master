@@ -216,4 +216,9 @@ export class FrmBase extends JetView {
         var newDate = new Date(Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes(), dt.getSeconds(), dt.getMilliseconds()));
         return '/Date(' + newDate.getTime() + ')/';
     }
+    convertToDate(strDate) {
+        var seconds = parseInt(strDate.replace(/\/Date\(([0-9]+)[^+]\//i, "$1"));
+        var date = new Date(seconds);
+        return date;
+    }
 }

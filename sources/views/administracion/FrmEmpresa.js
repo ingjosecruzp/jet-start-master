@@ -56,8 +56,8 @@ export class FrmEmpresa extends FrmBase {
                     body: {
                         rows: [{
                             cols: [
-                                { view: "datepicker", label: "Fecha Inicio", labelWidth: 100, name: "InicioPeriodo", stringResult: true, format: "%d  %M %Y", value: new Date() },
-                                { view: "datepicker", label: "Fecha Fin", labelWidth: 100, name: "FinPeriodo", stringResult: true, format: "%d  %M %Y", value: new Date() },
+                                { view: "datepicker", id: "DtpFechaInicio" + id, label: "Fecha Inicio", labelWidth: 100, name: "InicioPeriodo", stringResult: true, format: "%d  %M %Y", value: new Date() },
+                                { view: "datepicker", id: "DtpFechaFin" + id, label: "Fecha Fin", labelWidth: 100, name: "FinPeriodo", stringResult: true, format: "%d  %M %Y", value: new Date() },
                             ]
                         }, ]
                     }
@@ -80,11 +80,16 @@ export class FrmEmpresa extends FrmBase {
     }
     guardar() {
         let data = this.$$(this.Formulario).getValues();
-
+        console.log(data.InicioPeriodo);
         data.InicioPeriodo = this.convertToJSONDate(data.InicioPeriodo);
         data.FinPeriodo = this.convertToJSONDate(data.FinPeriodo);
-
+        return;
+        data.Nombre = "";
         super.guardar(data);
     }
 
+    cargarCombos(data) {
+        $$("DtpFechaInicio" + this.id).setValue(this.convertToDate(data.InicioPeriodo));
+        $$("DtpFechaFin" + this.id).setValue(this.convertToDate(data.FinPeriodo));
+    }
 }
