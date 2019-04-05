@@ -5,6 +5,7 @@ export class FrmBase extends JetView {
         super(app, name);
 
         this.form = form;
+        //Id de la ventana para poder abrir varios
         this.id = id
         this.Ventana = "Ventana" + new Date().getTime();
         this.Formulario = "Frm" + new Date().getTime();
@@ -71,12 +72,20 @@ export class FrmBase extends JetView {
 
                 this.hiddenProgressBar();
 
-            }).fail(function(error) {
+                //Detecta cuando se cerro la ventana
+                $$(this.Formulario).attachEvent("onDestruct", () => {
+                    socket.emit("liberar", this._id);
+                });
+
+
+            }).fail((error) => {
                 webix.alert({
                     type: "alert-error",
                     text: "Error: " + error.statusText
+                }).then((result) => {
+                    $$(this.Ventana).close();
+                    this.hiddenProgressBar();
                 });
-                this.hiddenProgressBar();
             });
         }
 
@@ -86,6 +95,7 @@ export class FrmBase extends JetView {
 
         if (this.$$(this.Formulario).validate() == false)
             return;
+
         data = data == undefined ? this.$$(this.Formulario).getValues() : data;
 
         webix.confirm({

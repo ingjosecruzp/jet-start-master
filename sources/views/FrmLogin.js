@@ -31,10 +31,20 @@ export default class FrmLogin extends JetView {
     init(view) {
         view.$view.querySelector("input").focus();
         webix.extend($$("FrmLogin"), webix.ProgressBar);
+
+        /*socket.on('mensaje', function(data) {
+            data = JSON.parse(data);
+            console.log(data);
+        });
+
+        socket.on('clienteSesiones', function(data) {
+            data = JSON.parse(data);
+            console.log(data);
+        });*/
+
     }
 
     do_login() {
-        console.log("entro");
         if (this.$$("FrmLogin").validate() == false)
             return;
 

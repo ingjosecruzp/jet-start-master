@@ -11,10 +11,20 @@
 
 
     <!-- App -->
+    <script type="text/javascript" src="lib/socket.io.js">
+    </script>
+    <!--<script type="text/javascript" src="node_modules/socket.io/lib/socket.js">
+        var socket = io.connect('http://localhost:90/', {
+            'forceNew': true
+        });
+    </script> -->
     <script type="text/javascript" src="codebase/myapp.js"></script>
     <link rel="stylesheet" type="text/css" href="codebase/myapp.css">
 </head>
 
 <body></body>
+<script>
+    var socket;
+</script>
 
 </html>
