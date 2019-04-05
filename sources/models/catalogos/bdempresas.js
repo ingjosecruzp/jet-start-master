@@ -4,7 +4,7 @@ import { ModeloBase } from "../ModeloBase";
 export class bdempresas extends ModeloBase {
     constructor() {
         let servicio = "Servicios/Generales/WcfEmpresas.svc/";
-        let campos = "_id,Clave,Nombre,TipoAlmacen,Activo";
+        let campos = "_id,RazonSocial,RFC,Status,MetodoCosteo";
 
         super(servicio, campos);
     }
