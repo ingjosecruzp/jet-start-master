@@ -30,11 +30,6 @@ export const menu_data_multi = new webix.DataCollection({
                     value: "Unidades"
                 },
                 {
-                    id: "GridUnidadesss",
-                    icon: "mdi mdi-cube",
-                    value: "Grupos Componentes"
-                },
-                {
                     id: "GridConceptos",
                     icon: "mdi mdi-cube",
                     value: "Conceptos"

@@ -20,6 +20,7 @@ import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
 import { FrmUsuarios } from "views/administracion/FrmUsuarios";
+import { FrmRoles } from "views/administracion/FrmRoles";
 /*******************************************/
 
 /*********REPORTES**************************/
@@ -146,8 +147,10 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridUsuarios") {
                                     this.FrmUsuarios = this.ui(FrmUsuarios);
                                     this.FrmUsuarios.showWindow();
+                                } else if (this.getUrl()[1].page == "GridRoles") {
+                                    this.FrmRoles = this.ui(FrmRoles);
+                                    this.FrmRoles.showWindow();
                                 }
-
                             }
                         },
                         {
