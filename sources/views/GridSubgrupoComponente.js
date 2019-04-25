@@ -7,6 +7,7 @@ export default class GridSubgrupoComponente extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
+            { id: "Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
             { id: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 150 },
             { id: "Grupo Componente", template: (obj) => { return obj.GrupoComponente.Nombre }, header: ["Grupo Componente", { content: "textFilter" }], fillspace: true },
             { id: "Tipo Componente", template: (obj) => { return obj.GrupoComponente.TipoComponente.Nombre }, header: ["Tipo Componente", { content: "textFilter" }], fillspace: true },

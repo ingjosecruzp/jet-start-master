@@ -11,6 +11,7 @@ export class FrmGrupoComponente extends FrmBase {
             width: 400,
             elements: [
                 { view: "text", name: "_id", hidden: true },
+                { view: "text", name: "Clave", label: "Clave", labelWidth: 140 },
                 { view: "text", name: "Nombre", label: "Nombre", labelWidth: 140 },
                 {
                     view: "combo",
