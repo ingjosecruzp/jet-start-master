@@ -93,7 +93,7 @@ export class FrmBase extends JetView {
     }
     guardar(data) {
 
-        if (this.$$(this.Formulario).validate() == false)
+        if (this.$$(this.Formulario).validate({ hidden: true }) == false)
             return;
 
         data = data == undefined ? this.$$(this.Formulario).getValues() : data;

@@ -6,6 +6,9 @@ import { grupounidad } from "models/catalogos/grupounidad";
 import { grupocomponente } from "models/catalogos/grupocomponente";
 import { unidades } from "models/catalogos/unidades";
 import { subgrupocomponente } from "models/catalogos/subgrupocomponente";
+import { pureza } from "models/inventarios/pureza";
+import { peso } from "models/inventarios/peso";
+import { paises } from "models/catalogos/paises";
 import { tipoconceptos } from "models/catalogos/tipoconceptos";
 import { getSiNo, getNaturaleza } from "models/generales";
 
@@ -37,8 +40,7 @@ export class FrmArticulos extends FrmBase {
                                     width: 400,
                                     rows: [{
                                             cols: [
-                                                { view: "text", name: "Clave", labelWidth: 75, label: "Clave" },
-                                                { view: "text", name: "NombreCorto", labelWidth: 75, label: "Nombre" }
+                                                { view: "text", name: "Clave", labelWidth: 75, label: "Clave" }
                                             ]
                                         },
                                         { view: "text", name: "Nombre", labelWidth: 75, label: "Nombre" },
@@ -221,6 +223,68 @@ export class FrmArticulos extends FrmBase {
                         }
                     },
                     {
+                        id: "TabParticulares",
+                        header: "Particulares",
+                        body: {
+                            height: 423,
+                            view: "fieldset",
+                            label: "Datos Particulares",
+                            type: "space",
+                            body: {
+                                rows: [{
+                                        view: "combo",
+                                        name: "Pureza._id",
+                                        labelWidth: 90,
+                                        id: "CmbPureza" + id,
+                                        label: "Pureza",
+                                        options: {
+                                            body: {
+                                                template: "#Nombre#",
+                                                dataFeed: function(text) {
+                                                    let purezas = new pureza();
+                                                    this.load(purezas.searchCombo(text));
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        view: "combo",
+                                        name: "Peso._id",
+                                        labelWidth: 90,
+                                        id: "CmbPeso" + id,
+                                        label: "Peso",
+                                        options: {
+                                            body: {
+                                                template: "#Nombre#",
+                                                dataFeed: function(text) {
+                                                    let pesos = new peso();
+                                                    this.load(pesos.searchCombo(text));
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        view: "combo",
+                                        name: "Paises._id",
+                                        labelWidth: 90,
+                                        id: "CmbPaises" + id,
+                                        label: "Procedencia",
+                                        options: {
+                                            body: {
+                                                template: "#Nombre#",
+                                                dataFeed: function(text) {
+                                                    let pais = new paises();
+                                                    this.load(pais.searchCombo(text));
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+
+                        }
+                    },
+                    {
                         header: "Inventarios y unidades",
                         id: "TabInventariosUnidades",
                         margin: 250,
@@ -383,7 +447,19 @@ export class FrmArticulos extends FrmBase {
 
             }],
             rules: {
-                //$all: webix.rules.isNotEmpty
+                //Datos Generales
+                "Clave": webix.rules.isNotEmpty,
+                "Nombre": webix.rules.isNotEmpty,
+                "GrupoComponente._id": webix.rules.isNotEmpty,
+                "SubGrupoComponente._id": webix.rules.isNotEmpty,
+                "GrupoUnidad._id": webix.rules.isNotEmpty,
+                "Activo": webix.rules.isNotEmpty,
+                ///Inventario y unidades
+                "Inventariable": webix.rules.isNotEmpty,
+                "TipoSeguimiento": webix.rules.isNotEmpty,
+                "UnidadInventario._id": webix.rules.isNotEmpty,
+                "UnidadVenta._id": webix.rules.isNotEmpty,
+                "UnidadCompra._id": webix.rules.isNotEmpty
             }
         };
 
@@ -394,7 +470,6 @@ export class FrmArticulos extends FrmBase {
     init(view) {
         let self = this;
         webix.extend($$(this.Ventana), webix.ProgressBar);
-
 
         $$("CmbGrupoComponente" + this.id).attachEvent("onChange", (newv, oldv) => {
             $$("CmbSubGrupoComponente" + this.id).setValue("");
@@ -489,26 +564,27 @@ export class FrmArticulos extends FrmBase {
         //Agrega las Imagenes
         data.Imagen = $$("carousel" + this.id).serialize();
 
-        //console.log($$("gridCodigos" + this.id).serialize());
-
         let CodigosBarra = [];
 
         //Obtiene los valores del grid
         $$("gridCodigos" + this.id).eachRow((row) => {
             let record = $$("gridCodigos" + this.id).getItem(row);
-            console.log(record);
-            console.log(record.Unidad._id);
 
-            let codigo = {
-                Codigo: record.Codigo,
-                Activo: record.Activo,
-                //Unidad: record.Unidad._id
-                Unidad: {
-                    _id: record.Unidad
+            if (record.Unidad != undefined) {
+                console.log(record);
+                console.log(record.Unidad._id);
+
+                let codigo = {
+                    Codigo: record.Codigo,
+                    Activo: record.Activo,
+                    //Unidad: record.Unidad._id
+                    Unidad: {
+                        _id: record.Unidad
+                    }
                 }
-            }
 
-            CodigosBarra.push(codigo);
+                CodigosBarra.push(codigo);
+            }
         });
 
         data.CodigosBarra = CodigosBarra;
@@ -519,17 +595,25 @@ export class FrmArticulos extends FrmBase {
         super.guardar(data);
     }
     cargarCombos(data) {
-        //console.log(data);
+        console.log(data);
         //console.log("cargando");
 
         this.cargarCombo($$("CmbGrupoComponente" + this.id), data.GrupoComponente);
         this.cargarCombo($$("CmbSubGrupoComponente" + this.id), data.SubGrupoComponente);
         this.cargarCombo($$("CmbGrupoUnidad" + this.id), data.GrupoUnidad);
-        this.cargarCombo($$("cmbMarca" + this.id), data.Marca);
 
         this.cargarCombo($$("cmbUnidadCompra" + this.id), data.UnidadCompra);
         this.cargarCombo($$("cmbUnidadInventario" + this.id), data.UnidadInventario);
         this.cargarCombo($$("cmbUnidadVenta" + this.id), data.UnidadVenta);
+
+        if (data.Marca != undefined)
+            this.cargarCombo($$("cmbMarca" + this.id), data.Marca);
+        if (data.Pureza != undefined)
+            this.cargarCombo($$("CmbPureza" + this.id), data.Pureza);
+        if (data.Peso != undefined)
+            this.cargarCombo($$("CmbPeso" + this.id), data.Peso);
+        if (data.Paises != undefined)
+            this.cargarCombo($$("CmbPaises" + this.id), data.Paises);
 
         let Carousel = $$("carousel" + this.id);
         data.Imagen.forEach(element => {

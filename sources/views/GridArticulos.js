@@ -8,8 +8,8 @@ export default class GridArticulos extends GridBase {
         let columns = [
             { id: "_id", hidden: true },
             { id: "Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
-            { id: "NombreCorto", header: ["Nombre Corto", { content: "textFilter" }], fillspace: true },
-            { id: "Marca", template: (obj) => { return obj.Marca.Nombre }, header: ["Marca", { content: "textFilter" }], width: 150 },
+            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], fillspace: true },
+            { id: "Marca", template: (obj) => { return obj.Marca == undefined ? "Sin Marca" : obj.Marca.Nombre }, header: ["Marca", { content: "textFilter" }], width: 150 },
             { id: "Activo", header: ["Activo", { content: "textFilter" }], width: 150 },
             { id: "GrupoComponente", template: (obj) => { return obj.GrupoComponente.Nombre }, header: ["GrupoComponente", { content: "textFilter" }], width: 150 },
             { id: "SubGrupoComponente", template: (obj) => { return obj.SubGrupoComponente.Nombre }, header: ["SubGrupoComponente", { content: "textFilter" }], width: 150 },

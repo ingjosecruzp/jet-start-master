@@ -7,13 +7,9 @@ export class conceptos extends ModeloBase {
         let campos = "_id,Clave,Nombre,Naturaleza,TipoConcepto.Nombre,Predefinido";
         super(servicio, campos, naturaleza);
         this.fields = "campos=" + campos;
-
-
     }
+
     searchCombo(text) {
         return this.url + "Nombrebusqueda=" + this.fields + "/tipoMovimiento=" + this.naturaleza;
-
     }
-
-
 }
