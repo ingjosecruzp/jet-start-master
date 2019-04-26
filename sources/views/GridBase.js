@@ -35,4 +35,25 @@ export class GridBase extends JetView {
         view.parse(this.Modelo.getAllData());
         this.$$(this.Grid).showOverlay("Cargando...");
     }
+    convertToJSONDate(strDate) {
+        var dt = new Date(strDate);
+        var newDate = new Date(Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes(), dt.getSeconds(), dt.getMilliseconds()));
+        return '/Date(' + newDate.getTime() + ')/';
+    }
+    convertToDate(strDate) {
+        var seconds = parseInt(strDate.replace(/\/Date\(([0-9]+)[^+]\//i, "$1"));
+        var date = new Date(seconds);
+
+        var dateString =
+            date.getUTCFullYear() + "/" +
+            ("0" + (date.getUTCMonth() + 1)).slice(-2) + "/" +
+            ("0" + date.getUTCDate()).slice(-2)
+            /* + " " +
+                        ("0" + date.getUTCHours()).slice(-2) + ":" +
+                        ("0" + date.getUTCMinutes()).slice(-2) + ":" +
+                        ("0" + date.getUTCSeconds()).slice(-2)*/
+        ;
+
+        return dateString;
+    }
 }

@@ -40,7 +40,7 @@ export class FrmArticulos extends FrmBase {
                                     width: 400,
                                     rows: [{
                                             cols: [
-                                                { view: "text", name: "Clave", labelWidth: 75, label: "Clave" }
+                                                { view: "text", name: "Clave", labelWidth: 75, label: "Clave", readonly: true }
                                             ]
                                         },
                                         { view: "text", name: "Nombre", labelWidth: 75, label: "Nombre" },
@@ -448,7 +448,7 @@ export class FrmArticulos extends FrmBase {
             }],
             rules: {
                 //Datos Generales
-                "Clave": webix.rules.isNotEmpty,
+                //"Clave": webix.rules.isNotEmpty,
                 "Nombre": webix.rules.isNotEmpty,
                 "GrupoComponente._id": webix.rules.isNotEmpty,
                 "SubGrupoComponente._id": webix.rules.isNotEmpty,
