@@ -35,7 +35,10 @@ export class FrmAlmacen extends FrmBase {
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty
+                "Clave": webix.rules.isNotEmpty,
                 "Nombre": webix.rules.isNotEmpty,
+                "TipoAlmacen": webix.rules.isNotEmpty,
+                "Activo": webix.rules.isNotEmpty,
                 "TipoComponente._id": webix.rules.isNotEmpty
 
             }
