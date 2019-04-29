@@ -12,7 +12,7 @@ export default class FrmLogin extends JetView {
             borderless: false,
             margin: 10,
             rows: [
-                { type: "header", template: "GLG" },
+                { type: "header", template: "CLG" },
                 { view: "text", name: "Nombre", label: "Usuario", labelPosition: "top" },
                 { view: "text", type: "password", name: "Contrasena", label: "Password", labelPosition: "top" },
                 { view: "button", value: "Entrar", click: () => this.do_login(), hotkey: "enter" }
