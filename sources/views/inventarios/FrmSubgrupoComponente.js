@@ -50,6 +50,7 @@ export class FrmSubgrupoComponente extends FrmBase {
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty
+                "Clave": webix.rules.isNotEmpty,
                 "Nombre": webix.rules.isNotEmpty,
                 "GrupoComponente._id": webix.rules.isNotEmpty,
                 //"TipoComponente._id": webix.rules.isNotEmpty
