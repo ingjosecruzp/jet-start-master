@@ -66,7 +66,7 @@ export class FrmBase extends JetView {
             this.showProgressBar();
 
             this.Modelo.getData(this._id).then((realdata) => {
-                console.log(realdata.json());
+                //console.log(realdata.json());
 
 
                 this.$$(this.Formulario).setValues(realdata.json());

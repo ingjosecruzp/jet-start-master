@@ -266,8 +266,6 @@ export class FrmSalida extends FrmBase {
         super.guardar(data);
     }
     cargarCombos(data) {
-        console.log(data);
-
         $$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
 
         this.cargarCombo($$("cmbConcepto" + this.id), data.Concepto);

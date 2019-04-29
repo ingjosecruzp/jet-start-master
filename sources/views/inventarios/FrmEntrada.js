@@ -74,6 +74,7 @@ export class FrmEntrada extends FrmBase {
                     view: "datatable",
                     id: "gridArticulos" + id,
                     height: 300,
+                    width: 500,
                     select: "cell",
                     //editaction: "none",
                     columns: [
@@ -82,10 +83,10 @@ export class FrmEntrada extends FrmBase {
                             id: "Articulo",
                             editor: "combo",
                             header: "Articulo",
-                            width: 257,
+                            fillspace: true,
+                            //width: 257,
                             placeholder: "Type something... ",
                             collection: collection,
-                            fillspace: true,
                             //select: "row",
                             //navigation: true,
                             suggest: { // suggest
@@ -109,7 +110,7 @@ export class FrmEntrada extends FrmBase {
                     },
                     liveValidation: true,
                     editable: true,
-                    autowidth: true,
+                    //autowidth: true,
                     data: [{}]
                 }
             ],
@@ -135,7 +136,7 @@ export class FrmEntrada extends FrmBase {
         let self = this;
 
         $$("cmbConcepto" + this.id).attachEvent("onChange", (newv, oldv) => {
-            setTimeout(function() {
+            setTimeout(() => {
                 let concepto = $$("cmbConcepto" + self.id).getPopup().getList().getItem(newv);
 
                 self.CostoAutomatico = concepto.CostoAutomatico;
@@ -143,6 +144,8 @@ export class FrmEntrada extends FrmBase {
                 if (self.CostoAutomatico == "SI") {
                     grid.hideColumn("Costo");
                     grid.hideColumn("CostoTotal");
+
+
                 } else if (self.CostoAutomatico == "") {
                     grid.showColumn("Costo");
                     grid.showColumn("CostoTotal");
@@ -155,7 +158,7 @@ export class FrmEntrada extends FrmBase {
                 } else {
                     $$("Folio").enable(true);
                 }
-            }, 10000);
+            }, 50);
         });
 
 
@@ -267,7 +270,6 @@ export class FrmEntrada extends FrmBase {
         super.guardar(data);
     }
     cargarCombos(data) {
-        console.log(data);
         //this.cargarCombo(this.$$("cmbConcepto" + this.id), data.TipoConcepto);
 
         $$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));

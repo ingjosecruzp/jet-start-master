@@ -95,7 +95,7 @@ export default class TopView extends JetView {
                             icon: "mdi mdi-plus-circle",
                             //badge: 4,
                             click: () => {
-                                console.log(this.getUrl()[1].page);
+                                //console.log(this.getUrl()[1].page);
                                 if (this.getUrl()[1].page == "GridUnidades") {
                                     this.FrmUnidades = this.ui(FrmUnidades);
                                     this.FrmUnidades.showWindow();
