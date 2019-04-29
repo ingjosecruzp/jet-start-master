@@ -64,9 +64,15 @@ export class FrmEmpresa extends FrmBase {
                 },
             ],
             rules: {
-                //$all: webix.rules.isNotEmpty
-                //"Nombre": webix.rules.isNotEmpty,
-                //"TipoComponente._id": webix.rules.isNotEmpty
+
+                "RazonSocial": webix.rules.isNotEmpty,
+                "RFC": webix.rules.isNotEmpty,
+                "Status": webix.rules.isNotEmpty,
+                "MetodoCosteo": webix.rules.isNotEmpty,
+                "SalidasSinExistencia": webix.rules.isNotEmpty,
+                "ValidaVariacionCosto": webix.rules.isNotEmpty,
+                "PorcentajeVariacionCosto": webix.rules.isNotEmpty
+                    //$all: webix.rules.isNotEmpty
 
             }
         };
