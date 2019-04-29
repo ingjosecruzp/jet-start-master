@@ -24,7 +24,7 @@ export class FrmSalida extends FrmBase {
                     cols: [{
                             rows: [{
                                     cols: [
-                                        { view: "datepicker", label: "Fecha", labelWidth: 50, name: "Fecha", stringResult: true, format: "%d  %M %Y", value: new Date() },
+                                        { view: "datepicker", id: "Fecha" + id, label: "Fecha", labelWidth: 50, name: "Fecha", stringResult: true, format: "%d  %M %Y", value: new Date() },
                                         { view: "text", id: "Folio", name: "Folio", labelWidth: 50, label: "Folio" },
                                     ]
                                 },
@@ -115,10 +115,10 @@ export class FrmSalida extends FrmBase {
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty,
-                /*  "Folio": webix.rules.isNotEmpty,
-                  "Concepto._id": webix.rules.isNotEmpty,
-                  "Almacen._id": webix.rules.isNotEmpty,
-                  "Fecha": webix.rules.isNotEmpty,*/
+                //"Folio": webix.rules.isNotEmpty,
+                "Concepto._id": webix.rules.isNotEmpty,
+                "Almacen._id": webix.rules.isNotEmpty,
+                "Fecha": webix.rules.isNotEmpty
             }
         };
 
@@ -135,26 +135,27 @@ export class FrmSalida extends FrmBase {
         let self = this;
 
         $$("cmbConcepto" + this.id).attachEvent("onChange", (newv, oldv) => {
-            let concepto = $$("cmbConcepto" + self.id).getPopup().getList().getItem(newv);
+            setTimeout(function() {
+                let concepto = $$("cmbConcepto" + self.id).getPopup().getList().getItem(newv);
 
-            self.CostoAutomatico = concepto.CostoAutomatico;
+                self.CostoAutomatico = concepto.CostoAutomatico;
 
-            if (self.CostoAutomatico == "SI") {
-                grid.hideColumn("Costo");
-                grid.hideColumn("CostoTotal");
-            } else if (self.CostoAutomatico == "") {
-                grid.showColumn("Costo");
-                grid.showColumn("CostoTotal");
-            }
+                if (self.CostoAutomatico == "SI") {
+                    grid.hideColumn("Costo");
+                    grid.hideColumn("CostoTotal");
+                } else if (self.CostoAutomatico == "") {
+                    grid.showColumn("Costo");
+                    grid.showColumn("CostoTotal");
+                }
 
-            if (concepto.FolioAutomatico == "SI") {
-                $$("Folio").setValue("");
-                $$("Folio").disable(true);
+                if (concepto.FolioAutomatico == "SI") {
+                    $$("Folio").setValue("");
+                    $$("Folio").disable(true);
 
-            } else {
-                $$("Folio").enable(true);
-            }
-
+                } else {
+                    $$("Folio").enable(true);
+                }
+            }, 10000);
         });
 
 
@@ -265,6 +266,31 @@ export class FrmSalida extends FrmBase {
         super.guardar(data);
     }
     cargarCombos(data) {
-        this.cargarCombo(this.$$("cmbConcepto" + this.id), data.TipoConcepto);
+        console.log(data);
+
+        $$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
+
+        this.cargarCombo($$("cmbConcepto" + this.id), data.Concepto);
+        this.cargarCombo($$("cmbAlmacen" + this.id), data.Almacen);
+
+        if (data.Almacen_Destino != undefined)
+            console.log("vacio");
+
+        $$("gridArticulos" + this.id).clearAll();
+
+        data.Detalles_ES.forEach(element => {
+            $$("gridArticulos" + this.id).config.columns[1].collection.add(element.Articulo);
+
+            let articulo = {
+                Clave: element.Clave,
+                Articulo: element.Articulo._id,
+                Cantidad: element.Cantidad,
+                Unidad: element.Articulo.UnidadInventario.Abreviatura,
+                Costo: element.Costo,
+                CostoTotal: element.CostoTotal,
+            }
+
+            $$("gridArticulos" + this.id).add(articulo);
+        });
     }
 }
