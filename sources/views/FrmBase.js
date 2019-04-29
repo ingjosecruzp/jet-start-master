@@ -66,8 +66,11 @@ export class FrmBase extends JetView {
             this.showProgressBar();
 
             this.Modelo.getData(this._id).then((realdata) => {
-                //console.log(realdata.json());
+                console.log(realdata.json());
+
+
                 this.$$(this.Formulario).setValues(realdata.json());
+
                 this.cargarCombos(realdata.json());
 
                 this.hiddenProgressBar();
@@ -79,6 +82,7 @@ export class FrmBase extends JetView {
 
 
             }).fail((error) => {
+                console.log(error);
                 webix.alert({
                     type: "alert-error",
                     text: "Error: " + error.statusText
