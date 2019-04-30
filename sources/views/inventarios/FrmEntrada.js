@@ -141,20 +141,18 @@ export class FrmEntrada extends FrmBase {
 
                 self.CostoAutomatico = concepto.CostoAutomatico;
 
-                if (self.CostoAutomatico == "SI") {
+                if (self.CostoAutomatico == "SI" && this._id == undefined) {
                     grid.hideColumn("Costo");
                     grid.hideColumn("CostoTotal");
-
-
-                } else if (self.CostoAutomatico == "") {
+                } else if (self.CostoAutomatico == "" && this._id == undefined) {
                     grid.showColumn("Costo");
                     grid.showColumn("CostoTotal");
                 }
 
                 if (concepto.FolioAutomatico == "SI") {
-                    $$("Folio").setValue("");
+                    if (this._id == undefined)
+                        $$("Folio").setValue("");
                     $$("Folio").disable(true);
-
                 } else {
                     $$("Folio").enable(true);
                 }
@@ -250,18 +248,20 @@ export class FrmEntrada extends FrmBase {
             //record.Articulo = this.LstArticulos.getItem(record.Articulo);
 
             //Se crea el objecto articulo el cual se añadira al movimiento
-            let articulo = {
-                Articulo: {
-                    _id: record.Articulo
-                },
-                Cantidad: record.Cantidad,
-                Clave: record.Clave,
-                Costo: record.Costo,
-                CostoTotal: record.CostoTotal,
-                Unidad: null
-            };
+            if (record.Articulo != undefined) {
+                let articulo = {
+                    Articulo: {
+                        _id: record.Articulo
+                    },
+                    Cantidad: record.Cantidad,
+                    Clave: record.Clave,
+                    Costo: record.Costo,
+                    CostoTotal: record.CostoTotal,
+                    Unidad: null
+                };
 
-            Detalles_ES.push(articulo);
+                Detalles_ES.push(articulo);
+            }
         });
 
         data.Detalles_ES = Detalles_ES;

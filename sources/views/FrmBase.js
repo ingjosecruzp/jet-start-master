@@ -68,7 +68,6 @@ export class FrmBase extends JetView {
             this.Modelo.getData(this._id).then((realdata) => {
                 //console.log(realdata.json());
 
-
                 this.$$(this.Formulario).setValues(realdata.json());
 
                 this.cargarCombos(realdata.json());
