@@ -49,8 +49,14 @@ export class FrmConceptos extends FrmBase {
                 },
             ],
             rules: {
-                $all: webix.rules.isNotEmpty,
-                "TipoConcepto._id": webix.rules.isNotEmpty
+                //$all: webix.rules.isNotEmpty,
+                "Clave": webix.rules.isNotEmpty,
+                "FolioAutomatico": webix.rules.isNotEmpty,
+                "Nombre": webix.rules.isNotEmpty,
+                "Naturaleza": webix.rules.isNotEmpty,
+                "TipoConcepto._id": webix.rules.isNotEmpty,
+                "Predefinido": webix.rules.isNotEmpty,
+                "CostoAutomatico": webix.rules.isNotEmpty
             }
         };
 

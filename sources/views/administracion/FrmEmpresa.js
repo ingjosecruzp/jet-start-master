@@ -89,7 +89,7 @@ export class FrmEmpresa extends FrmBase {
         console.log(data.InicioPeriodo);
         data.InicioPeriodo = this.convertToJSONDate(data.InicioPeriodo);
         data.FinPeriodo = this.convertToJSONDate(data.FinPeriodo);
-        return;
+        //return;
         data.Nombre = "";
         super.guardar(data);
     }

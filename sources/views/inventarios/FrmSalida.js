@@ -39,7 +39,7 @@ export class FrmSalida extends FrmBase {
                                             template: "#Nombre#",
                                             dataFeed: function(text) {
                                                 let concepto = new conceptos("SALIDA");
-                                                this.load(concepto.searchCombo(text));
+                                                this.load(concepto.searchXNaturaleza(text));
                                             }
                                         }
                                     }
