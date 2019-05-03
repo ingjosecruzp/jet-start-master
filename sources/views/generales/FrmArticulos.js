@@ -247,22 +247,7 @@ export class FrmArticulos extends FrmBase {
                                             }
                                         }
                                     },
-                                    {
-                                        view: "combo",
-                                        name: "Peso._id",
-                                        labelWidth: 90,
-                                        id: "CmbPeso" + id,
-                                        label: "Peso",
-                                        options: {
-                                            body: {
-                                                template: "#Nombre#",
-                                                dataFeed: function(text) {
-                                                    let pesos = new peso();
-                                                    this.load(pesos.searchCombo(text));
-                                                }
-                                            }
-                                        }
-                                    },
+                                    { view: "text", name: "Peso", labelWidth: 90, label: "Peso", attributes: { type: "number" } },
                                     {
                                         view: "combo",
                                         name: "Paises._id",
@@ -610,8 +595,8 @@ export class FrmArticulos extends FrmBase {
             this.cargarCombo($$("cmbMarca" + this.id), data.Marca);
         if (data.Pureza != undefined)
             this.cargarCombo($$("CmbPureza" + this.id), data.Pureza);
-        if (data.Peso != undefined)
-            this.cargarCombo($$("CmbPeso" + this.id), data.Peso);
+        /*if (data.Peso != undefined)
+            this.cargarCombo($$("CmbPeso" + this.id), data.Peso);*/
         if (data.Paises != undefined)
             this.cargarCombo($$("CmbPaises" + this.id), data.Paises);
 
