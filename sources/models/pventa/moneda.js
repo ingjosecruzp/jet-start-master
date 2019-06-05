@@ -2,11 +2,9 @@ import { JetView } from "webix-jet";
 import { ModeloBase } from "../ModeloBase";
 
 export class moneda extends ModeloBase {
-    constructor(naturaleza) {
+    constructor() {
         let servicio = "Servicios/Generales/WcfMoneda.svc/";
-        let campos = "_id, Nombre, TextoImporte, Simbolo, ClaveInterna, ClaveFiscal, ValorPredeterminado, MonedaNac";
-
-        super(servicio, campos, naturaleza);
+        let campos = "_id,Nombre,TextoImporte,Simbolo,ClaveInterna,ClaveFiscal,ValorPredeterminado,MonedaNac";
+        super(servicio, campos);
     }
-
 }

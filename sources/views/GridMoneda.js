@@ -12,8 +12,7 @@ export default class GridMoneda extends GridBase {
             { id: "Simbolo", header: ["Simbolo", { content: "textFilter" }], width: 150 },
             { id: "ClaveInterna", header: ["Clave Interna", { content: "textFilter" }], width: 150 },
             { id: "ClaveFiscal", header: ["Clave Fiscal", { content: "textFilter" }], width: 150 },
-            { id: "ValorPredeterminado", header: ["Valor Predeterminado", { content: "textFilter" }], width: 150 },
-            { id: "MonedaNac", header: ["Moneda Nac", { content: "textFilter" }], width: 150 },
+
         ];
 
         let monedas = new moneda();
@@ -23,8 +22,6 @@ export default class GridMoneda extends GridBase {
     init(view) {
         this.$$(this.Grid).attachEvent("onItemDblClick", (id, e, node) => {
             var item = $$(this.Grid).getItem(id);
-
-            console.log("double click");
             this.FrmMoneda = this.ui(FrmMoneda);
             this.FrmMoneda.showWindow(item._id);
         });
