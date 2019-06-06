@@ -60,11 +60,28 @@ export class FrmSalida extends FrmBase {
                                         }
                                     }
                                 },
+                                {
+                                    view: "combo",
+                                    name: "Almacen_Destino._id",
+                                    labelWidth: 50,
+                                    id: "cmbAlmacenDestino" + id,
+                                    label: "Destino",
+                                    disabled: true,
+                                    options: {
+                                        body: {
+                                            template: "#Nombre#",
+                                            dataFeed: function(text) {
+                                                let almacen = new almacenes();
+                                                this.load(almacen.searchCombo(text));
+                                            }
+                                        }
+                                    }
+                                },
                             ],
                         },
                         {
                             rows: [
-                                { view: "textarea", height: 112, name: "Descripcion", label: "Descripción:", labelPosition: "top" }
+                                { view: "textarea", height: 148, name: "Descripcion", label: "Descripción:", labelPosition: "top" }
                             ]
                         }
                     ]
@@ -137,14 +154,15 @@ export class FrmSalida extends FrmBase {
 
         $$("cmbConcepto" + this.id).attachEvent("onChange", (newv, oldv) => {
             setTimeout(function() {
+
                 let concepto = $$("cmbConcepto" + self.id).getPopup().getList().getItem(newv);
 
                 self.CostoAutomatico = concepto.CostoAutomatico;
-
-                if (self.CostoAutomatico == "SI" && this._id == undefined) {
+                
+                if (self.CostoAutomatico == "SI" && self._id == undefined) {
                     grid.hideColumn("Costo");
                     grid.hideColumn("CostoTotal");
-                } else if (self.CostoAutomatico == "" && this._id == undefined) {
+                } else if (self.CostoAutomatico == "" && self._id == undefined) {
                     grid.showColumn("Costo");
                     grid.showColumn("CostoTotal");
                 }
@@ -157,6 +175,12 @@ export class FrmSalida extends FrmBase {
                 } else {
                     $$("Folio").enable(true);
                 }
+
+                if(concepto.TipoConcepto != undefined)
+                    if(concepto.TipoConcepto._id == "5bd257b01d28282c7ce19c2e") {
+                        $$("cmbAlmacenDestino" + self.id).enable(true);
+                        $$("cmbConcepto" + self.id).disable(true);
+                    }
             }, 50);
         });
 
@@ -233,7 +257,6 @@ export class FrmSalida extends FrmBase {
         });
     }
     guardar() {
-        console.log($$("gridArticulos" + this.id).validate());
         if (!$$("gridArticulos" + this.id).validate()) return;
 
         let data = this.$$(this.Formulario).getValues();
@@ -241,6 +264,9 @@ export class FrmSalida extends FrmBase {
         data.Fecha = this.convertToJSONDate(data.Fecha);
 
         let Detalles_ES = [];
+
+        if(data.Almacen_Destino._id=="")
+                data.Almacen_Destino=null;
 
         //Obtiene los valores del grid
         $$("gridArticulos" + this.id).eachRow((row) => {
@@ -266,7 +292,6 @@ export class FrmSalida extends FrmBase {
 
         data.Detalles_ES = Detalles_ES;
         console.log(data);
-
         super.guardar(data);
     }
     cargarCombos(data) {
@@ -274,6 +299,7 @@ export class FrmSalida extends FrmBase {
 
         this.cargarCombo($$("cmbConcepto" + this.id), data.Concepto);
         this.cargarCombo($$("cmbAlmacen" + this.id), data.Almacen);
+        this.cargarCombo($$("cmbAlmacenDestino" + this.id), data.Almacen_Destino);
 
         if (data.Almacen_Destino != undefined)
             console.log("vacio");
