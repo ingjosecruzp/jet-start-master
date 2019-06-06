@@ -16,7 +16,9 @@ import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 
-
+/*********PUNTO DE VENTA******************/
+import { FrmMoneda } from "views/pventa/FrmMoneda";
+/*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
 import { FrmUsuarios } from "views/administracion/FrmUsuarios";
@@ -150,6 +152,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridRoles") {
                                     this.FrmRoles = this.ui(FrmRoles);
                                     this.FrmRoles.showWindow();
+                                } else if (this.getUrl()[1].page == "GridMoneda") {
+                                    this.FrmMoneda = this.ui(FrmMoneda);
+                                    this.FrmMoneda.showWindow();
                                 }
                             }
                         },
