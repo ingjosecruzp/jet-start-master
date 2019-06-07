@@ -231,22 +231,8 @@ export class FrmArticulos extends FrmBase {
                             label: "Datos Particulares",
                             type: "space",
                             body: {
-                                rows: [{
-                                        view: "combo",
-                                        name: "Pureza._id",
-                                        labelWidth: 90,
-                                        id: "CmbPureza" + id,
-                                        label: "Pureza",
-                                        options: {
-                                            body: {
-                                                template: "#Nombre#",
-                                                dataFeed: function(text) {
-                                                    let purezas = new pureza();
-                                                    this.load(purezas.searchCombo(text));
-                                                }
-                                            }
-                                        }
-                                    },
+                                rows: [
+                                    { view: "text", name: "Pureza", labelWidth: 90, label: "Pureza", attributes: { type: "number" } },
                                     { view: "text", name: "Peso", labelWidth: 90, label: "Peso", attributes: { type: "number" } },
                                     {
                                         view: "combo",
@@ -551,6 +537,9 @@ export class FrmArticulos extends FrmBase {
 
         let CodigosBarra = [];
 
+        if(data.Peso=="") data.Peso=0.0;
+        if(data.Pureza=="") data.Pureza=0.0;
+
         //Obtiene los valores del grid
         $$("gridCodigos" + this.id).eachRow((row) => {
             let record = $$("gridCodigos" + this.id).getItem(row);
@@ -593,8 +582,8 @@ export class FrmArticulos extends FrmBase {
 
         if (data.Marca != undefined)
             this.cargarCombo($$("cmbMarca" + this.id), data.Marca);
-        if (data.Pureza != undefined)
-            this.cargarCombo($$("CmbPureza" + this.id), data.Pureza);
+        /*if (data.Pureza != undefined)
+            this.cargarCombo($$("CmbPureza" + this.id), data.Pureza);*/
         /*if (data.Peso != undefined)
             this.cargarCombo($$("CmbPeso" + this.id), data.Peso);*/
         if (data.Paises != undefined)
