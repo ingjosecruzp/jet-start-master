@@ -18,6 +18,7 @@ import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 
 /*********PUNTO DE VENTA******************/
 import { FrmMoneda } from "views/pventa/FrmMoneda";
+import { FrmFormaCobro } from "views/pventa/FrmFormaCobro";
 /*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
@@ -155,6 +156,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridMoneda") {
                                     this.FrmMoneda = this.ui(FrmMoneda);
                                     this.FrmMoneda.showWindow();
+                                } else if (this.getUrl()[1].page == "GridFormaCobro") {
+                                    this.FrmFormaCobro = this.ui(FrmFormaCobro);
+                                    this.FrmFormaCobro.showWindow();
                                 }
                             }
                         },

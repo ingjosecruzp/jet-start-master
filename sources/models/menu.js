@@ -106,7 +106,8 @@ export const menu_data_multi = new webix.DataCollection({
             icon: "mdi mdi-store",
             value: "Punto De Venta",
             data: [
-                { id: "GridMoneda", icon: "mdi mdi-coin", value: "Monedas" }
+                { id: "GridMoneda", icon: "mdi mdi-coin", value: "Monedas" },
+                { id: "GridFormaCobro", icon: "mdi mdi-coins", value: "Forma de Cobro" }
             ]
         },
         {
