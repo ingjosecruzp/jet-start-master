@@ -15,9 +15,9 @@ export class FrmFormaCobro extends FrmBase {
                 { view: "text", name: "Nombre", label: "Nombre", labelWidth: 140 },
                 {
                     view: "combo",
-                    name: "FormadeCobro._id",
+                    name: "Moneda._id",
                     labelWidth: 140,
-                    id: "cmbFormadeCobro" + id,
+                    id: "cmbMoneda" + id,
                     label: "Moneda",
                     options: {
                         body: {
@@ -37,8 +37,7 @@ export class FrmFormaCobro extends FrmBase {
                 //$all: webix.rules.isNotEmpty
                 "ClaveFiscal": webix.rules.isNotEmpty,
                 "Nombre": webix.rules.isNotEmpty,
-                "FormadeCobro._id": webix.rules.isNotEmpty
-
+                "Moneda._id": webix.rules.isNotEmpty
             }
         };
 
@@ -52,6 +51,6 @@ export class FrmFormaCobro extends FrmBase {
 
     cargarCombos(data) {
         console.log(data);
-        this.cargarCombo(this.$$("cmbFormadeCobro" + this.id), data.Moneda);
+        this.cargarCombo(this.$$("cmbMoneda" + this.id), data.Moneda);
     }
 }
