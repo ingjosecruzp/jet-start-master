@@ -97,8 +97,8 @@ export const menu_data_multi = new webix.DataCollection({
             icon: "mdi mdi-book",
             value: "Movimientos",
             data: [
-                { id: "GridEntradas", icon: "mdi mdi-circle", value: "Entrada" },
-                { id: "GridSalida", icon: "mdi mdi-circle", value: "Salida" }
+                { id: "GridEntradas", icon: "mdi mdi-tag-plus", value: "Entrada" },
+                { id: "GridSalida", icon: "mdi mdi-tag-minus", value: "Salida" }
             ]
         },
         {
@@ -107,7 +107,8 @@ export const menu_data_multi = new webix.DataCollection({
             value: "Punto De Venta",
             data: [
                 { id: "GridMoneda", icon: "mdi mdi-coin", value: "Monedas" },
-                { id: "GridFormaCobro", icon: "mdi mdi-coins", value: "Forma de Cobro" }
+                { id: "GridFormaCobro", icon: "mdi mdi-currency-usd", value: "Forma de Cobro" },
+                { id: "GridTipodeCambio", icon: "mdi mdi-home-currency-usd", value: "Tipo de Cambio" }
             ]
         },
         {
