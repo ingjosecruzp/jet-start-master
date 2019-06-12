@@ -109,7 +109,8 @@ export const menu_data_multi = new webix.DataCollection({
                 { id: "GridMoneda", icon: "mdi mdi-coin", value: "Monedas" },
                 { id: "GridFormaCobro", icon: "mdi mdi-currency-usd", value: "Forma de Cobro" },
                 { id: "GridTipodeCambio", icon: "mdi mdi-home-currency-usd", value: "Tipo de Cambio" },
-                { id: "GridPoliticadeComisiones", icon: "mdi mdi-cash-refund", value: "Politica de Comisiones" }
+                { id: "GridPoliticadeComisiones", icon: "mdi mdi-cash-refund", value: "Politica de Comisiones" },
+                { id: "GridVendedor", icon: "mdi mdi-account-box-outline", value: "Vendedor" }
             ]
         },
         {

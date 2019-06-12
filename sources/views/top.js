@@ -21,6 +21,7 @@ import { FrmMoneda } from "views/pventa/FrmMoneda";
 import { FrmFormaCobro } from "views/pventa/FrmFormaCobro";
 import { FrmTipodeCambio } from "views/pventa/FrmTipodeCambio";
 import { FrmPoliticadeComisiones } from "views/pventa/FrmPoliticadeComisiones";
+import { FrmVendedor } from "views/pventa/FrmVendedor";
 /*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
@@ -167,6 +168,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridPoliticadeComisiones") {
                                     this.FrmPoliticadeComisiones = this.ui(FrmPoliticadeComisiones);
                                     this.FrmPoliticadeComisiones.showWindow();
+                                } else if (this.getUrl()[1].page == "GridVendedor") {
+                                    this.FrmVendedor = this.ui(FrmVendedor);
+                                    this.FrmVendedor.showWindow();
                                 }
                             }
                         },
