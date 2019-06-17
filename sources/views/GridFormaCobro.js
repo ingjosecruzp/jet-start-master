@@ -7,10 +7,10 @@ export default class GridFormaCobro extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 150 },
+            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 350 },
             { id: "DiasTransito", header: ["DiasTransito", { content: "textFilter" }], width: 150 },
             { id: "ClaveFiscal", header: ["ClaveFiscal", { content: "textFilter" }], width: 150 },
-            { id: "ValorPredeterminado", header: ["ValorPredeterminado", { content: "textFilter" }], width: 150 },
+            { id: "ValorPredeterminado", header: ["ValorPredeterminado", { content: "textFilter" }], fillspace: true },
         ];
 
         let formascobros = new formacobro();
