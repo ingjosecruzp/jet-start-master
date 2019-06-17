@@ -33,6 +33,11 @@ import { RptExistencias } from "views/reportes/RptExistencias";
 
 export default class TopView extends JetView {
     config() {
+        
+        //Activa el scroll customisado de webix
+        if (!webix.env.touch && webix.env.scrollSize)
+            webix.CustomScroll.init();
+
         var header = {
             type: "header",
             template: this.app.config.name,
@@ -167,9 +172,20 @@ export default class TopView extends JetView {
                             type: "icon",
                             width: 45,
                             css: "app_button",
-                            icon: "mdi mdi-exit-to-app",
+                            icon: "mdi mdi-refresh",
                             //badge: 10,
                             click: () => {
+                                $$("GridBase").$scope.refresh();
+                            }
+                        },
+                        {
+                            view: "button",
+                            type: "icon",
+                            width: 45,
+                            css: "app_button",
+                            icon: "mdi mdi-exit-to-app",
+                            //badge: 10,
+                            click: () => {;
                                 webix.confirm({
                                     title: "Salir",
                                     ok: "Si",
@@ -204,6 +220,7 @@ export default class TopView extends JetView {
                                             this.RptExistencias = this.ui(RptExistencias);
                                             this.RptExistencias.showWindow();
                                         } else {
+                                            // Se abre el grid seleccionado
                                             this.app.show("/top/" + id);
                                         }
                                     }

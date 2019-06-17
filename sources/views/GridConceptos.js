@@ -8,11 +8,11 @@ export default class GridConceptos extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", hidden: true },
-            { id: "Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
-            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], fillspace: true },
-            { id: "Naturaleza", header: ["Naturaleza", { content: "textFilter" }], width: 150 },
-            { id: "Tipo Concepto", template: (obj) => { return obj.TipoConcepto.Nombre }, header: ["Tipo Concepto", { content: "textFilter" }], width: 150 },
-            { id: "Predefinido", header: ["Predefinido", { content: "textFilter" }], width: 150 },
+            { id: "Clave",MongoField:"Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
+            { id: "Nombre", MongoField:"Nombre",header: ["Nombre", { content: "textFilter" }], fillspace: true },
+            { id: "Naturaleza", MongoField:"Naturaleza",header: ["Naturaleza", { content: "textFilter" }], width: 150 },
+            { id: "Tipo Concepto", MongoField:"TipoConcepto.Nombre",template: (obj) => { return obj.TipoConcepto.Nombre }, header: ["Tipo Concepto", { content: "textFilter" }], width: 150 },
+            { id: "Predefinido", MongoField:"Predefinido",header: ["Predefinido", { content: "textFilter" }], width: 150 },
         ];
 
         let concepto = new conceptos();

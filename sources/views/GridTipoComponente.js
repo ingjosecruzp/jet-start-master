@@ -7,7 +7,7 @@ export default class GridTipoComponente extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], fillspace: true }
+            { id: "Nombre",MongoField:"Nombre", header: ["Nombre", { content: "textFilter" }], fillspace: true }
         ];
 
         let tcomponente = new tipocomponente();

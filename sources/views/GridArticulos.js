@@ -7,12 +7,12 @@ export default class GridArticulos extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", hidden: true },
-            { id: "Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
-            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], fillspace: true },
-            { id: "Marca", template: (obj) => { return obj.Marca == undefined ? "Sin Marca" : obj.Marca.Nombre }, header: ["Marca", { content: "textFilter" }], width: 150 },
-            { id: "Activo", header: ["Activo", { content: "textFilter" }], width: 150 },
-            { id: "GrupoComponente", template: (obj) => { return obj.GrupoComponente.Nombre }, header: ["GrupoComponente", { content: "textFilter" }], width: 150 },
-            { id: "SubGrupoComponente", template: (obj) => { return obj.SubGrupoComponente.Nombre }, header: ["SubGrupoComponente", { content: "textFilter" }], width: 150 },
+            { id: "Clave",MongoField:"Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
+            { id: "Nombre",MongoField:"Nombre", header: ["Nombre", { content: "textFilter" }], fillspace: true },
+            { id: "Marca",MongoField:"Marca", template: (obj) => { return obj.Marca == undefined ? "Sin Marca" : obj.Marca.Nombre }, header: ["Marca", { content: "textFilter" }], width: 150 },
+            { id: "Activo",MongoField:"Activo", header: ["Activo", { content: "textFilter" }], width: 150 },
+            { id: "GrupoComponente",MongoField:"GrupoComponente.Nombre", template: (obj) => { return obj.GrupoComponente.Nombre }, header: ["GrupoComponente", { content: "textFilter" }], width: 150 },
+            { id: "SubGrupoComponente", MongoField:"SubGrupoComponente.Nombre",template: (obj) => { return obj.SubGrupoComponente.Nombre }, header: ["SubGrupoComponente", { content: "textFilter" }], width: 150 },
         ];
 
         let articulo = new articulos();

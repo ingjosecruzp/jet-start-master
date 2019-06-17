@@ -42,7 +42,9 @@ export class FrmBase extends JetView {
                     cols: [
                         { view: "icon", icon: "mdi mdi-content-save", align: "left", click: () => this.guardar() },
                         { view: "icon", icon: "mdi mdi-content-save-all", align: "center" },
-                        { view: "icon", icon: "mdi mdi-delete", align: "right", click: () => this.eliminar() }
+                        { view: "icon", icon: "mdi mdi-delete", align: "right", click: () => this.eliminar() },
+                        { view: "icon", icon: "mdi mdi-arrow-left-bold", align: "right", click: () => this.upRow() },
+                        { view: "icon", icon: "mdi mdi-arrow-right-bold", align: "right", click: () => this.downRow() }
                     ]
                 }, {
                     view: "form",
@@ -76,6 +78,7 @@ export class FrmBase extends JetView {
 
                 //Detecta cuando se cerro la ventana
                 $$(this.Formulario).attachEvent("onDestruct", () => {
+                    console.log("entrio");
                     socket.emit("liberar", this._id);
                 });
 
@@ -127,7 +130,8 @@ export class FrmBase extends JetView {
         this.Modelo.saveData(data).then((realdata) => {
 
             this.hiddenProgressBar();
-
+            $$("GridBase").$scope.refresh();
+            
             webix.alert("Guardado con exito", (result) => {
                 $$(this.Ventana).close();
             });
@@ -140,9 +144,10 @@ export class FrmBase extends JetView {
         });
     }
     update(data) {
-        console.log(data);
+        //console.log(data);
         this.Modelo.updateData(data).then((realdata) => {
             this.hiddenProgressBar();
+            $$("GridBase").$scope.refresh();
 
             webix.alert("Guardado con exito", (result) => {
                 $$(this.Ventana).close();
@@ -187,6 +192,16 @@ export class FrmBase extends JetView {
                 });
             }
         });
+    }
+    upRow(){
+        $$("GridBase").moveSelection("up");
+        let item = $$("GridBase").getSelectedItem();
+        this.showWindow(item._id);
+    }
+    downRow(){
+        $$("GridBase").moveSelection("down");
+        let item = $$("GridBase").getSelectedItem();
+        this.showWindow(item._id);
     }
     cargarCombos(data) {
         //Metodo para sobrescribir
