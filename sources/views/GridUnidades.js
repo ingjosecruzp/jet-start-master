@@ -7,7 +7,7 @@ export default class GridUnidades extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Abreviatura",MongoField:"Abreviatura", header: ["Abreviatura", { content: "textFilter" }], width: 150 },
+            { id: "Abreviatura",MongoField:"Abreviatura", header: ["Abreviatura", { content: "textFilter" }], width: 150  },
             { id: "Nombre", MongoField:"Nombre",header: ["Nombre", { content: "textFilter" }], fillspace: true },
         ];
 

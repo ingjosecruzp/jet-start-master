@@ -10,6 +10,9 @@ export class GridBase extends JetView {
         this.columns = columns;
         this.Modelo = model;
         this.Formulario = formulario;
+
+        //Agregar el atributo de footer a la ultima columna
+        this.columns[this.columns.length-1].footer={ content:"rowCount",css: { "text-align": "right  !important" }};
     }
     config() {
         return {
@@ -37,6 +40,10 @@ export class GridBase extends JetView {
         };
     }
     init(view) {
+        /**
+         * La funcion para contar las filas se encuntra en el archivo top-js 
+         * **/
+
        //Activa lazy loading
        this.Modelo.lazyLoading(true);
 
@@ -70,6 +77,8 @@ export class GridBase extends JetView {
             let id = grid.getFirstId();
             grid.select(id);
         });
+
+
     }
     convertToJSONDate(strDate) {
         var dt = new Date(strDate);

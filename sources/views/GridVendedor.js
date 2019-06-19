@@ -7,8 +7,8 @@ export default class GridVendedor extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 350 },
             { id: "Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
+            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], fillspace: true },
             { id: "ValorPredeterminado", header: ["ValorPredeterminado", { content: "textFilter" }], width: 150 },
         ];
 

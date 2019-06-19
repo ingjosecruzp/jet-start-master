@@ -267,5 +267,13 @@ export default class TopView extends JetView {
                 headers["token"] = localStorage.getItem("token");
             }
         );
+
+        //Filtro para contar las filas
+        webix.ui.datafilter.rowCount = webix.extend({
+            refresh:function(master, node, value){ 
+                let total=  master.count();
+                node.firstChild.innerHTML = total <=1 ? total  + " registro" : total + " registros";
+            }
+        }, webix.ui.datafilter.summColumn);
     }
 }

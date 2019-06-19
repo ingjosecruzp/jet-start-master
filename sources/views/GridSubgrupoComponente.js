@@ -10,7 +10,7 @@ export default class GridSubgrupoComponente extends GridBase {
             { id: "Clave", MongoField:"Clave",header: ["Clave", { content: "textFilter" }], width: 150},
             { id: "Nombre",MongoField:"Nombre", header: ["Nombre", { content: "textFilter" }], width: 150 },
             { id: "Grupo Componente",MongoField:"GrupoComponente.Nombre", template: (obj) => { return obj.GrupoComponente.Nombre }, header: ["Grupo Componente", { content: "textFilter" }], fillspace: true },
-            { id: "Tipo Componente",MongoField:"GrupoComponente.TipoComponente.Nombre", template: (obj) => { return obj.GrupoComponente.TipoComponente.Nombre }, header: ["Tipo Componente", { content: "textFilter" }], fillspace: true },
+            { id: "Tipo Componente",MongoField:"GrupoComponente.TipoComponente.Nombre", template: (obj) => { return obj.GrupoComponente.TipoComponente.Nombre }, header: ["Tipo Componente", { content: "textFilter" }], fillspace: true},
         ];
 
         let scomponente = new subgrupocomponente();
