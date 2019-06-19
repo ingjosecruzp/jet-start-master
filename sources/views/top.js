@@ -275,5 +275,7 @@ export default class TopView extends JetView {
                 node.firstChild.innerHTML = total <=1 ? total  + " registro" : total + " registros";
             }
         }, webix.ui.datafilter.summColumn);
+
+        //comentario heri
     }
 }
