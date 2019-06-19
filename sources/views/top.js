@@ -36,7 +36,7 @@ import { RptExistencias } from "views/reportes/RptExistencias";
 
 export default class TopView extends JetView {
     config() {
-        
+
         //Activa el scroll customisado de webix
         if (!webix.env.touch && webix.env.scrollSize)
             webix.CustomScroll.init();
@@ -270,12 +270,12 @@ export default class TopView extends JetView {
 
         //Filtro para contar las filas
         webix.ui.datafilter.rowCount = webix.extend({
-            refresh:function(master, node, value){ 
-                let total=  master.count();
-                node.firstChild.innerHTML = total <=1 ? total  + " registro" : total + " registros";
+            refresh: function(master, node, value) {
+                let total = master.count();
+                node.firstChild.innerHTML = total <= 1 ? total + " registro" : total + " registros";
             }
         }, webix.ui.datafilter.summColumn);
 
-        //comentario heri
+        //comentario dany
     }
 }
