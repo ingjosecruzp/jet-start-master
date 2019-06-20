@@ -8,9 +8,9 @@ export default class GridGrupoComponente extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
-            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 150 },
-            { id: "Tipo Componente", template: (obj) => { return obj.TipoComponente.Nombre }, header: ["Tipo Componente", { content: "textFilter" }], fillspace: true },
+            { id: "Clave",MongoField:"Clave", header: ["Clave", { content: "textFilter" }], width: 150 },
+            { id: "Nombre",MongoField:"Nombre", header: ["Nombre", { content: "textFilter" }], width: 150 },
+            { id: "Tipo Componente",MongoField:"TipoComponente.Nombre", template: (obj) => { return obj.TipoComponente.Nombre }, header: ["Tipo Componente", { content: "textFilter" }], fillspace: true },
         ];
 
         let gcomponente = new grupocomponente();

@@ -16,7 +16,13 @@ import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 
-
+/*********PUNTO DE VENTA******************/
+import { FrmMoneda } from "views/pventa/FrmMoneda";
+import { FrmFormaCobro } from "views/pventa/FrmFormaCobro";
+import { FrmTipodeCambio } from "views/pventa/FrmTipodeCambio";
+import { FrmPoliticadeComisiones } from "views/pventa/FrmPoliticadeComisiones";
+import { FrmVendedor } from "views/pventa/FrmVendedor";
+/*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
 import { FrmUsuarios } from "views/administracion/FrmUsuarios";
@@ -30,6 +36,11 @@ import { RptExistencias } from "views/reportes/RptExistencias";
 
 export default class TopView extends JetView {
     config() {
+
+        //Activa el scroll customisado de webix
+        if (!webix.env.touch && webix.env.scrollSize)
+            webix.CustomScroll.init();
+
         var header = {
             type: "header",
             template: this.app.config.name,
@@ -150,7 +161,33 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridRoles") {
                                     this.FrmRoles = this.ui(FrmRoles);
                                     this.FrmRoles.showWindow();
+                                } else if (this.getUrl()[1].page == "GridMoneda") {
+                                    this.FrmMoneda = this.ui(FrmMoneda);
+                                    this.FrmMoneda.showWindow();
+                                } else if (this.getUrl()[1].page == "GridFormaCobro") {
+                                    this.FrmFormaCobro = this.ui(FrmFormaCobro);
+                                    this.FrmFormaCobro.showWindow();
+                                } else if (this.getUrl()[1].page == "GridTipodeCambio") {
+                                    this.FrmTipodeCambio = this.ui(FrmTipodeCambio);
+                                    this.FrmTipodeCambio.showWindow();
+                                } else if (this.getUrl()[1].page == "GridPoliticadeComisiones") {
+                                    this.FrmPoliticadeComisiones = this.ui(FrmPoliticadeComisiones);
+                                    this.FrmPoliticadeComisiones.showWindow();
+                                } else if (this.getUrl()[1].page == "GridVendedor") {
+                                    this.FrmVendedor = this.ui(FrmVendedor);
+                                    this.FrmVendedor.showWindow();
                                 }
+                            }
+                        },
+                        {
+                            view: "button",
+                            type: "icon",
+                            width: 45,
+                            css: "app_button",
+                            icon: "mdi mdi-refresh",
+                            //badge: 10,
+                            click: () => {
+                                $$("GridBase").$scope.refresh();
                             }
                         },
                         {
@@ -160,7 +197,7 @@ export default class TopView extends JetView {
                             css: "app_button",
                             icon: "mdi mdi-exit-to-app",
                             //badge: 10,
-                            click: () => {
+                            click: () => {;
                                 webix.confirm({
                                     title: "Salir",
                                     ok: "Si",
@@ -195,6 +232,7 @@ export default class TopView extends JetView {
                                             this.RptExistencias = this.ui(RptExistencias);
                                             this.RptExistencias.showWindow();
                                         } else {
+                                            // Se abre el grid seleccionado
                                             this.app.show("/top/" + id);
                                         }
                                     }
@@ -229,5 +267,15 @@ export default class TopView extends JetView {
                 headers["token"] = localStorage.getItem("token");
             }
         );
+
+        //Filtro para contar las filas
+        webix.ui.datafilter.rowCount = webix.extend({
+            refresh: function(master, node, value) {
+                let total = master.count();
+                node.firstChild.innerHTML = total <= 1 ? total + " registro" : total + " registros";
+            }
+        }, webix.ui.datafilter.summColumn);
+
+        //comentario dany
     }
 }

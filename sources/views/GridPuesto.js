@@ -7,8 +7,8 @@ export default class GridPuesto extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 150 },
-            { id: "Departamento", template: (obj) => { return obj.Departamento.Nombre }, header: ["Departamento", { content: "textFilter" }], fillspace: true },
+            { id: "Nombre",MongoField:"Nombre", header: ["Nombre", { content: "textFilter" }], width: 150 },
+            { id: "Departamento",MongoField:"Departamento.Nombre", template: (obj) => { return obj.Departamento.Nombre }, header: ["Departamento", { content: "textFilter" }], fillspace: true },
         ];
 
         let puto = new puesto();

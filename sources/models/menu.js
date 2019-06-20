@@ -70,16 +70,6 @@ export const menu_data_multi = new webix.DataCollection({
                     value: "Puestos"
                 },
                 {
-                    id: "GridPureza",
-                    icon: "mdi mdi-hexagon-slice-6",
-                    value: "Purezas"
-                },
-                {
-                    id: "GridPeso",
-                    icon: "mdi mdi-weight-kilogram",
-                    value: "Pesos"
-                },
-                {
                     id: "GridProcedencia",
                     icon: "mdi mdi-earth",
                     value: "Procedencia"
@@ -97,8 +87,20 @@ export const menu_data_multi = new webix.DataCollection({
             icon: "mdi mdi-book",
             value: "Movimientos",
             data: [
-                { id: "GridEntradas", icon: "mdi mdi-circle", value: "Entrada" },
-                { id: "GridSalida", icon: "mdi mdi-circle", value: "Salida" }
+                { id: "GridEntradas", icon: "mdi mdi-tag-plus", value: "Entrada" },
+                { id: "GridSalida", icon: "mdi mdi-tag-minus", value: "Salida" }
+            ]
+        },
+        {
+            id: "pventa",
+            icon: "mdi mdi-store",
+            value: "Punto De Venta",
+            data: [
+                { id: "GridMoneda", icon: "mdi mdi-coin", value: "Monedas" },
+                { id: "GridFormaCobro", icon: "mdi mdi-currency-usd", value: "Forma de Cobro" },
+                { id: "GridTipodeCambio", icon: "mdi mdi-home-currency-usd", value: "Tipo de Cambio" },
+                { id: "GridPoliticadeComisiones", icon: "mdi mdi-cash-refund", value: "Politica de Comisiones" },
+                { id: "GridVendedor", icon: "mdi mdi-account-box-outline", value: "Vendedor" }
             ]
         },
         {

@@ -1,14 +1,35 @@
 import { JetView } from "webix-jet";
 
 export class ModeloBase {
+    
     constructor(servicio, campos, naturaleza) {
+        this.skip=false;
+
         if (naturaleza) this.naturaleza = naturaleza;
+        
         this.url = "http://localhost:60493/" + servicio;
         this.fields = "campos/" + campos;
     }
 
-    getAllData() {
-        return webix.ajax(this.url + this.fields);
+    //Metodo para activar el LazyLoading
+    lazyLoading(status) {
+        this.skip=status;
+    }
+
+    getAllData(skipValue,filters) {
+        //console.log(skipValue);
+
+        if(this.skip==false)
+        {
+            return webix.ajax(this.url + this.fields);
+        }
+        else
+        {   skipValue = skipValue==undefined ? 0 : skipValue;
+            if(filters === undefined || filters==="")
+                return webix.ajax(this.url + this.fields + "/" + skipValue);
+            else
+                return webix.ajax(this.url + this.fields + "/" + skipValue + "/" + filters);
+        }
     }
 
     getData(id) {

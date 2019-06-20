@@ -8,13 +8,14 @@ export class FrmMarca extends FrmBase {
             title: "Marcas",
             width: 350,
             elements: [
+                { view: "text", name: "Clave", label: "Clave" },
                 { view: "text", name: "_id", hidden: true },
                 { view: "text", name: "Nombre", label: "Nombre" }
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty
+                "Clave": webix.rules.isNotEmpty,
                 "Nombre": webix.rules.isNotEmpty
-
             }
         };
 

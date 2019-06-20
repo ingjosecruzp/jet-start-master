@@ -67,7 +67,6 @@ export class FrmSubgrupoComponente extends FrmBase {
     }
 
     cargarCombos(data) {
-        console.log(data);
         this.cargarCombo(this.$$("cmbGrupoComponente" + this.id), data.GrupoComponente);
         /*this.cargarCombo(this.$$("cmbTipoComponente" + this.id), data.TipoComponente);*/
     }

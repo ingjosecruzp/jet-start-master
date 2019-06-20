@@ -7,8 +7,8 @@ export default class GridProcedencia extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 250 },
-            { id: "Abreviatura", header: ["Abreviatura", { content: "textFilter" }], fillspace: true }
+            { id: "Nombre",MongoField:"Nombre", header: ["Nombre", { content: "textFilter" }], width: 250 },
+            { id: "Abreviatura",MongoField:"Abreviatura", header: ["Abreviatura", { content: "textFilter" }], fillspace: true }
         ];
 
         let pais = new paises();

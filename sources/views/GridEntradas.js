@@ -8,10 +8,10 @@ export default class GridEntradas extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Fecha", template: (obj) => { return this.convertToDate(obj.Fecha) }, header: ["Fecha", { content: "textFilter" }] },
-            { id: "Folio", header: ["Folio", { content: "textFilter" }] },
-            { id: "Almacen", template: (obj) => { return obj.Almacen.Nombre }, header: ["Almacen", { content: "textFilter" }] },
-            { id: "Concepto", template: (obj) => { return obj.Concepto.Nombre }, header: ["Concepto", { content: "textFilter" }], fillspace: true }
+            { id: "Fecha", MongoField:"Fecha",template: (obj) => { return this.convertToDate(obj.Fecha) }, header: ["Fecha", { content: "textFilter" }] },
+            { id: "Folio", MongoField:"Folio",header: ["Folio", { content: "textFilter" }] },
+            { id: "Almacen", MongoField:"Almacen.Nombre",template: (obj) => { return obj.Almacen.Nombre }, header: ["Almacen", { content: "textFilter" }] },
+            { id: "Concepto",MongoField:"Concepto.Nombre", template: (obj) => { return obj.Concepto.Nombre }, header: ["Concepto", { content: "textFilter" }], fillspace: true }
         ];
 
         let movimientos = new movimientosES("ENTRADA");
