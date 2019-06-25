@@ -83,6 +83,12 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridEstado",
                     icon: "mdi mdi-nintendo-switch",
                     value: "Estados"
+                },
+
+                {
+                    id: "GridMunicipios",
+                    icon: "mdi mdi-grid",
+                    value: "Municipios"
                 }
 
             ]

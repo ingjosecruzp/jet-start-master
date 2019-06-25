@@ -8,7 +8,7 @@ export default class GridMunicipios extends GridBase {
         let columns = [
             { id: "_id", hidden: true },
             { id: "Nombre", MongoField:"Nombre",header: ["Nombre", { content: "textFilter" }], fillspace: true },
-            { id: "Estado", MongoField:"Estado.Nombre",template: (obj) => { return obj.Estadp.Nombre }, header: ["Estado", { content: "textFilter" }], width: 150 },
+            { id: "Estado", MongoField:"Estado.Nombre",template: (obj) => { return obj.Estado.Nombre }, header: ["Estado", { content: "textFilter" }], width: 150 },
             { id: "Pais", MongoField:"Paises.Nombre",template: (obj) => { return obj.Paises.Nombre }, header: ["Paises", { content: "textFilter" }], width: 150 },
         ];
 

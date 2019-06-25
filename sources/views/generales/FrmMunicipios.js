@@ -1,40 +1,31 @@
 import { JetView } from "webix-jet";
 import { FrmBase } from "views/FrmBase";
-import { conceptos } from "models/catalogos/conceptos";
-import { tipoconceptos } from "models/catalogos/tipoconceptos";
+import { municipios } from "models/catalogos/municipios";
 import { getSiNo, getNaturaleza } from "models/generales";
 
-export class FrmConceptos extends FrmBase {
+export class FrmMunicipios extends FrmBase {
     constructor(app, name) {
         //Genera un idetificador unico para la ventana con el 
         //objetivo de poder generar varias instancias
         let id = new Date().getTime();
 
         let form = {
-            title: "Conceptos",
+            title: "Municipios",
             width: 500,
             elements: [
-                { view: "text", name: "_id", hidden: true },
-                {
-                    //margin: 5,
-                    cols: [
-                        { view: "text", name: "Clave", labelWidth: 105, label: "Clave" },
-                        { view: "combo", name: "FolioAutomatico", labelWidth: 105, label: "Folio Automatico", options: getSiNo() },
-                    ]
-                },
+                { view: "text", name: "_id", hidden: true },                
                 { view: "text", name: "Nombre", labelWidth: 105, label: "Nombre" },
-                { view: "combo", name: "Naturaleza", labelWidth: 105, label: "Naturaleza", options: getNaturaleza() },
                 {
                     view: "combo",
-                    name: "TipoConcepto._id",
+                    name: "Estado._id",
                     labelWidth: 105,
-                    id: "cmbTipoConcepto" + id,
-                    label: "Tipo Concepto",
+                    id: "cmbEstado" + id,
+                    label: "Estado",
                     options: {
                         body: {
                             template: "#Nombre#",
                             dataFeed: function(text) {
-                                let tipoconcepto = new tipoconceptos();
+                                let Estado = new Estado();
                                 this.load(tipoconcepto.searchCombo(text));
                             }
                         }
