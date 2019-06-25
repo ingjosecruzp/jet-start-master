@@ -15,6 +15,7 @@ import { FrmPureza } from "views/inventarios/FrmPureza";
 import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
+import { FrmEstado } from "views/generales/FrmEstado";
 
 /*********PUNTO DE VENTA******************/
 import { FrmMoneda } from "views/pventa/FrmMoneda";
@@ -27,6 +28,7 @@ import { FrmVendedor } from "views/pventa/FrmVendedor";
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
 import { FrmUsuarios } from "views/administracion/FrmUsuarios";
 import { FrmRoles } from "views/administracion/FrmRoles";
+
 /*******************************************/
 
 /*********REPORTES**************************/
@@ -36,7 +38,7 @@ import { RptExistencias } from "views/reportes/RptExistencias";
 
 export default class TopView extends JetView {
     config() {
-        
+
         //Activa el scroll customisado de webix
         if (!webix.env.touch && webix.env.scrollSize)
             webix.CustomScroll.init();
@@ -176,6 +178,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridVendedor") {
                                     this.FrmVendedor = this.ui(FrmVendedor);
                                     this.FrmVendedor.showWindow();
+                                } else if (this.getUrl()[1].page == "GridEstado") {
+                                    this.FrmEstado = this.ui(FrmEstado);
+                                    this.FrmEstado.showWindow();
                                 }
                             }
                         },
@@ -270,10 +275,12 @@ export default class TopView extends JetView {
 
         //Filtro para contar las filas
         webix.ui.datafilter.rowCount = webix.extend({
-            refresh:function(master, node, value){ 
-                let total=  master.count();
-                node.firstChild.innerHTML = total <=1 ? total  + " registro" : total + " registros";
+            refresh: function(master, node, value) {
+                let total = master.count();
+                node.firstChild.innerHTML = total <= 1 ? total + " registro" : total + " registros";
             }
         }, webix.ui.datafilter.summColumn);
+
+        //comentario dany
     }
 }
