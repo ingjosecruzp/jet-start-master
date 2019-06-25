@@ -44,7 +44,8 @@ export class FrmBase extends JetView {
                         { view: "icon", icon: "mdi mdi-content-save-all", align: "center" },
                         { view: "icon", icon: "mdi mdi-delete", align: "right", click: () => this.eliminar() },
                         { view: "icon", icon: "mdi mdi-arrow-left-bold", align: "right", click: () => this.upRow() },
-                        { view: "icon", icon: "mdi mdi-arrow-right-bold", align: "right", click: () => this.downRow() }
+                        { view: "icon", icon: "mdi mdi-arrow-right-bold", align: "right", click: () => this.downRow() },
+                        { view: "icon", icon: "mdi mdi-printer", align: "right", click: () => this.imprimir() }
                     ]
                 }, {
                     view: "form",
@@ -78,7 +79,6 @@ export class FrmBase extends JetView {
 
                 //Detecta cuando se cerro la ventana
                 $$(this.Formulario).attachEvent("onDestruct", () => {
-                    console.log("entrio");
                     socket.emit("liberar", this._id);
                 });
 
@@ -202,6 +202,26 @@ export class FrmBase extends JetView {
         $$("GridBase").moveSelection("down");
         let item = $$("GridBase").getSelectedItem();
         this.showWindow(item._id);
+    }
+    imprimir() {
+
+        this.showProgressBar();
+
+        this.Modelo.imprimir(this._id).then((realdata) => {
+            let archivo = realdata.json();
+            var win = window.open("http://localhost:60493/webReports/" + archivo, '_blank');
+            win.focus();
+
+            this.hiddenProgressBar();
+        }).fail((error) => {
+            console.log(error);
+            webix.alert({
+                type: "alert-error",
+                text: "Error: " + error.statusText
+            }).then((result) => {
+                this.hiddenProgressBar();
+            });
+        });
     }
     cargarCombos(data) {
         //Metodo para sobrescribir

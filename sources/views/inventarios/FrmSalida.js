@@ -16,7 +16,7 @@ export class FrmSalida extends FrmBase {
         });
 
         let form = {
-            title: "Entrada",
+            title: "Salida",
             width: 750,
             elements: [
                 { view: "text", name: "_id", hidden: true },
@@ -168,8 +168,8 @@ export class FrmSalida extends FrmBase {
                 }
 
                 if (concepto.FolioAutomatico == "SI") {
-                    if (this._id == undefined)
-                        $$("Folio").setValue("");
+                    /*if (this._id == undefined)
+                        $$("Folio").setValue("");*/
                     $$("Folio").disable(true);
 
                 } else {
@@ -299,10 +299,9 @@ export class FrmSalida extends FrmBase {
 
         this.cargarCombo($$("cmbConcepto" + this.id), data.Concepto);
         this.cargarCombo($$("cmbAlmacen" + this.id), data.Almacen);
-        this.cargarCombo($$("cmbAlmacenDestino" + this.id), data.Almacen_Destino);
 
         if (data.Almacen_Destino != undefined)
-            console.log("vacio");
+            this.cargarCombo($$("cmbAlmacenDestino" + this.id), data.Almacen_Destino);
 
         $$("gridArticulos" + this.id).clearAll();
 
