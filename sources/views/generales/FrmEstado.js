@@ -1,16 +1,16 @@
 import { JetView } from "webix-jet";
 import { FrmBase } from "views/FrmBase";
-import { paises } from "models/catalogos/paises";
+import { estados } from "models/catalogos/estado";
 
-export class FrmPaises extends FrmBase {
+export class FrmEstado extends FrmBase {
     constructor(app, name) {
         let form = {
-            title: "Paises",
+            title: "Estados",
             width: 350,
             elements: [
                 { view: "text", name: "_id", hidden: true },
-                { view: "text", name: "Nombre", labelWidth: 120, label: "Nombre" },
-                { view: "text", name: "Abreviatura", labelWidth: 120, label: "Abreviatura" }
+                { view: "text", name: "Nombre", labelWidth: 120, label: "Nombre" }
+                //{ view: "combotext", name: "Paises", labelWidth: 120, label: "Paises" }
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty
@@ -19,9 +19,9 @@ export class FrmPaises extends FrmBase {
             }
         };
 
-        let pais = new paises();
+        let estado = new estados();
 
-        super(app, name, form, pais);
+        super(app, name, form, estado);
     }
     init(view) {
         webix.extend($$(this.Ventana), webix.ProgressBar);
