@@ -128,7 +128,6 @@ export class FrmBase extends JetView {
     }
     save(data) {
         this.Modelo.saveData(data).then((realdata) => {
-
             this.hiddenProgressBar();
             $$("GridBase").$scope.refresh();
             

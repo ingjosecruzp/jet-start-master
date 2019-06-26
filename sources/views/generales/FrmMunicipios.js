@@ -1,6 +1,8 @@
 import { JetView } from "webix-jet";
 import { FrmBase } from "views/FrmBase";
 import { municipios } from "models/catalogos/municipios";
+import { estados } from "models/catalogos/estado";
+import { paises } from "models/catalogos/paises";
 import { getSiNo, getNaturaleza } from "models/generales";
 
 export class FrmMunicipios extends FrmBase {
@@ -11,7 +13,7 @@ export class FrmMunicipios extends FrmBase {
 
         let form = {
             title: "Municipios",
-            width: 500,
+            width: 400,
             elements: [
                 { view: "text", name: "_id", hidden: true },                
                 { view: "text", name: "Nombre", labelWidth: 105, label: "Nombre" },
@@ -23,44 +25,50 @@ export class FrmMunicipios extends FrmBase {
                     label: "Estado",
                     options: {
                         body: {
-                            template: "#Nombre#",
+                            template: "#Nombre#", //es el campo que sem mostrara lo agarra del json
                             dataFeed: function(text) {
-                                let Estado = new Estado();
-                                this.load(tipoconcepto.searchCombo(text));
+                                let Estado = new estados(); //modelo para cargar el combo
+                                this.load(Estado.searchCombo(text));
                             }
                         }
                     }
                 },
                 {
-                    //margin: 5,
-                    cols: [
-                        { view: "combo", name: "Predefinido", labelWidth: 105, label: "Predefinido", options: getSiNo() },
-                        { view: "combo", name: "CostoAutomatico", labelWidth: 105, label: "Costo Automatico", options: getSiNo() },
-                    ]
-                },
+                    view: "combo",
+                    name: "Paises._id",
+                    labelWidth: 105,
+                    id: "cmbPais" + id,
+                    label: "Pais",
+                    options: {
+                        body: {
+                            template: "#Nombre#", //es el campo que sem mostrara lo agarra del json
+                            dataFeed: function(text) {
+                                let Pais = new paises(); //modelo para cargar el combo
+                                this.load(Pais.searchCombo(text));
+                            }
+                        }
+                    }
+                }
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty,
-                "Clave": webix.rules.isNotEmpty,
-                "FolioAutomatico": webix.rules.isNotEmpty,
                 "Nombre": webix.rules.isNotEmpty,
-                "Naturaleza": webix.rules.isNotEmpty,
-                "TipoConcepto._id": webix.rules.isNotEmpty,
-                "Predefinido": webix.rules.isNotEmpty,
-                "CostoAutomatico": webix.rules.isNotEmpty
+                "Estado._id": webix.rules.isNotEmpty,
+                "Paises._id": webix.rules.isNotEmpty
             }
         };
 
-        let concepto = new conceptos();
+        let municipio = new municipios();
 
-        super(app, name, form, concepto, id);
+        super(app, name, form, municipio, id);
     }
     init(view) {
         webix.extend($$(this.Ventana), webix.ProgressBar);
     }
 
     cargarCombos(data) {
-        this.cargarCombo(this.$$("cmbTipoConcepto" + this.id), data.TipoConcepto);
+        this.cargarCombo(this.$$("cmbEstado" + this.id), data.Estado);
+        this.cargarCombo(this.$$("cmbPais" + this.id), data.Paises);
     }
 
 }
