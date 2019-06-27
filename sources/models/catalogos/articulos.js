@@ -8,4 +8,8 @@ export class articulos extends ModeloBase {
 
         super(servicio, campos);
     }
+
+    searchLimitIds(text,ids) {
+        return this.url + "?searchBy=getXLimitIds&busqueda=" + text + "&ids=" + ids;
+    }
 }

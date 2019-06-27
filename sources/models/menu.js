@@ -99,7 +99,8 @@ export const menu_data_multi = new webix.DataCollection({
             value: "Movimientos",
             data: [
                 { id: "GridEntradas", icon: "mdi mdi-tag-plus", value: "Entrada" },
-                { id: "GridSalida", icon: "mdi mdi-tag-minus", value: "Salida" }
+                { id: "GridSalida", icon: "mdi mdi-tag-minus", value: "Salida" },
+                { id: "GridInventarioFisico", icon: "mdi mdi-table-search", value: "Inventario Físico" },
             ]
         },
         {

@@ -16,6 +16,7 @@ import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 import { FrmEstado } from "views/generales/FrmEstado";
+import { FrmInventarioFisico } from "views/inventarios/FrmInventarioFisico";
 
 /*********PUNTO DE VENTA******************/
 import { FrmMoneda } from "views/pventa/FrmMoneda";
@@ -181,6 +182,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridEstado") {
                                     this.FrmEstado = this.ui(FrmEstado);
                                     this.FrmEstado.showWindow();
+                                } else if (this.getUrl()[1].page == "GridInventarioFisico") {
+                                    this.FrmInventarioFisico = this.ui(FrmInventarioFisico);
+                                    this.FrmInventarioFisico.showWindow();
                                 }
                             }
                         },
