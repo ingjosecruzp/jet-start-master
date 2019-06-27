@@ -17,13 +17,13 @@ export default class GridMunicipios extends GridBase {
         super(app, name, columns, municipio);
     }
     init(view) {
-        /*this.$$(this.Grid).attachEvent("onItemDblClick", (id, e, node) => {
+        this.$$(this.Grid).attachEvent("onItemDblClick", (id, e, node) => {
             var item = $$(this.Grid).getItem(id);
 
             console.log("double click");
-            this.FrmConceptos = this.ui(FrmConceptos);
-            this.FrmConceptos.showWindow(item._id);
-        });*/
+            this.FrmMunicipios = this.ui(FrmMunicipios);
+            this.FrmMunicipios.showWindow(item._id);
+        });
 
         super.init(view);
     }

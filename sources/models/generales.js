@@ -46,3 +46,19 @@ export function getValoracion() {
     ];
     return Valoracion;
 };
+
+export function getCajasRegVta() {
+    var Valoracion = [
+        { id: "LOS ARTICULOS", value: "LOS ARTICULOS" },
+        { id: "LOS CLIENTES", value: "LOS CLIENTES" },
+    ];
+    return Valoracion;
+};
+
+export function getCajasCobroDefault() {
+    var Valoracion = [
+        { id: "EFECTIVO", value: "EFECTIVO" },
+        { id: "TARJETA", value: "TARJETA" },
+    ];
+    return Valoracion;
+};

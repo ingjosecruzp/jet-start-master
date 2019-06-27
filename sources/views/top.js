@@ -16,7 +16,11 @@ import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 import { FrmEstado } from "views/generales/FrmEstado";
+<<<<<<< HEAD
 import { FrmInventarioFisico } from "views/inventarios/FrmInventarioFisico";
+=======
+import { FrmMunicipios } from "views/generales/FrmMunicipios";
+>>>>>>> 03882ae1681c677fe737e8d03e08bbfc40061dd4
 
 /*********PUNTO DE VENTA******************/
 import { FrmMoneda } from "views/pventa/FrmMoneda";
@@ -24,6 +28,7 @@ import { FrmFormaCobro } from "views/pventa/FrmFormaCobro";
 import { FrmTipodeCambio } from "views/pventa/FrmTipodeCambio";
 import { FrmPoliticadeComisiones } from "views/pventa/FrmPoliticadeComisiones";
 import { FrmVendedor } from "views/pventa/FrmVendedor";
+import { FrmCajas } from "views/pventa/FrmCajas";
 /*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
@@ -185,6 +190,12 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridInventarioFisico") {
                                     this.FrmInventarioFisico = this.ui(FrmInventarioFisico);
                                     this.FrmInventarioFisico.showWindow();
+                                } else if (this.getUrl()[1].page == "GridMunicipios") {
+                                    this.FrmMunicipios = this.ui(FrmMunicipios);
+                                    this.FrmMunicipios.showWindow();
+                                } else if (this.getUrl()[1].page == "GridCajas") {
+                                    this.FrmCajas = this.ui(FrmCajas);
+                                    this.FrmCajas.showWindow();
                                 }
                             }
                         },
