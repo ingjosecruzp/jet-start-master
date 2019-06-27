@@ -16,11 +16,8 @@ import { FrmPeso } from "views/inventarios/FrmPeso";
 import { FrmProcedencia } from "views/inventarios/FrmProcedencia";
 import { FrmAlmacen } from "views/inventarios/FrmAlmacen";
 import { FrmEstado } from "views/generales/FrmEstado";
-<<<<<<< HEAD
 import { FrmInventarioFisico } from "views/inventarios/FrmInventarioFisico";
-=======
 import { FrmMunicipios } from "views/generales/FrmMunicipios";
->>>>>>> 03882ae1681c677fe737e8d03e08bbfc40061dd4
 
 /*********PUNTO DE VENTA******************/
 import { FrmMoneda } from "views/pventa/FrmMoneda";
