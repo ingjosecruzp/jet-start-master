@@ -24,6 +24,7 @@ import { FrmFormaCobro } from "views/pventa/FrmFormaCobro";
 import { FrmTipodeCambio } from "views/pventa/FrmTipodeCambio";
 import { FrmPoliticadeComisiones } from "views/pventa/FrmPoliticadeComisiones";
 import { FrmVendedor } from "views/pventa/FrmVendedor";
+import { FrmCajas } from "views/pventa/FrmCajas";
 /*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
@@ -185,6 +186,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridMunicipios") {
                                     this.FrmMunicipios = this.ui(FrmMunicipios);
                                     this.FrmMunicipios.showWindow();
+                                } else if (this.getUrl()[1].page == "GridCajas") {
+                                    this.FrmCajas = this.ui(FrmCajas);
+                                    this.FrmCajas.showWindow();
                                 }
                             }
                         },

@@ -74,6 +74,7 @@ export class FrmBase extends JetView {
                 this.$$(this.Formulario).setValues(realdata.json());
 
                 this.cargarCombos(realdata.json());
+                this.cargarChecks(realdata.json());
 
                 this.hiddenProgressBar();
 
@@ -236,6 +237,11 @@ export class FrmBase extends JetView {
         combo.setValue(data.id);
         //combo.setValue(data._id);
     }
+
+    cargarChecks(data){
+
+    }
+
     showProgressBar() {
         $$(this.Ventana).showProgress({
             type: "icon",
