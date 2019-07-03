@@ -180,6 +180,8 @@ export class FrmBase extends JetView {
 
                     this.hiddenProgressBar();
 
+                    $$("GridBase").$scope.refresh();
+
                     webix.alert("Eliminado con exito", (result) => {
                         $$(this.Ventana).close();
                     });

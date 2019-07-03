@@ -108,7 +108,8 @@ export class GridBase extends JetView {
         let filter=[];
 
         grid.config.columns.forEach((element) => {
-            if(grid.getFilter(element.id).value !== "")
+            //Recolecta lo que esta escrito en los filtros
+            if(element.MongoField!= undefined && grid.getFilter(element.id).value !== "")
                 filter.push(element.MongoField + "=" +  grid.getFilter(element.id).value);
         });
         let filters = filter.join();

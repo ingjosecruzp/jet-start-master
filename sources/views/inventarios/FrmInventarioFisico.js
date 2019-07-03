@@ -3,7 +3,7 @@ import { FrmBase } from "views/FrmBase";
 import { conceptos } from "models/catalogos/conceptos";
 import { articulos } from "models/catalogos/articulos";
 import { almacenes } from "models/catalogos/almacenes";
-import { movimientosES } from "models/inventarios/movimientosES";
+import { inventariofisico } from "models/inventarios/inventariofisico";
 
 export class FrmInventarioFisico extends FrmBase {
     constructor(app, name) {
@@ -125,9 +125,9 @@ export class FrmInventarioFisico extends FrmBase {
             }
         };
 
-        let movimientoES = new movimientosES();
+        let inventario = new inventariofisico();
 
-        super(app, name, form, movimientoES, id);
+        super(app, name, form, inventario, id);
     }
     init(view) {
         webix.extend($$(this.Ventana), webix.ProgressBar);
@@ -137,29 +137,6 @@ export class FrmInventarioFisico extends FrmBase {
         this.LstArticulos = [];
         let self = this;
 
-        /*$$("cmbConcepto" + this.id).attachEvent("onChange", (newv, oldv) => {
-            setTimeout(() => {
-                let concepto = $$("cmbConcepto" + self.id).getPopup().getList().getItem(newv);
-
-                self.CostoAutomatico = concepto.CostoAutomatico;
-
-                if (self.CostoAutomatico == "SI" && this._id == undefined) {
-                    grid.hideColumn("Costo");
-                    grid.hideColumn("CostoTotal");
-                } else if (self.CostoAutomatico == "" && this._id == undefined) {
-                    grid.showColumn("Costo");
-                    grid.showColumn("CostoTotal");
-                }
-
-                if (concepto.FolioAutomatico == "SI") {
-                    if (this._id == undefined)
-                        $$("Folio").setValue("");
-                    $$("Folio").disable(true);
-                } else {
-                    $$("Folio").enable(true);
-                }
-            }, 50);
-        });*/
         webix.UIManager.addHotKey("enter", function(view){
             console.log("entro enter");
             var pos = view.getSelectedId();
@@ -236,7 +213,7 @@ export class FrmInventarioFisico extends FrmBase {
 
         data.Fecha = this.convertToJSONDate(data.Fecha);
 
-        let Detalles_ES = [];
+        let InventarioFisicoDetalle = [];
 
         //Obtiene los valores del grid
         $$("gridArticulos" + this.id).eachRow((row) => {
@@ -249,19 +226,14 @@ export class FrmInventarioFisico extends FrmBase {
                     Articulo: {
                         _id: record.Articulo
                     },
-                    Cantidad: record.Cantidad,
-                    Clave: record.Clave,
-                    Costo: record.Costo,
-                    CostoTotal: record.CostoTotal,
-                    Unidad: null
+                    ExistenciaFisica: record.Existencia
                 };
 
-                Detalles_ES.push(articulo);
+                InventarioFisicoDetalle.push(articulo);
             }
         });
 
-        data.Detalles_ES = Detalles_ES;
-        console.log(data);
+        data.InventarioFisicoDetalle = InventarioFisicoDetalle;
 
         super.guardar(data);
     }
@@ -270,24 +242,19 @@ export class FrmInventarioFisico extends FrmBase {
 
         $$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
 
-        this.cargarCombo($$("cmbConcepto" + this.id), data.Concepto);
         this.cargarCombo($$("cmbAlmacen" + this.id), data.Almacen);
 
-        if (data.Almacen_Destino != undefined)
-            console.log("vacio");
 
         $$("gridArticulos" + this.id).clearAll();
 
-        data.Detalles_ES.forEach(element => {
+        data.InventarioFisicoDetalle.forEach(element => {
             $$("gridArticulos" + this.id).config.columns[1].collection.add(element.Articulo);
 
             let articulo = {
-                Clave: element.Clave,
+                Clave: element.Articulo.Clave,
                 Articulo: element.Articulo._id,
-                Cantidad: element.Cantidad,
-                Unidad: element.Articulo.UnidadInventario.Abreviatura,
-                Costo: element.Costo,
-                CostoTotal: element.CostoTotal,
+                Existencia: element.ExistenciaFisica,
+                Unidad: element.Articulo.UnidadInventario.Abreviatura
             }
 
             $$("gridArticulos" + this.id).add(articulo);

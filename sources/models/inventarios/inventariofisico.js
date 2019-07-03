@@ -7,5 +7,12 @@ export class inventariofisico extends ModeloBase {
         let campos = "_id,Fecha,Folio,Almacen.Nombre,Estado,Descripcion";
         super(servicio, campos);
     }
+    aplicarInventario(data) {
+        var promise = webix.ajax().headers({
+            "Content-type": "application/json"
+        }).post(this.url + "InventarioFisico", data);
+
+        return promise;
+    }
 
 }
