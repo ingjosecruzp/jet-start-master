@@ -62,3 +62,29 @@ export function getCajasCobroDefault() {
     ];
     return Valoracion;
 };
+
+export function getNaturalezaTimp() {
+    var Valoracion = [
+        { id: "IMPUESTO", value: "IMPUESTO" },
+        { id: "RETENCION DE IMPUESTO", value: "RETENCION DE IMPUESTO" },
+    ];
+    return Valoracion;
+};
+
+export function getTipoCalculo() {
+    var Valoracion = [
+        { id: "PORCENTAJE", value: "PORCENTAJE" },
+        { id: "CUOTA POR UNIDAD", value: "CUOTA POR UNIDAD" },
+    ];
+    return Valoracion;
+};
+
+export function getTipoIva() {
+    var Valoracion = [
+        { id: "GENERAL", value: "GENERAL" },
+        { id: "FRONTERA", value: "FRONTERA" },
+        { id: "TASA 0", value: "TASA 0" },
+        { id: "EXENTO", value: "EXENTO" },
+    ];
+    return Valoracion;
+};
