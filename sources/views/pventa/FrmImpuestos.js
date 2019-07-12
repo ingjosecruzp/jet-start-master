@@ -70,7 +70,6 @@ export class FrmImpuestos extends FrmBase {
 
     cargarCombos(data) {
         this.cargarCombo(this.$$("cmbTipoImpuesto" + this.id), data.TipoImpuesto);
-        //this.cargarCombo(this.$$("cmbPais" + this.id), data.Paises);
     }
     
     cargarChecks(data){
