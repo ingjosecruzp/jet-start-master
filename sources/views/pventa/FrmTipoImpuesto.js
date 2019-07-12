@@ -36,28 +36,7 @@ export class FrmTipoImpuesto extends FrmBase {
                                 width: 390,
                                 select: "cell",
                                 //editaction: "none",
-                                columns: [
-                                    /*{
-                                        id: "cmbNombreTipo",
-                                        editor: "combo",
-                                        header: "Articulo",
-                                        fillspace: true,
-                                        //width: 257,
-                                        placeholder: "Type something... ",
-                                        collection: collection,
-                                        //select: "row",
-                                        //navigation: true,
-                                        suggest: { // suggest
-                                            template: "#value#",
-                                            body: { // list
-                                                template: "#value#",
-                                                dataFeed: function(text) {
-                                                    let tipoimp = new tipoimpuesto();
-                                                    this.load(tipoimp.searchXTipoImp(text));
-                                                }
-                                            }
-                                        }
-                                    }*/                                                                                                            
+                                columns: [                                                                                                                                             
                                     {
                                         id: "TipoImpuesto",
                                         editor: "combo",
@@ -146,6 +125,21 @@ export class FrmTipoImpuesto extends FrmBase {
             }
         });
 
+        /*this.$$("gridGravables").attachEvent("onAfterEditStop", function(state, editor) {
+
+            if (editor.column == "TipoImpuesto") {
+                var item = editor.getPopup().getList().getItem(state.value);
+
+                if (item == undefined)
+                    return;
+
+                this.getItem(editor.row)["TipoImpuesto"] = item.Nombre;
+                //this.getItem(editor.row)["Unidad"] = item.UnidadInventario.Abreviatura;
+
+            } 
+
+        });*/
+
         $$("gridGravables").attachEvent("onBeforeEditStop", function(change, editor) {
             var column = editor.config;
 
@@ -219,5 +213,40 @@ export class FrmTipoImpuesto extends FrmBase {
         this.$$("Grava").value=data.Grava;
         this.$$("Predeterminado").value=data.Predeterminado;
     }
+
+    cargarCombos(data) {        
+
+        $$("gridGravables").clearAll();
+
+        data.TiposGravan.forEach(element => {
+            $$("gridGravables").config.columns[0].collection.add(element.TipoImpuesto);
+
+            let tipoimp = {
+                TipoImpuesto: element.TipoImpuesto._id       
+            }
+            console.log(tipoimp);
+
+            $$("gridGravables").add(tipoimp);
+        });
+    }
+
+    /*cargarCombos(data) {
+        $$("gridArticulos" + this.id).clearAll();
+
+        data.Detalles_ES.forEach(element => {
+            $$("gridArticulos" + this.id).config.columns[1].collection.add(element.Articulo);
+
+            let articulo = {
+                Clave: element.Clave,
+                Articulo: element.Articulo._id,
+                Cantidad: element.Cantidad,
+                Unidad: element.Articulo.UnidadInventario.Abreviatura,
+                Costo: element.Costo,
+                CostoTotal: element.CostoTotal,
+            }
+
+            $$("gridArticulos" + this.id).add(articulo);
+        });
+    }*/
 
 }
