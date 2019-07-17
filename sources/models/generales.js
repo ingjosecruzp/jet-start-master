@@ -88,3 +88,12 @@ export function getTipoIva() {
     ];
     return Valoracion;
 };
+
+export function getCajeroReporte() {
+    var Valoracion = [
+        { id: "PROPIO CAJERO SOLAMENTE", value: "PROPIO CAJERO SOLAMENTE" },
+        { id: "CUALQUIER CAJERO EN CAJAS AUTORIZADAS", value: "CUALQUIER CAJERO EN CAJAS AUTORIZADAS" },
+        { id: "TODAS LAS CAJAS DE CUALQUIER CAJERO", value: "TODAS LAS CAJAS DE CUALQUIER CAJERO" },
+    ];
+    return Valoracion;
+};

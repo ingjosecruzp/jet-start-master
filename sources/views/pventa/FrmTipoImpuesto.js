@@ -1,7 +1,6 @@
 import { JetView } from "webix-jet";
 import { FrmBase } from "views/FrmBase";
 import { tipoimpuesto } from "models/pventa/tipoimpuesto";
-import { articulos } from "models/catalogos/articulos";
 import { getNaturalezaTimp } from "models/generales";
 
 export class FrmTipoImpuesto extends FrmBase {
@@ -125,20 +124,6 @@ export class FrmTipoImpuesto extends FrmBase {
             }
         });
 
-        /*this.$$("gridGravables").attachEvent("onAfterEditStop", function(state, editor) {
-
-            if (editor.column == "TipoImpuesto") {
-                var item = editor.getPopup().getList().getItem(state.value);
-
-                if (item == undefined)
-                    return;
-
-                this.getItem(editor.row)["TipoImpuesto"] = item.Nombre;
-                //this.getItem(editor.row)["Unidad"] = item.UnidadInventario.Abreviatura;
-
-            } 
-
-        });*/
 
         $$("gridGravables").attachEvent("onBeforeEditStop", function(change, editor) {
             var column = editor.config;
@@ -229,24 +214,5 @@ export class FrmTipoImpuesto extends FrmBase {
             $$("gridGravables").add(tipoimp);
         });
     }
-
-    /*cargarCombos(data) {
-        $$("gridArticulos" + this.id).clearAll();
-
-        data.Detalles_ES.forEach(element => {
-            $$("gridArticulos" + this.id).config.columns[1].collection.add(element.Articulo);
-
-            let articulo = {
-                Clave: element.Clave,
-                Articulo: element.Articulo._id,
-                Cantidad: element.Cantidad,
-                Unidad: element.Articulo.UnidadInventario.Abreviatura,
-                Costo: element.Costo,
-                CostoTotal: element.CostoTotal,
-            }
-
-            $$("gridArticulos" + this.id).add(articulo);
-        });
-    }*/
 
 }

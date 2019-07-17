@@ -26,6 +26,7 @@ import { FrmTipodeCambio } from "views/pventa/FrmTipodeCambio";
 import { FrmPoliticadeComisiones } from "views/pventa/FrmPoliticadeComisiones";
 import { FrmVendedor } from "views/pventa/FrmVendedor";
 import { FrmCajas } from "views/pventa/FrmCajas";
+import { FrmCajeros } from "views/pventa/FrmCajeros";
 import { FrmTipoImpuesto } from "views/pventa/FrmTipoImpuesto";FrmImpuestos
 import { FrmImpuestos } from "views/pventa/FrmImpuestos";
 /*******************************************/
@@ -195,6 +196,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridCajas") {
                                     this.FrmCajas = this.ui(FrmCajas);
                                     this.FrmCajas.showWindow();
+                                } else if (this.getUrl()[1].page == "GridCajeros") {
+                                    this.FrmCajeros = this.ui(FrmCajeros);
+                                    this.FrmCajeros.showWindow();
                                 } else if (this.getUrl()[1].page == "GridTipoImpuesto") {
                                     this.FrmTipoImpuesto = this.ui(FrmTipoImpuesto);
                                     this.FrmTipoImpuesto.showWindow();
