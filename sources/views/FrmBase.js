@@ -13,7 +13,7 @@ export class FrmBase extends JetView {
     }
     config() {
         return {
-            view: "window",
+            view: "window",            
             /*top: 200,
             left: 300,*/
             id: this.Ventana,
