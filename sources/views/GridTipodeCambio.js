@@ -8,10 +8,11 @@ export default class GridTipodeCambio extends GridBase {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
             { id: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 350 },
-            { id: "Fecha", header: ["Fecha", { content: "textFilter" }], width: 150 },
+            { id: "Fecha", MongoField: "Fecha", template: (obj) => { return this.convertToDate(obj.Fecha) }, header: ["Fecha", { content: "textFilter" }], width: 150 },
             { id: "TipoCambio", header: ["TipoCambio", { content: "textFilter" }], width: 150 },
             { id: "EnCobros", header: ["EnCobros", { content: "textFilter" }], fillspace: true },
         ];
+
 
         let tiposdecambios = new tipodecambio();
 
