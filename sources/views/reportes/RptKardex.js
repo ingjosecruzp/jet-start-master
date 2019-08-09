@@ -1,26 +1,27 @@
 import { JetView } from "webix-jet";
 import { FrmReporteBase } from "views/FrmReporteBase";
-import { existencias } from "models/reportes/existencias";
+import { kardex } from "models/reportes/kardex";
 import { almacenes } from "models/catalogos/almacenes";
 import { grupocomponente } from "models/catalogos/grupocomponente";
 import { subgrupocomponente } from "models/catalogos/subgrupocomponente";
 import { getValoracion } from "models/generales";
 import { articulos } from "models/catalogos/articulos";
 
-export class RptExistencias extends FrmReporteBase {
+export class RptKardex extends FrmReporteBase {
 
     constructor(app, name) {
         let id = new Date().getTime();
 
         let form = {
-            title: "Reporte Existencias",
+            title: "Reporte Kardex",
             width: 350,
             elements: [
-                { view: "datepicker", disabled: false, label: "Fecha", labelWidth: 80, id: "Fecha" + id, name: "Fecha", stringResult: true, format: "%d  %M %Y", value: new Date() },
+                { view: "datepicker", disabled: false, label: "Fecha Inicio", labelWidth: 80, id: "FechaI" + id, name: "FechaInicio", stringResult: true, format: "%d  %M %Y", value: new Date() },
+                { view: "datepicker", disabled: false, label: "Fecha Fin", labelWidth: 80, id: "FechaF" + id, name: "FechaFin", stringResult: true, format: "%d  %M %Y", value: new Date() },
                 {
                     cols: [{
                         view: "combo",
-                        name: "AlmacenID",
+                        name: "AlmacenId",
                         labelWidth: 80,
                         id: "cmbAlmacen" + id,
                         label: "Almacen",
@@ -113,13 +114,14 @@ export class RptExistencias extends FrmReporteBase {
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty
-                //"Nombre": webix.rules.isNotEmpty,
-                //"Abreviatura": webix.rules.isNotEmpty
+                "FechaInicio": webix.rules.isNotEmpty,
+                "FechaFin": webix.rules.isNotEmpty,
+                "AlmacenId": webix.rules.isNotEmpty
             }
         };
 
-        let existencia = new existencias();
-        super(app, name, form, existencia, id);
+        let Kardex = new kardex();
+        super(app, name, form, Kardex, id);
     }
     init(view) {
         let self = this;

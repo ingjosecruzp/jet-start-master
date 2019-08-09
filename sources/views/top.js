@@ -36,6 +36,7 @@ import { FrmRoles } from "views/administracion/FrmRoles";
 
 /*********REPORTES**************************/
 import { RptExistencias } from "views/reportes/RptExistencias";
+import { RptKardex } from "views/reportes/RptKardex";
 /*******************************************/
 
 
@@ -245,9 +246,13 @@ export default class TopView extends JetView {
                                     onAfterSelect: (id) => {
                                         //webix.message("Selected: " + this.getItem(id).value);
                                         //webix.message("Selected: " + this.getItem(id).url);
+                                        //RptKardex
                                         if (id == "RptExistencia") {
                                             this.RptExistencias = this.ui(RptExistencias);
                                             this.RptExistencias.showWindow();
+                                        } else  if (id == "RptKardex") {
+                                            this.RptKardex = this.ui(RptKardex);
+                                            this.RptKardex.showWindow();
                                         } else {
                                             // Se abre el grid seleccionado
                                             this.app.show("/top/" + id);
@@ -292,6 +297,10 @@ export default class TopView extends JetView {
                 node.firstChild.innerHTML = total <= 1 ? total + " registro" : total + " registros";
             }
         }, webix.ui.datafilter.summColumn);
+
+        //Formatea la fecha para que solo se obtenga la misma y no fecha y hora
+        //webix.i18n.parseFormat = "%Y-%m-%d";
+        //webix.i18n.setLocale();
 
         //comentario dany
     }

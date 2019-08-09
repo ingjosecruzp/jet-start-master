@@ -85,6 +85,9 @@ export class FrmReporteBase extends JetView {
 
         console.log("imprimir");
 
+        if (this.$$(this.Formulario).validate({ hidden: true }) == false)
+        return;
+
         this.showProgressBar();
         let params = this.$$(this.Formulario).getValues();
 

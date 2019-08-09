@@ -121,7 +121,8 @@ export const menu_data_multi = new webix.DataCollection({
             icon: "mdi mdi-chart-bar",
             value: "Reportes",
             data: [
-                { id: "RptExistencia", icon: "mdi mdi-book", value: "Existencias" }
+                { id: "RptExistencia", icon: "mdi mdi-book", value: "Existencias" },
+                { id: "RptKardex", icon: "mdi mdi-book", value: "Kardex" }
             ]
         },
         {

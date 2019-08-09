@@ -110,11 +110,14 @@ export class FrmInventarioFisico extends FrmBase {
                     ],
                     rules: {
                         //   $all: webix.rules.isNotEmpty
+                        "Existencia" : function(value){ return value > -1 }
                     },
                     liveValidation: true,
                     editable: true,
                     //autowidth: true,
-                    data: [{}]
+                    data: [{
+                        Existencia:0
+                    }]
                 }
             ],
             rules: {
@@ -138,7 +141,6 @@ export class FrmInventarioFisico extends FrmBase {
         let self = this;
 
         webix.UIManager.addHotKey("enter", function(view){
-            console.log("entro enter");
             var pos = view.getSelectedId();
             view.edit(pos);
         }, this.$$("gridArticulos" + this.id));
@@ -198,7 +200,9 @@ export class FrmInventarioFisico extends FrmBase {
                 var editor = this.getEditor();
                 setTimeout(function() {
                     if (editor.column == "Existencia" && editor.row == grid.getLastId()) {
-                        grid.add({});
+                        grid.add({
+                            Existencia:0
+                        });
                     }
                     //grid.editNext(true, editor);
                 }, 50);
