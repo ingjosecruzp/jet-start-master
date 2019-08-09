@@ -28,7 +28,7 @@ export class FrmTipodeCambio extends FrmBase {
                         }
                     }
                 },
-                { view: "text", name: "Fecha", label: "Fecha", labelWidth: 140 },
+                { view: "datepicker", id: "Fecha" + id, label: "Fecha", labelWidth: 140, name: "Fecha", stringResult: true, format: "%d  %M %Y", value: new Date() },
                 { view: "text", name: "TipoCambio", label: "Tipo de Cambio", labelWidth: 140 },
                 { view: "text", name: "EnCobros", label: "En Cobros", labelWidth: 140 }
             ],
@@ -51,6 +51,7 @@ export class FrmTipodeCambio extends FrmBase {
 
     cargarCombos(data) {
         console.log(data);
+        //$$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
         this.cargarCombo(this.$$("cmbMoneda" + this.id), data.Moneda);
     }
 }

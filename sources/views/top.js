@@ -26,6 +26,10 @@ import { FrmTipodeCambio } from "views/pventa/FrmTipodeCambio";
 import { FrmPoliticadeComisiones } from "views/pventa/FrmPoliticadeComisiones";
 import { FrmVendedor } from "views/pventa/FrmVendedor";
 import { FrmCajas } from "views/pventa/FrmCajas";
+import { FrmCajeros } from "views/pventa/FrmCajeros";
+import { FrmTipoImpuesto } from "views/pventa/FrmTipoImpuesto";
+import { FrmImpuestos } from "views/pventa/FrmImpuestos";
+import { FrmPuntoVenta } from "views/FrmPuntoVenta";
 /*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
@@ -194,6 +198,20 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridCajas") {
                                     this.FrmCajas = this.ui(FrmCajas);
                                     this.FrmCajas.showWindow();
+                                } else if (this.getUrl()[1].page == "GridCajeros") {
+                                    this.FrmCajeros = this.ui(FrmCajeros);
+                                    this.FrmCajeros.showWindow();
+                                } else if (this.getUrl()[1].page == "GridTipoImpuesto") {
+                                    this.FrmTipoImpuesto = this.ui(FrmTipoImpuesto);
+                                    this.FrmTipoImpuesto.showWindow();
+                                } else if (this.getUrl()[1].page == "GridImpuestos") {
+                                    this.FrmImpuestos = this.ui(FrmImpuestos);
+                                    this.FrmImpuestos.showWindow();
+                                } else if (this.getUrl()[1].page == "PuntoVenta") {
+                                    //console.log(this.getUrl()[1].page.value);
+                                    //this.app.show("/FrmPuntoVenta");
+                                    //this.FrmPuntoVenta = this.ui(FrmPuntoVenta);
+                                    //this.FrmPuntoVenta.showWindow();
                                 }
                             }
                         },

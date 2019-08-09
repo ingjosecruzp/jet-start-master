@@ -14,30 +14,51 @@ export class FrmCajas extends FrmBase {
             title: "Cajas",
             width: 400,
             elements: [
-                { view: "text", name: "_id", hidden: true },                
-                { view: "text", name: "Nombre", labelWidth: 105, label: "Nombre" },
                 {
-                    view: "combo",
-                    name: "Almacen._id",
-                    labelWidth: 105,
-                    id: "CmbAlmacen" + id,
-                    label: "Almacen",
-                    options: {
-                        body: {
-                            template: "#Nombre#", //es el campo que sem mostrara lo agarra del json
-                            dataFeed: function(text) {
-                                let Almacen = new almacenes(); //modelo para cargar el combo
-                                this.load(Almacen.searchCombo(text));
-                            }
-                        }
+                    view: "fieldset",
+                    label: "Datos",
+                    id: "fieldsetDatosCaja" + id,
+                    type: "space",
+                    body: {
+                        rows: [
+                            { view: "text", name: "_id", hidden: true },                
+                            { view: "text", name: "Nombre", labelWidth: 82, label: "Nombre" },
+                            {
+                                view: "combo",
+                                name: "Almacen._id",
+                                labelWidth: 82,
+                                id: "CmbAlmacen" + id,
+                                label: "Almacen",
+                                options: {
+                                    body: {
+                                        template: "#Nombre#", //es el campo que sem mostrara lo agarra del json
+                                        dataFeed: function(text) {
+                                            let Almacen = new almacenes(); //modelo para cargar el combo
+                                            this.load(Almacen.searchCombo(text));
+                                        }
+                                    }
+                                }
+                            },
+                            { view: "checkbox", id: "ModAlmacenVta", name: "ModAlmacenVta",labelRight:"Modificar el almacén en las ventas",uncheckValue:0, checkValue:1},
+                        ]
                     }
                 },
-                { view: "checkbox", id: "ModAlmacenVta", name: "ModAlmacenVta",labelRight:"Modificar el almacén en las ventas",uncheckValue:0, checkValue:1},
-                { view: "combo", name: "RegVtaApartir", labelWidth: 200, id: "cmbRegVtaApartir" + id, label: "Registrar ventas a partir de", options:  getCajasRegVta()},
-                { view: "checkbox", id: "ManejaVendCaja", name: "ManejaVendCaja",labelRight:"Manejar vendedores en la caja",uncheckValue:0, checkValue:1},
-                { view: "checkbox", id: "RecibeCobroCaja",name: "RecibeCobroCaja",labelRight:"Recibir cobros en la caja",uncheckValue:0, checkValue:1},
-                { view: "checkbox", id: "PausaCobro", name: "PausaCobro",labelRight:"Presentar pausa al terminar cada cobro",uncheckValue:0, checkValue:1},
-                { view: "combo", name: "CobroPredet", labelWidth: 200, id: "cmbCobroPredet" + id, label: "Cobro predeterminado", options:  getCajasCobroDefault()}                
+                {
+                    view: "fieldset",
+                    label: "Configuracion",
+                    id: "fieldsetDatosConfiguracion" + id,
+                    type: "space",
+                    body: {
+                        rows: [
+                            { view: "combo", name: "RegVtaApartir", labelWidth: 190, id: "cmbRegVtaApartir" + id, label: "Registrar ventas a partir de", options:  getCajasRegVta()},
+                            { view: "combo", name: "CobroPredet", labelWidth: 190, id: "cmbCobroPredet" + id, label: "Cobro predeterminado", options:  getCajasCobroDefault()},
+                            { view: "label", label: ""},
+                            { view: "checkbox", id: "ManejaVendCaja", name: "ManejaVendCaja",labelRight:"Manejar vendedores en la caja",uncheckValue:0, checkValue:1, labelWidth:0}, 
+                            { view: "checkbox", id: "RecibeCobroCaja",name: "RecibeCobroCaja",labelRight:"Recibir cobros en la caja",uncheckValue:0, checkValue:1, labelWidth:0},
+                            { view: "checkbox", id: "PausaCobro", name: "PausaCobro",labelRight:"Presentar pausa al terminar cada cobro",uncheckValue:0, checkValue:1, labelWidth:0}
+                        ]
+                    }
+                }                                
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty,
