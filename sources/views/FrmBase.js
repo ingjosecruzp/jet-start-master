@@ -40,7 +40,7 @@ export class FrmBase extends JetView {
                     view: "toolbar",
                     height: 35,
                     cols: [
-                        { view: "icon", icon: "mdi mdi-content-save", align: "left", click: () => this.guardar() },
+                        { view: "icon", icon: "mdi mdi-plus-circle", align: "left", click: () => this.guardar() },
                         { view: "icon", icon: "mdi mdi-content-save-all", align: "center" },
                         { view: "icon", icon: "mdi mdi-delete", align: "right", click: () => this.eliminar() },
                         { view: "icon", icon: "mdi mdi-arrow-left-bold", align: "right", click: () => this.upRow() },
