@@ -126,7 +126,8 @@ export const menu_data_multi = new webix.DataCollection({
             value: "Reportes",
             data: [
                 { id: "RptExistencia", icon: "mdi mdi-book", value: "Existencias" },
-                { id: "RptKardex", icon: "mdi mdi-book", value: "Kardex" }
+                { id: "RptKardex", icon: "mdi mdi-book", value: "Kardex" },
+                { id: "RptCodigosBarrras", icon: "mdi mdi-book", value: "Codigo de barras" }
             ]
         },
         {

@@ -41,6 +41,7 @@ import { FrmRoles } from "views/administracion/FrmRoles";
 /*********REPORTES**************************/
 import { RptExistencias } from "views/reportes/RptExistencias";
 import { RptKardex } from "views/reportes/RptKardex";
+import { RptCodigosBarrras } from "views/reportes/RptCodigosBarrras";
 /*******************************************/
 
 
@@ -271,6 +272,9 @@ export default class TopView extends JetView {
                                         } else  if (id == "RptKardex") {
                                             this.RptKardex = this.ui(RptKardex);
                                             this.RptKardex.showWindow();
+                                        } else  if (id == "RptCodigosBarrras") {
+                                            this.RptCodigosBarrras = this.ui(RptCodigosBarrras);
+                                            this.RptCodigosBarrras.showWindow();
                                         } else {
                                             // Se abre el grid seleccionado
                                             this.app.show("/top/" + id);
@@ -295,11 +299,11 @@ export default class TopView extends JetView {
         //this.FrmUnidades = this.ui(FrmUnidades);
 
         //Conecta al socket para monitorear la informacion
-        socket = io.connect('http://localhost:90/', {
+        /*var socket = io.connect('http://localhost:90/', {
             'forceNew': true,
             query: { token: localStorage.getItem("token") }
-            /*transport: ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']*/
-        });
+            //transport: ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']
+        });*/
 
         webix.attachEvent("onBeforeAjax",
             function(mode, url, data, request, headers, files, promise) {
