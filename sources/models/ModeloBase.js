@@ -70,4 +70,8 @@ export class ModeloBase {
     searchCombo(text) {
         return this.url + "?searchBy=getXNombre&busqueda=" + text;
     }
+
+    searchPorCampo(campo,text) {
+        return this.url + "?searchBy=getXCampo&campo="+ campo +"&busqueda=" + text;
+    }
 }

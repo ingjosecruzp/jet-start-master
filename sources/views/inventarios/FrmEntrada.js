@@ -170,7 +170,6 @@ export class FrmEntrada extends FrmBase {
 
             if (editor.column == "Articulo") {
                 var item = editor.getPopup().getList().getItem(state.value);
-
                 if (item == undefined)
                     return;
 
