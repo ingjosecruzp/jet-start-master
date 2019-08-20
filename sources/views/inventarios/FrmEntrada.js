@@ -172,7 +172,7 @@ export class FrmEntrada extends FrmBase {
                 var item = editor.getPopup().getList().getItem(state.value);
                 if (item == undefined)
                     return;
-
+                    console.log("row "+editor.row);
                 this.getItem(editor.row)["Clave"] = item.Clave;
                 this.getItem(editor.row)["Unidad"] = item.UnidadInventario.Abreviatura;
 
