@@ -37,10 +37,12 @@ export class ModeloBase {
         return promise;
     }
 
-    saveData(data) {
+    saveData(data) {        
         var promise = webix.ajax().headers({
             "Content-type": "application/json"
         }).post(this.url, data);
+        console.log(this.url);
+        console.log(data);
 
         return promise;
     }
