@@ -526,9 +526,11 @@ export class FrmPuntoVenta extends FrmBase {
     guardar() {
         let falta=0;
         let totPago = $$("txtsupagon").getValue();
-        let total = $$("txttotaln").getValue();
+        let totaln = parseFloat($$("txttotaln").getValue());
+        let subtotaln =parseFloat($$("txtsubtotaln").getValue());
+        let ivan = parseFloat($$("txtivan").getValue());
 
-        if(totPago<total){
+        if(totPago<totaln){
             falta=total-totPago;
             webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
             return;
@@ -549,7 +551,7 @@ export class FrmPuntoVenta extends FrmBase {
         public int Mes { get; set; }
         public int Dia { get; set; }*/
         //data.Hora=this.convertToJSONTime(new Time);
-        //data.Cajeros= alguno por default;
+        data.Cajero= {_id: '5d2e631492a3d99448b79f9a'},
         //data.Clientes={_id: '5d5b4015a44ae9e6936e72da'},
         data.Almacen= {_id: '5c92a3ef7d7b30184c602277'},
         //public int Moneda { get; set; }
@@ -560,15 +562,15 @@ export class FrmPuntoVenta extends FrmBase {
         data.DescuentoImporte=0;
         data.Estatus='N';
         data.Aplicado='S';
-        data.ImporteNeto=parseFloat($$("txtsubtotaln").getValue());
-        data.TotalImpuestos=parseFloat($$("txtivan").getValue());
-        data.TotalVenta=parseFloat($$("txttotaln").getValue());
+        data.ImporteNeto=subtotaln,
+        data.TotalImpuestos=ivan,
+        data.TotalVenta=totaln,
         data.ImporteDonativo=0;        
         data.SistemaOrigen='PV';
         //data.Vendedor { get; set; }
         //data.UsuarioCreador=1;
 
-        /*
+        
         //Obtiene los valores del grid
         $$("gridDetalle").eachRow((row) => {
             let record = $$("gridDetalle").getItem(row);
@@ -608,11 +610,11 @@ export class FrmPuntoVenta extends FrmBase {
 
         let vtaImp = {
             //public Impuestos Impuesto { get; set; }
-            VentaNeta: $$("txtsubtotaln").getValue(),
-            VentaBruta: $$("txtsubtotaln").getValue(),
+            VentaNeta: subtotaln,
+            VentaBruta: subtotaln,
             OtrosImpuestos: 0,
             PorcentajeImpuesto: 0,
-            ImporteImpuesto: $$("txtivan").getValue(),
+            ImporteImpuesto: ivan,
             UnidadesImpuesto: 0,
             ImporteUnitarioImpuesto: 0
         }
@@ -630,7 +632,7 @@ export class FrmPuntoVenta extends FrmBase {
             }
             PuntoVtaCobros.push(detpago);            
         });
-        data.PuntoVtaCobros = PuntoVtaCobros;*/
+        data.PuntoVtaCobros = PuntoVtaCobros;
 
         //console.log(this.$$(this.Formulario));
         console.log(data);
