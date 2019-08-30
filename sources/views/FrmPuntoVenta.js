@@ -65,7 +65,7 @@ export class FrmPuntoVenta extends FrmBase {
                     view: "form", container: "descuento", width: WContainer, height: 140,
                     elements: [
                         {view:"text", id:"txtdescuento", label:"Descto.", align:"left", readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
-                        {view: "button", id:"btncobrar", label: "COBRAR", height:70} 
+                        {view: "button", type: "image", image:"http://localhost:60493/img/cobrar.png", id:"btncobrar", css: { "background-color": "#9fff90", "text-align": "center" }, label: "COBRAR", height:70} 
                     ]
                 },
                 { //-------------------- SUBTOTAL IVA Y TOTAL ---------------------
@@ -129,10 +129,10 @@ export class FrmPuntoVenta extends FrmBase {
                                 {view:"text", id:"tipocambio", align:"right", label:"Tipo Cambio: $", labelWidth:120,  inputWidth:190}
                             ]},                     
                             {cols:[			
-                                { view: "button", id:"btnefectivo", label: "EFECTIVO MXN", height:70},
-                                { view: "button", id:"btntarjeta", label: "TARJETA MXN"},
-                                { view: "button", id:"btnefectivodls", label: "EFECTIVO DLS"},
-                                { view: "button", id:"btntarjetadls", label: "TARJETA DLS"}				
+                                { view: "button", id:"btnefectivo", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/efemxn.png", label: "EFECTIVO MXN", height:70, margin:30},
+                                { view: "button", id:"btntarjeta", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/tarmxn.png", label: "TARJETA MXN", margin:30},
+                                { view: "button", id:"btnefectivodls", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/efedll.png", label: "EFECTIVO DLS", margin:30},
+                                { view: "button", id:"btntarjetadls", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/tardll.png", label: "TARJETA DLS", margin:30,}				
                             ]
                         }]
                     }
@@ -164,8 +164,8 @@ export class FrmPuntoVenta extends FrmBase {
                                 { view: "button", id:"btnmultiplica", label: " X ", height: botonesTec}                                
                             ]},
                             {cols:[
-                                { view: "button", id:"btnpagar", label: " PAGAR ", height: botonesTec, width: WContainer*0.62, click: () => this.guardar() },
-                                { view: "button", id:"btnborrar", label: " <-- ", height: botonesTec, width: WContainer*0.38}
+                                { view: "button",gravity:2, type:"image", id:"btnpagar", label: " PAGAR ", css: { "background-color": "#9fff90" }, image:"http://localhost:60493/img/pagar.png", height: botonesTec, click: () => this.guardar() },
+                                { view: "button",gravity:1, type:"imageTop", label:"BORRAR", css: { "background-color": "#ffbebe" }, image:"http://localhost:60493/img/backspace.png", id:"btnborrar", height: botonesTec}
                             ]},
                         ]
                     },  
@@ -243,7 +243,9 @@ export class FrmPuntoVenta extends FrmBase {
        
         let Carousel = $$("carousel" + this.id);
         let url = "http://localhost:60493/img/ptovta.png";
-        Carousel.add({ Source: url });   
+        Carousel.add({ Source: url });  
+        
+        
         
         habilitaControles(false);
         let formatofecha = webix.Date.dateToStr("%l %d %F %Y");
@@ -555,18 +557,19 @@ export class FrmPuntoVenta extends FrmBase {
         //data.Clientes={_id: '5d5b4015a44ae9e6936e72da'},
         data.Almacen= {_id: '5c92a3ef7d7b30184c602277'},
         //public int Moneda { get; set; }
-        data.ImpuestoIncluido='S';
+        data.ImpuestoIncluido='S',
         //public TipodeCambio TipodeCambio { get; set; }
-        data.TipoDescuento='P';
-        data.DescuentoPorcentaje=0;
-        data.DescuentoImporte=0;
-        data.Estatus='N';
-        data.Aplicado='S';
+        data.TipoDescuento='P',
+        data.DescuentoPorcentaje=0,
+        data.DescuentoImporte=0,
+        data.Estatus='N',
+        data.TicketEmitido='N',
+        data.Aplicado='S',
         data.ImporteNeto=subtotaln,
         data.TotalImpuestos=ivan,
         data.TotalVenta=totaln,
         data.ImporteDonativo=0;        
-        data.SistemaOrigen='PV';
+        data.SistemaOrigen='PV',
         //data.Vendedor { get; set; }
         //data.UsuarioCreador=1;
 
