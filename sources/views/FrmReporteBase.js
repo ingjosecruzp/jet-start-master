@@ -95,7 +95,7 @@ export class FrmReporteBase extends JetView {
             this.hiddenProgressBar();
 
             let archivo = realdata.json();
-            var win = window.open("http://localhost:9090/webReports/" + archivo, '_blank');
+            var win = window.open("http://localhost:60493/webReports/" + archivo, '_blank');
             win.focus();
 
         }).fail((error) => {

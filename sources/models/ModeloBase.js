@@ -7,7 +7,7 @@ export class ModeloBase {
 
         if (naturaleza) this.naturaleza = naturaleza;
         
-        this.url = "http://localhost:9090/" + servicio;
+        this.url = "http://localhost:60493/" + servicio;
         this.fields = "campos/" + campos;
     }
 
