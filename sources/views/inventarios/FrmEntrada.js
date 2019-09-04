@@ -172,7 +172,7 @@ export class FrmEntrada extends FrmBase {
                 var item = editor.getPopup().getList().getItem(state.value);
                 if (item == undefined)
                     return;
-
+                    console.log("row "+editor.row);
                 this.getItem(editor.row)["Clave"] = item.Clave;
                 this.getItem(editor.row)["Unidad"] = item.UnidadInventario.Abreviatura;
 
@@ -236,6 +236,7 @@ export class FrmEntrada extends FrmBase {
         if (!$$("gridArticulos" + this.id).validate()) return;
 
         let data = this.$$(this.Formulario).getValues();
+        console.log(this.$$(this.Formulario).getValues());
 
         data.Fecha = this.convertToJSONDate(data.Fecha);
 

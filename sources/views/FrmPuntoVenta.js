@@ -1,9 +1,7 @@
 import { FrmBase } from "views/FrmBase";
-import { cajeros } from "models/pventa/cajeros";
-//import { clientes } from "models/pventa/cajeros";
+import { clientes } from "models/catalogos/clientes";
 import { articulos } from "models/catalogos/articulos";
-//import { cajas } from "models/pventa/cajas";
-//import { getCajeroReporte } from "models/generales";
+import { puntoVenta } from "models/pventa/puntoVenta";
 
 export class FrmPuntoVenta extends FrmBase {
     constructor(app, name) {
@@ -21,7 +19,7 @@ export class FrmPuntoVenta extends FrmBase {
         //let areaPagos = WContainer/2;        
 
         let alto = (document.body.offsetHeight)-((document.body.offsetHeight)*.08);
-        let altoTecyPag = alto-210;
+        let altoTecyPag = alto-250;
         let botonesTec = altoTecyPag/6;
         
         let funcionx=0;
@@ -51,6 +49,7 @@ export class FrmPuntoVenta extends FrmBase {
             {
                 view: "datatable", id: "gridDetalle", select: "cell", liveValidation: true, editable: false, autowidth: true, data: [{}],
                 columns: [
+                    { id: "id", editor:"text", header: "id", width: 0 },
                     { id: "Codigo", editor:"text", header: "Codigo", width: Wdet*.13, css: { "text-align": "left" } },
                     { id: "Articulo", header: "Articulo", width: Wdet*.38, css: { "text-align": "left" } },                            
                     { id: "Cantidad", header: "Cantidad", format: webix.i18n.numberFormat, width: Wdet*.08, css: { "text-align": "center" } },
@@ -66,7 +65,7 @@ export class FrmPuntoVenta extends FrmBase {
                     view: "form", container: "descuento", width: WContainer, height: 140,
                     elements: [
                         {view:"text", id:"txtdescuento", label:"Descto.", align:"left", readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
-                        {view: "button", id:"btncobrar", label: "COBRAR", height:70, click: () => this.validaCobrar()} 
+                        {view: "button", type: "image", image:"http://localhost:60493/img/cobrar.png", id:"btncobrar", css: { "background-color": "#9fff90", "text-align": "center" }, label: "COBRAR", height:70} 
                     ]
                 },
                 { //-------------------- SUBTOTAL IVA Y TOTAL ---------------------
@@ -74,7 +73,11 @@ export class FrmPuntoVenta extends FrmBase {
                     elements: [
                         {view:"text", id:"txtsubtotal", label:"Subtotal:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
                         {view:"text", id:"txtiva", label:"IVA:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
-                        {view:"text", id:"txttotal", label:"TOTAL:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"}     
+                        {view:"text", id:"txttotal", label:"TOTAL:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
+                        
+                        {view:"text", id:"txtsubtotaln", value: webix.i18n.numberFormat(0)},
+                        {view:"text", id:"txtivan", value: webix.i18n.numberFormat(0)},
+                        {view:"text", id:"txttotaln", value: webix.i18n.numberFormat(0)}     
                     ]
                 }
             ]}
@@ -88,19 +91,20 @@ export class FrmPuntoVenta extends FrmBase {
                     elements: [
                         {cols:[
                             {view:"label", id:"vendedor", label:"Nombre del VENDEDOR", align:"left"},
-                            {view:"label", id:"fecha", align:"right"}
+                            {view:"label", id:"fecha", align:"right"}                            
                         ]},
                         {cols:[
-                            { view: "combo", name: "cmbcliente._id",id:"cmbcliente", label: "Cliente",
+                            /*{ view: "combo", name: "cmbcliente._id",id:"cmbcliente", label: "Cliente",
                                 options: {
                                     body: {
                                         template: "#Nombre#", dataFeed: function(text) {
-                                            let cte = new cajeros();
+                                            let cte = new clientes();
                                             this.load(cte.searchCombo(text));
                                         }
                                     }
                                 }
-                            },
+                            },*/
+                            {view:"text", id:"cmbcliente", label:"Cliente", value: "PUBLICO GENERAL", inputAlign:"left"},
                             {view: "label", id:"puntos", label:"PUNTOS: 0", align:"right", width: 200}
                         ]}
                     ]
@@ -117,13 +121,21 @@ export class FrmPuntoVenta extends FrmBase {
             ]},
             //-------------------- FORMA DE PAGO ---------------------
             { rows: [	
-                { view: "fieldset", label: "Forma de pago", type:"clean", height: 70, 
-                body:{ cols:[			
-                        { view: "button", id:"btnefectivo", label: "EFECTIVO MXN"},
-                        { view: "button", id:"btntarjeta", label: "TARJETA MXN"},
-                        { view: "button", id:"btnefectivodls", label: "EFECTIVO DLS"},
-                        { view: "button", id:"btntarjetadls", label: "TARJETA DLS"}				
-                    ]}
+                { view: "fieldset", label: "Forma de pago", type:"clean", height: 100, 
+                    body:{
+                        rows: [{
+                            cols:[	
+                                {view:"label", id:"montopaga", align:"left"},		
+                                {view:"text", id:"tipocambio", align:"right", label:"Tipo Cambio: $", labelWidth:120,  inputWidth:190}
+                            ]},                     
+                            {cols:[			
+                                { view: "button", id:"btnefectivo", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/efemxn.png", label: "EFECTIVO MXN", height:70, margin:30},
+                                { view: "button", id:"btntarjeta", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/tarmxn.png", label: "TARJETA MXN", margin:30},
+                                { view: "button", id:"btnefectivodls", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/efedll.png", label: "EFECTIVO DLS", margin:30},
+                                { view: "button", id:"btntarjetadls", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/tardll.png", label: "TARJETA DLS", margin:30,}				
+                            ]
+                        }]
+                    }
                 }
             ]},
             {
@@ -148,11 +160,12 @@ export class FrmPuntoVenta extends FrmBase {
                             ]},
                             {cols:[
                                 { view: "button", id:"num0", label: " 0 ", height: botonesTec},
-                                { view: "button", id:"btnmultiplica", label: " X ", height: botonesTec, click: () => this.setFuncionx()},
-                                { view: "button", id:"btnborrar", label: " <-- ", height: botonesTec}
+                                { view: "button", id:"btnpunto", label: " . ", height: botonesTec},
+                                { view: "button", id:"btnmultiplica", label: " X ", height: botonesTec}                                
                             ]},
                             {cols:[
-                                { view: "button", id:"btnpagar", label: " PAGAR ", height: botonesTec}
+                                { view: "button",gravity:2, type:"image", id:"btnpagar", label: " PAGAR ", css: { "background-color": "#9fff90" }, image:"http://localhost:60493/img/pagar.png", height: botonesTec, click: () => this.guardar() },
+                                { view: "button",gravity:1, type:"imageTop", label:"BORRAR", css: { "background-color": "#ffbebe" }, image:"http://localhost:60493/img/backspace.png", id:"btnborrar", height: botonesTec}
                             ]},
                         ]
                     },  
@@ -160,19 +173,20 @@ export class FrmPuntoVenta extends FrmBase {
                     { view: "form", width: WContainer, paddingY: 1, height: altoTecyPag,
                         elements: [
                             { rows:[
-                                //{view:"datatable", id:"gridpagos", elements:gridPagos}
-                                { view: "datatable", id: "gridPagos", select: "cell", liveValidation: true, editable: true, autowidth: true, data: [{}],
+                                {
+                                    view: "datatable", id: "gridPagos", select: "cell", liveValidation: true, editable: false, autowidth: true, data: [{}],
                                     columns: [
-                                        { id: "tipo", header: { text: "Forma", css: { "text-align": "center" } }, width: gpago, css: { "text-align": "left" } },
-                                        { id: "montotipo", format: webix.i18n.priceFormat, header: { text: "Importe", css: { "text-align": "center" } }, width: gpago, css: { "text-align": "right" } },
+                                        { id: "tipo", header: "Forma", width:gpago, css: { "text-align": "left" } },                            
+                                        { id: "montotipo", header: "Monto", format: webix.i18n.priceFormat, width: gpago, css: { "text-align": "right" } }
                                     ],
-                                    rules: {},
-                                }
+                                    rules: {},                       
+                                },
                             ]},
                             { rows:[
                                 {view:"text", id:"txttotalpago", label:"Total:", align:"right", labelWidth:85, inputWidth:210, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
                                 {view:"text", id:"txtsupago", label:"Su Pago:", align:"right", labelWidth:85, inputWidth:210, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
-                                {view:"text", id:"txtsucambio", label:"Su Cambio:", align:"right", labelWidth:85, inputWidth:210, height:50, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"} 
+                                {view:"text", id:"txtsucambio", label:"Su Cambio:", align:"right", labelWidth:85, inputWidth:210, height:50, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
+                                {view:"text", id:"txtsupagon"},
                             ]}
                         ]
                     },                
@@ -198,7 +212,7 @@ export class FrmPuntoVenta extends FrmBase {
             }        
         };       
 
-        let puntodeventa = new cajeros();
+        let puntodeventa = new puntoVenta();
 
         super(app, name, form, puntodeventa, id);
     }
@@ -209,35 +223,49 @@ export class FrmPuntoVenta extends FrmBase {
         let subtotal=0;
         let iva=0;
         let total=0;
-        let funborrar;        
-        let funpor=0;
+        let funNum=0;
         let idRegArt;
+        let idPago;
+        let totPago=0;
+        let tienePunto=false;
+        let numDecimal=0;
         let estadoVta="COBRO";
-        let funNumero=0;
-
+        let gridPago = $$("gridPagos");        
         let gridArt = $$("gridDetalle");
+        
+        gridPago.clearAll();
         gridArt.clearAll();
+        gridArt.hideColumn("id");
+        $$("txtsubtotaln").hide();
+        $$("txttotaln").hide();
+        $$("txtiva").hide();
+        $$("txtsupagon").hide();
        
         let Carousel = $$("carousel" + this.id);
+<<<<<<< HEAD
         let url = "http://localhost:9090/img/ptovta.png";
         Carousel.add({ Source: url });   
+=======
+        let url = "http://localhost:60493/img/ptovta.png";
+        Carousel.add({ Source: url });  
+>>>>>>> f22953d4f7d2c468b9e826cf8a8ea0fb3de9e935
         
-        this.habilitaControles(false);
+        
+        
+        habilitaControles(false);
         let formatofecha = webix.Date.dateToStr("%l %d %F %Y");
-        $$("fecha").setValue(formatofecha(new Date()));        
+        $$("fecha").setValue(formatofecha(new Date()));                
 
         $$("txtarticulo").attachEvent("onKeyPress", function(code, e) {   
             if (code == 13) {
                 setTimeout(function() {
-                    //var item = editor.getPopup().getList().getItem(state.value);
                     var idart = $$("txtarticulo").getValue();
                     var item = $$("txtarticulo").getList().getItem(idart);
                     
                     if (item == undefined)
                         return;
-                        //console.log("llega");
-                    let precio=12.5;
                     let articulogrid = {
+                        id: item._id,
                         Codigo: item.Clave,
                         Articulo: item.Nombre,
                         Cantidad: "1",
@@ -249,78 +277,376 @@ export class FrmPuntoVenta extends FrmBase {
                     }                    
                     gridArt.add(articulogrid);   
                     nart=nart+1;
+                    idRegArt = gridArt.getLastId();
                     $$("narticulos").setValue(nart + " Articulos");
                     $$("txtarticulo").setValue("");   
-                    /*subtotal=subtotal+item.PrecioLista;
-                    $$("txtsubtotal").setValue(webix.i18n.priceFormat(subtotal));*/
                 }, 50);                
             }
         });
 
-        this.$$("gridDetalle").attachEvent("onAfterAdd", function(id, index) {                        
-            let record =  gridArt.getItem(id);            
-            subtotal = subtotal + (record.Precio*record.Cantidad);                                        
-            $$("txtsubtotal").setValue(webix.i18n.priceFormat(subtotal));
-            total=subtotal+iva;
-            $$("txttotal").setValue(webix.i18n.priceFormat(total));
-            $$("txttotalpago").setValue(webix.i18n.priceFormat(total));
+        this.$$("gridDetalle").attachEvent("onAfterAdd", function(id, index) {                                    
+            cuentas();
         });
 
-        this.$$("gridDetalle").attachEvent("onBeforeDelete", function(id) {                        
-            let record =  gridArt.getItem(id);            
-            subtotal = subtotal - (record.Precio*record.Cantidad);                                        
-            $$("txtsubtotal").setValue(webix.i18n.priceFormat(subtotal));
-            total=subtotal+iva;
-            $$("txttotal").setValue(webix.i18n.priceFormat(total));
-            $$("txttotalpago").setValue(webix.i18n.priceFormat(total));
+        this.$$("gridDetalle").attachEvent("onAfterDelete", function(id) {                                    
+            cuentas();
+            $$("txtarticulo").focus();
+        });
+
+        this.$$("gridDetalle").attachEvent("onDataUpdate", function(id, data, old){
+            cuentas();
         });
 
         this.$$("gridDetalle").attachEvent("onItemClick", function(id, e, node) {                                    
-            funborrar=1;
-            funpor=1;
             idRegArt=id;
         });
 
-        this.$$("btnborrar").attachEvent("onItemClick", function(id, e){
-            if(estadoVta="COBRO" && funborrar==1){ //borrar elemento del grid detalle articulos
-                gridArt.remove(idRegArt);
-            }else if(estadoVta="COBRO" && funborrar==2){ //borrar caracter del txtarticulo
-
-            }else if(estadoVta="PAGO" && funborrar==3){ //borrar elemento del grid pagos
-
+        this.$$("gridPagos").attachEvent("onItemClick", function(id, e, node) {                                    
+            idPago=id;
+            funNum=3;
+        });
+        
+        this.$$("btnborrar").attachEvent("onFocus", function(current_view, prev_view){            
+            if(estadoVta=="COBRO" && prev_view.$view.id==""){ //borrar caracter del txtarticulo
+                
+            }else if(estadoVta=="COBRO" && prev_view.$view.id!=""){ //borrar registro del grid detalle
+                gridArt.remove(idRegArt);                
+            }else if(estadoVta=="PAGO" && funNum==2){ //borrar el numero escrito en label
+                $$("montopaga").setValue("");
+                tienePunto=false;
+                numDecimal=0;
+            }else if(estadoVta=="PAGO" && funNum==3){ //borrar registro del grid pagos
+                gridPago.remove(idPago);                
+                funNum=2;
+                cuentaPagos();
             }
         });
         
         this.$$("btncobrar").attachEvent("onItemClick", function(id, e){
             estadoVta="PAGO";
+            funNum=2;
         });
 
         this.$$("btnmultiplica").attachEvent("onItemClick", function(id, e){
-            funNumero=2;            
+            funNum=1;  
+            $$("txtarticulo").focus();          
+        });  
+        
+        this.$$("btnefectivo").attachEvent("onItemClick", function(id, e){
+            agregaPago("EFECTIVO");
         });
 
-        /*this.$$("num2").attachEvent("onItemClick", function(id, e){
-            if(funNumero==1){//escribir numero en el txtarticulo
+        this.$$("btntarjeta").attachEvent("onItemClick", function(id, e){
+            agregaPago("TARJETA");
+        });
 
-            }else if(funNumero==2){//multiplicar numero griddetalle
-                this.escribeNumero(2);                
-            }else if(funNumero==3){//escribir numero para pago
+        this.$$("btnefectivodls").attachEvent("onItemClick", function(id, e){
+            let tc = $$("tipocambio").getValue();
+            if(tc=="" || tc=="0"){
+                webix.message({type:"error", text:"INDIQUE EL TIPO DE CAMBIO!!"});
+                return;
+            }
+            agregaPago("EFECTIVO DLS");
+        });
 
+        this.$$("btntarjetadls").attachEvent("onItemClick", function(id, e){
+            let tc = $$("tipocambio").getValue();
+            if(tc=="" || tc=="0"){
+                webix.message({type:"error", text:"INDIQUE EL TIPO DE CAMBIO!!"});
+                return;
+            }
+            agregaPago("TARJETA DLS");
+        });
+
+        /*this.$$("btnpagar").attachEvent("onItemClick", function(id, e){
+            let falta=0;
+            if(totPago<total){
+                falta=total-totPago;
+                webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
+                return;
+            }   
+            guardar();         
+        });*/
+
+        this.$$("num1").attachEvent("onItemClick", function(id, e){
+            BtnNumero(1);
+        });
+
+        this.$$("num2").attachEvent("onItemClick", function(id, e){
+            BtnNumero(2);
+        });
+
+        this.$$("num3").attachEvent("onItemClick", function(id, e){
+            BtnNumero(3);
+        });
+
+        this.$$("num4").attachEvent("onItemClick", function(id, e){
+            BtnNumero(4);
+        });
+
+        this.$$("num5").attachEvent("onItemClick", function(id, e){
+            BtnNumero(5);
+        });
+
+        this.$$("num6").attachEvent("onItemClick", function(id, e){
+            BtnNumero(6);
+        });
+
+        this.$$("num7").attachEvent("onItemClick", function(id, e){
+            BtnNumero(7);
+        });
+
+        this.$$("num8").attachEvent("onItemClick", function(id, e){
+            BtnNumero(8);
+        });
+
+        this.$$("num9").attachEvent("onItemClick", function(id, e){
+            BtnNumero(9);
+        });
+
+        this.$$("num0").attachEvent("onItemClick", function(id, e){
+            BtnNumero(0);
+        });
+
+        this.$$("btncobrar").attachEvent("onItemClick", function(id, e){
+            validaCobrar();
+        });
+
+        this.$$("btnpunto").attachEvent("onItemClick", function(id, e){
+            if(estadoVta=="PAGO" && tienePunto==false){//escribir punto
+                let monto=$$("montopaga").getValue()+".";
+                $$("montopaga").setValue(monto);
+                tienePunto=true;
             }
         });
 
-        $escribeNumero:function(num){
-            let idarticulo=0;
-            if(funpor==0){ // ultimo registro del grid         
-                idarticulo=gridArt.getLastId();                       
-            }else if(funpor==1){ //registro del grid seleccionado
-                idarticulo=idRegArt;                        
+        function BtnNumero(num){
+            if(estadoVta=="COBRO" && funNum==0){ //escribir numero en el txtarticulo
+                
+            }else if(estadoVta=="COBRO" && funNum==1 && num>0){ //multiplicar numero griddetalle   
+                let item = gridArt.getItem(idRegArt);
+                item["Cantidad"] = num;   
+                item["Subtotal"] = num * item.Precio;
+                gridArt.updateItem(idRegArt, item);
+                funNum=0;
+                $$("txtarticulo").focus();
+            }else if(estadoVta=="PAGO"){//escribir numero para pago
+                if(tienePunto){
+                    numDecimal=numDecimal+1;
+                    if(numDecimal>2)
+                        return;
+                }
+                let monto=$$("montopaga").getValue()+num;
+                $$("montopaga").setValue(monto);
+                funNum=2;
+            }            
+        }
+
+        function cuentas(){
+            subtotal=0;
+            total=0;
+            gridArt.eachRow(function(row){ 
+                let record = gridArt.getItem(row);
+                if (record == undefined) return;
+                subtotal = subtotal + (record.Precio*record.Cantidad);                                                        
+                total=subtotal+iva;
+            });
+            $$("txtsubtotal").setValue(webix.i18n.priceFormat(subtotal));
+            $$("txtsubtotaln").setValue(subtotal);
+            $$("txttotal").setValue(webix.i18n.priceFormat(total));
+            $$("txttotaln").setValue(total);
+            $$("txttotalpago").setValue(webix.i18n.priceFormat(total));
+            $$("txtarticulo").focus();
+        }
+
+        function validaCobrar(){        
+            if(nart==0){
+                webix.message({type:"error", text:"AGREGUE ARTICULOS A LA LISTA!!"});
+                return;
             }
-            let record =  gridArt.getItem(idarticulo);    
-            gridArt.getItem(idarticulo)["Cantidad"]=webix.i18n.numberFormat(num);
-            gridArt.getItem(idarticulo)["Subtotal"]=webix.i18n.priceFormat(num*record.Precio);
-        };*/
-    }   
+            habilitaControles(true);
+            
+        }
+
+        function agregaPago(tipoP){
+            let montop = $$("montopaga").getValue();
+
+            if (montop == "" || montop=="0"){
+                webix.message({type:"error", text:"INDIQUE EL MONTO!!"});
+                return;
+            }            
+
+            if(tipoP=="EFECTIVO DLS" || tipoP=="TARJETA DLS"){
+                montop=$$("tipocambio").getValue()*montop;
+            }
+
+            let itemPago = {
+                tipo: tipoP,
+                montotipo: montop,                
+            }                    
+            gridPago.add(itemPago);   
+            $$("montopaga").setValue("");  
+            tienePunto=false;  
+            numDecimal=0;
+            cuentaPagos();        
+        }
+
+        function cuentaPagos(){
+            totPago=0;
+            gridPago.eachRow(function(row){                 
+                let record = gridPago.getItem(row);
+                if (record == undefined) return;
+                totPago = totPago + (record.montotipo)*1;                                
+            });
+            $$("txtsupago").setValue(webix.i18n.priceFormat(totPago));
+            $$("txtsupagon").setValue(totPago);
+
+            if(totPago>total)
+                $$("txtsucambio").setValue(webix.i18n.priceFormat(totPago-total));
+            else
+                $$("txtsucambio").setValue(webix.i18n.priceFormat(0));            
+        }
+
+        function habilitaControles(valor){
+            if(valor==true){
+                $$("btnpagar").enable();
+                $$("btnefectivo").enable();
+                $$("btntarjeta").enable();
+                $$("btntarjetadls").enable();
+                $$("btnefectivodls").enable();
+                $$("btncobrar").disable();
+                $$("btnmultiplica").disable();
+                $$("txtarticulo").disable();
+            }else{
+                $$("btnpagar").disable();
+                $$("btnefectivo").disable();
+                $$("btntarjeta").disable();
+                $$("btnefectivodls").disable();
+                $$("btntarjetadls").disable();
+                $$("btncobrar").enable();
+                $$("txtarticulo").enable();
+                $$("txtarticulo").focus();
+            }        
+        }        
+    } 
+    
+    guardar() {
+        let falta=0;
+        let totPago = $$("txtsupagon").getValue();
+        let totaln = parseFloat($$("txttotaln").getValue());
+        let subtotaln =parseFloat($$("txtsubtotaln").getValue());
+        let ivan = parseFloat($$("txtivan").getValue());
+
+        if(totPago<totaln){
+            falta=total-totPago;
+            webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
+            return;
+        }
+        
+        let data = this.$$(this.Formulario).getValues();
+        
+        let PuntoVtaDet = [];
+        let PuntoVtaCobros = [];
+        let PuntoVtaImpuestos = [];
+
+        //campos del documento punto de venta
+        data.Caja = { _id: '5d139f0d92a3d9aa68a16620'},
+        data.TipoDocto='V';
+        data.Folio='';
+        data.Fecha=this.convertToJSONDate(new Date),
+        /*public int Ano { get; set; }
+        public int Mes { get; set; }
+        public int Dia { get; set; }*/
+        //data.Hora=this.convertToJSONTime(new Time);
+        data.Cajero= {_id: '5d2e631492a3d99448b79f9a'},
+        //data.Clientes={_id: '5d5b4015a44ae9e6936e72da'},
+        data.Almacen= {_id: '5c92a3ef7d7b30184c602277'},
+        //public int Moneda { get; set; }
+        data.ImpuestoIncluido='S',
+        //public TipodeCambio TipodeCambio { get; set; }
+        data.TipoDescuento='P',
+        data.DescuentoPorcentaje=0,
+        data.DescuentoImporte=0,
+        data.Estatus='N',
+        data.TicketEmitido='N',
+        data.Aplicado='S',
+        data.ImporteNeto=subtotaln,
+        data.TotalImpuestos=ivan,
+        data.TotalVenta=totaln,
+        data.ImporteDonativo=0;        
+        data.SistemaOrigen='PV',
+        //data.Vendedor { get; set; }
+        //data.UsuarioCreador=1;
+
+        
+        //Obtiene los valores del grid
+        $$("gridDetalle").eachRow((row) => {
+            let record = $$("gridDetalle").getItem(row);
+
+            let detvta = {                
+                Articulo: { _id: record.id },
+                Cantidad: record.Cantidad,
+                PrecioUnitario: record.Precio,
+                //PrecioUnitarioImpuesto { get; set; }
+                ImpuestoPorUnidad: 0,
+                PorcentajeDescto: (record.Descuento*100)/record.Precio,
+                PrecioTotalNeto: record.Subtotal,
+                PrecioModificado: 'P',
+                PorcentajeComision: 0,
+                Rol: 'N',
+                //public string Notas { get; set; }
+                DescuentoArt:record.Descuento,
+                DescuentoExtra:0,
+
+                PuntoVtaImpuestosDet: {
+                    //Impuesto { get; set; }
+                    IdInternoTipoImpuesto:'V',
+                    TipoCalc: 'P',
+                    ImporteImpuestoBruto: 0,
+                    VentaNeta: record.Subtotal,
+                    VentaBruta: record.Subtotal,
+                    OtrosImpuestos: 0,
+                    PorcentajeImpuesto: 0,
+                    ImporteImpuesto: 0,
+                    UnidadesImpuesto: 0,
+                    ImporteUnitarioImpuesto: 0
+                }
+            }
+            PuntoVtaDet.push(detvta);            
+        });
+        data.PuntoVtaDet = PuntoVtaDet;
+
+        let vtaImp = {
+            //public Impuestos Impuesto { get; set; }
+            VentaNeta: subtotaln,
+            VentaBruta: subtotaln,
+            OtrosImpuestos: 0,
+            PorcentajeImpuesto: 0,
+            ImporteImpuesto: ivan,
+            UnidadesImpuesto: 0,
+            ImporteUnitarioImpuesto: 0
+        }
+        PuntoVtaImpuestos.push(vtaImp);
+        data.PuntoVtaImpuestos = PuntoVtaImpuestos;
+
+        $$("gridPagos").eachRow((row) => {
+            let record = $$("gridPagos").getItem(row);
+
+            let detpago = {                
+                Tipo: record.tipo,
+                Importe: record.montotipo,
+                //TipodeCambio { get; set; }
+                ImporteMonedaDoc: record.montotipo
+            }
+            PuntoVtaCobros.push(detpago);            
+        });
+        data.PuntoVtaCobros = PuntoVtaCobros;
+
+        //console.log(this.$$(this.Formulario));
+        console.log(data);
+        //return;
+        super.guardar(data);
+    }
     
     config(){
         return {
@@ -359,51 +685,5 @@ export class FrmPuntoVenta extends FrmBase {
                 }]
             }
         };
-    }    
-
-    cargarCombos(data) {
-        //this.cargarCombo(this.$$("cmbcliente"), data.Usuarios);
-        
-        $$("gridOpera").clearAll();
-        data.CajerosCajas.forEach(element => {
-            $$("gridOpera").config.columns[0].collection.add(element.CajasOp);
-
-            let cajao = {
-                CajasOp: element.CajasOp._id       
-            }
-            console.log(cajao);
-
-            $$("gridOpera").add(cajao);
-        });
-    }
-
-    habilitaControles(valor){
-        if(valor==true){
-            $$("btnpagar").enable();
-            $$("btnefectivo").enable();
-            $$("btntarjeta").enable();
-            $$("btntarjetadls").enable();
-            $$("btnefectivodls").enable();
-            $$("btncobrar").disable();
-            $$("btnmultiplica").disable();
-            $$("txtarticulo").disable();
-        }else{
-            $$("btnpagar").disable();
-            $$("btnefectivo").disable();
-            $$("btntarjeta").disable();
-            $$("btnefectivodls").disable();
-            $$("btntarjetadls").disable();
-            $$("btncobrar").enable();
-            $$("txtarticulo").enable();
-        }        
-    }
-
-    validaCobrar(){
-        this.habilitaControles(true);
-        
-    }
-
-    setFuncionx(){
-        this.funcionx=1;
-    }
+    }          
 }
