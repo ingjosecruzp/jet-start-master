@@ -1,6 +1,6 @@
 import { JetView } from "webix-jet";
 import { FrmReporteBase } from "views/FrmReporteBase";
-import { kardex } from "models/reportes/kardex";
+import { codigosbarra } from "models/reportes/codigosbarra";
 import { almacenes } from "models/catalogos/almacenes";
 import { grupocomponente } from "models/catalogos/grupocomponente";
 import { subgrupocomponente } from "models/catalogos/subgrupocomponente";
@@ -88,14 +88,11 @@ export class RptCodigosBarrras extends FrmReporteBase {
             ],
             rules: {
                 //$all: webix.rules.isNotEmpty
-                "FechaInicio": webix.rules.isNotEmpty,
-                "FechaFin": webix.rules.isNotEmpty,
-                "AlmacenId": webix.rules.isNotEmpty
             }
         };
 
-        let Kardex = new kardex();
-        super(app, name, form, Kardex, id);
+        let codigos = new codigosbarra();
+        super(app, name, form, codigos, id);
     }
     init(view) {
         let self = this;

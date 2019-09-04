@@ -591,7 +591,7 @@ export class FrmArticulos extends FrmBase {
 
         let Carousel = $$("carousel" + this.id);
         data.Imagen.forEach(element => {
-            let url = "http://localhost:60493/img/" + element.Source;
+            let url = "http://localhost:9090/img/" + element.Source;
             Carousel.add({ Source: url });
         });
 

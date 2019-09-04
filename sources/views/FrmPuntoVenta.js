@@ -219,7 +219,7 @@ export class FrmPuntoVenta extends FrmBase {
         gridArt.clearAll();
        
         let Carousel = $$("carousel" + this.id);
-        let url = "http://localhost:60493/img/ptovta.png";
+        let url = "http://localhost:9090/img/ptovta.png";
         Carousel.add({ Source: url });   
         
         this.habilitaControles(false);

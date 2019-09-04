@@ -7,7 +7,7 @@ export class ModeloBase {
 
         if (naturaleza) this.naturaleza = naturaleza;
         
-        this.url = "http://localhost:60493/" + servicio;
+        this.url = "http://localhost:9090/" + servicio;
         this.fields = "campos/" + campos;
     }
 
@@ -62,7 +62,7 @@ export class ModeloBase {
     }
 
     imprimir(id) {
-        //http://localhost:60493/Servicios/Inventarios/WcfMovimientosES.svc/?searchBy=RptDocumento&id=5cc8c31948a4e21e0c44ed6d
+        //http://localhost:9090/Servicios/Inventarios/WcfMovimientosES.svc/?searchBy=RptDocumento&id=5cc8c31948a4e21e0c44ed6d
         var promise = webix.ajax(this.url + "?searchBy=RptDocumento&id="+ id);
         return promise;
     }

@@ -211,7 +211,7 @@ export class FrmBase extends JetView {
 
         this.Modelo.imprimir(this._id).then((realdata) => {
             let archivo = realdata.json();
-            var win = window.open("http://localhost:60493/webReports/" + archivo, '_blank');
+            var win = window.open("http://localhost:9090/webReports/" + archivo, '_blank');
             win.focus();
 
             this.hiddenProgressBar();
