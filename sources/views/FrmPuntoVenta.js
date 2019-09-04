@@ -242,13 +242,8 @@ export class FrmPuntoVenta extends FrmBase {
         $$("txtsupagon").hide();
        
         let Carousel = $$("carousel" + this.id);
-<<<<<<< HEAD
         let url = "http://localhost:9090/img/ptovta.png";
         Carousel.add({ Source: url });   
-=======
-        let url = "http://localhost:60493/img/ptovta.png";
-        Carousel.add({ Source: url });  
->>>>>>> f22953d4f7d2c468b9e826cf8a8ea0fb3de9e935
         
         
         
