@@ -244,7 +244,7 @@ export class FrmPuntoVenta extends FrmBase {
        
         let Carousel = $$("carousel" + this.id);
         let url = "http://localhost:60493/img/ptovta.png";
-        Carousel.add({ Source: url });  
+        Carousel.add({ Source: url });   
         
         
         
