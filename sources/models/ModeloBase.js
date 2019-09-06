@@ -76,4 +76,8 @@ export class ModeloBase {
     searchPorCampo(campo,text) {
         return this.url + "?searchBy=getXCampo&campo="+ campo +"&busqueda=" + text;
     }
+
+    getDataxId(id){
+        return this.url+id;
+    }
 }

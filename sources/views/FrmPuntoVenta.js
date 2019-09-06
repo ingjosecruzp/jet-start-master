@@ -2,6 +2,7 @@ import { FrmBase } from "views/FrmBase";
 import { clientes } from "models/catalogos/clientes";
 import { articulos } from "models/catalogos/articulos";
 import { puntoVenta } from "models/pventa/puntoVenta";
+import { impuestos } from "models/pventa/impuestos";
 
 export class FrmPuntoVenta extends FrmBase {
     constructor(app, name) {
@@ -238,7 +239,7 @@ export class FrmPuntoVenta extends FrmBase {
         gridArt.hideColumn("id");
         $$("txtsubtotaln").hide();
         $$("txttotaln").hide();
-        $$("txtiva").hide();
+        $$("txtivan").hide();
         $$("txtsupagon").hide();
        
         let Carousel = $$("carousel" + this.id);
@@ -256,26 +257,37 @@ export class FrmPuntoVenta extends FrmBase {
                 setTimeout(function() {
                     var idart = $$("txtarticulo").getValue();
                     var item = $$("txtarticulo").getList().getItem(idart);
+                    var impArt=0;
                     
                     if (item == undefined)
                         return;
-                    let articulogrid = {
-                        id: item._id,
-                        Codigo: item.Clave,
-                        Articulo: item.Nombre,
-                        Cantidad: "1",
-                        Unidad: item.UnidadInventario.Abreviatura,
-                        Precio: item.PrecioLista,
-                        Descuento: "0",
-                        Subtotal: item.PrecioLista,
-                        Impuestos: item.Impuestos
-                    }                    
-                    gridArt.add(articulogrid);   
+
+                    let impuesto = new impuestos();
+                    impuesto.getData(item.Impuestos._id).then((realdata) => {
+                        let imp=realdata.json();            
+                        
+                        let articulogrid = {
+                            id: item._id,
+                            Codigo: item.Clave,
+                            Articulo: item.Nombre,
+                            Cantidad: "1",
+                            Unidad: item.UnidadInventario.Abreviatura,
+                            Precio: item.PrecioLista,
+                            Descuento: "0",
+                            Subtotal: item.PrecioLista,
+                            Impuestos: (item.PrecioLista*(imp.Tasa/100)),
+                            Porcentaje: imp.Tasa,
+                            ImpUnitario: (item.PrecioLista*(imp.Tasa/100))
+                        }
+                        
+                        gridArt.add(articulogrid);                        
+                        idRegArt = gridArt.getLastId();
+                    });
+
                     nart=nart+1;
-                    idRegArt = gridArt.getLastId();
                     $$("narticulos").setValue(nart + " Articulos");
-                    $$("txtarticulo").setValue("");   
-                }, 50);                
+                    $$("txtarticulo").setValue("");
+                }, 50);
             }
         });
 
@@ -416,12 +428,16 @@ export class FrmPuntoVenta extends FrmBase {
         });
 
         function BtnNumero(num){
-            if(estadoVta=="COBRO" && funNum==0){ //escribir numero en el txtarticulo
-                
+            
+            if(estadoVta=="COBRO" && funNum==0){ //escribir numero en el txtarticulo    
+                var list = $$("txtarticulo").getPopup().getList();
+                list.clearAll();
+                list.parse("012200006");
             }else if(estadoVta=="COBRO" && funNum==1 && num>0){ //multiplicar numero griddetalle   
                 let item = gridArt.getItem(idRegArt);
                 item["Cantidad"] = num;   
                 item["Subtotal"] = num * item.Precio;
+                item["Impuestos"] = num * (item.Precio * (item.Porcentaje/100));
                 gridArt.updateItem(idRegArt, item);
                 funNum=0;
                 $$("txtarticulo").focus();
@@ -439,15 +455,19 @@ export class FrmPuntoVenta extends FrmBase {
 
         function cuentas(){
             subtotal=0;
+            iva=0;
             total=0;
             gridArt.eachRow(function(row){ 
                 let record = gridArt.getItem(row);
                 if (record == undefined) return;
-                subtotal = subtotal + (record.Precio*record.Cantidad);                                                        
+                subtotal = subtotal + (record.Precio*record.Cantidad);
+                iva= iva + (record.Impuestos);
                 total=subtotal+iva;
             });
             $$("txtsubtotal").setValue(webix.i18n.priceFormat(subtotal));
             $$("txtsubtotaln").setValue(subtotal);
+            $$("txtiva").setValue(webix.i18n.priceFormat(iva));
+            $$("txtivan").setValue(iva);
             $$("txttotal").setValue(webix.i18n.priceFormat(total));
             $$("txttotaln").setValue(total);
             $$("txttotalpago").setValue(webix.i18n.priceFormat(total));
@@ -597,12 +617,12 @@ export class FrmPuntoVenta extends FrmBase {
                     //Impuesto { get; set; }
                     IdInternoTipoImpuesto:'V',
                     TipoCalc: 'P',
-                    ImporteImpuestoBruto: 0,
-                    VentaNeta: record.Subtotal,
+                    ImporteImpuestoBruto: record.ImpUnitario,
+                    VentaNeta: record.Subtotal+record.Impuestos,
                     VentaBruta: record.Subtotal,
                     OtrosImpuestos: 0,
-                    PorcentajeImpuesto: 0,
-                    ImporteImpuesto: 0,
+                    PorcentajeImpuesto: record.Porcentaje,
+                    ImporteImpuesto: record.Impuestos,
                     UnidadesImpuesto: 0,
                     ImporteUnitarioImpuesto: 0
                 }
@@ -613,7 +633,7 @@ export class FrmPuntoVenta extends FrmBase {
 
         let vtaImp = {
             //public Impuestos Impuesto { get; set; }
-            VentaNeta: subtotaln,
+            VentaNeta: subtotaln+ivan,
             VentaBruta: subtotaln,
             OtrosImpuestos: 0,
             PorcentajeImpuesto: 0,
@@ -640,7 +660,14 @@ export class FrmPuntoVenta extends FrmBase {
         //console.log(this.$$(this.Formulario));
         console.log(data);
         //return;
-        super.guardar(data);
+        super.guardar(data);      
+        //this.limpiarTodo();
+    }
+
+    limpiarTodo(){
+        webix.delay(function(){
+            window.location.reload(true);
+        },this,[1],5000);
     }
     
     config(){
