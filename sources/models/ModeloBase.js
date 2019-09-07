@@ -41,8 +41,7 @@ export class ModeloBase {
         var promise = webix.ajax().headers({
             "Content-type": "application/json"
         }).post(this.url, data);
-        console.log(this.url);
-        console.log(data);
+        console.log(promise);
 
         return promise;
     }

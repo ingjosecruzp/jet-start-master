@@ -12,4 +12,14 @@ export class puntoVenta extends ModeloBase {
     /*getAllData() {
         return webix.ajax(this.url + this.fields + "/tipoMovimiento=" + this.naturaleza);
     }*/
+
+    saveData(data) {        
+        var promise = webix.ajax().headers({
+            "Content-type": "application/json"
+        }).post(this.url, data);
+        //console.log(this.url);
+        //console.log(data);
+
+        return promise;
+    }
 }

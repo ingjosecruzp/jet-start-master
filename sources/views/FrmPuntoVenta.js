@@ -241,6 +241,7 @@ export class FrmPuntoVenta extends FrmBase {
         $$("txttotaln").hide();
         $$("txtivan").hide();
         $$("txtsupagon").hide();
+        $$("txtsupagon").setValue(0);
        
         let Carousel = $$("carousel" + this.id);
         let url = "http://localhost:60493/img/ptovta.png";
@@ -547,13 +548,13 @@ export class FrmPuntoVenta extends FrmBase {
     
     guardar() {
         let falta=0;
-        let totPago = $$("txtsupagon").getValue();
+        let totPago = parseFloat($$("txtsupagon").getValue());
         let totaln = parseFloat($$("txttotaln").getValue());
         let subtotaln =parseFloat($$("txtsubtotaln").getValue());
         let ivan = parseFloat($$("txtivan").getValue());
 
         if(totPago<totaln){
-            falta=total-totPago;
+            falta=totaln-totPago;
             webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
             return;
         }
@@ -662,6 +663,25 @@ export class FrmPuntoVenta extends FrmBase {
         //return;
         super.guardar(data);      
         //this.limpiarTodo();
+    }
+
+    save(data) {
+        let ptovta =  new puntoVenta();
+        ptovta.saveData(data).then((realdata) => {
+            this.hiddenProgressBar();
+            //$$("GridBase").$scope.refresh();
+            
+            webix.alert("Venta registrada", (result) => {
+                location.reload();
+            });
+            //webix.alert("Venta registrada");
+        }).fail((error) => {
+            webix.alert({
+                type: "alert-error",
+                text: "Error: " + error.statusText
+            });
+            this.hiddenProgressBar();
+        });
     }
 
     limpiarTodo(){
