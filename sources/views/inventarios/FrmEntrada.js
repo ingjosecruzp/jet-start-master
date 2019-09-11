@@ -236,6 +236,7 @@ export class FrmEntrada extends FrmBase {
         if (!$$("gridArticulos" + this.id).validate()) return;
 
         let data = this.$$(this.Formulario).getValues();
+        console.log(this.$$(this.Formulario).getValues());
 
         data.Fecha = this.convertToJSONDate(data.Fecha);
 

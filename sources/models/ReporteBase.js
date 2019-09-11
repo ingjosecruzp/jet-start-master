@@ -6,6 +6,7 @@ export class ReporteBase {
     }
 
     VerReporte(params) {
+        console.log(this.url);
         var promise = webix.ajax().headers({
             "Content-type": "application/json"
         }).post(this.url, JSON.stringify(JSON.stringify(params)));

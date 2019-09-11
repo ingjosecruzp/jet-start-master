@@ -1,6 +1,8 @@
 import { FrmBase } from "views/FrmBase";
 import { clientes } from "models/catalogos/clientes";
 import { articulos } from "models/catalogos/articulos";
+import { puntoVenta } from "models/pventa/puntoVenta";
+import { impuestos } from "models/pventa/impuestos";
 
 export class FrmPuntoVenta extends FrmBase {
     constructor(app, name) {
@@ -64,7 +66,7 @@ export class FrmPuntoVenta extends FrmBase {
                     view: "form", container: "descuento", width: WContainer, height: 140,
                     elements: [
                         {view:"text", id:"txtdescuento", label:"Descto.", align:"left", readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
-                        {view: "button", id:"btncobrar", label: "COBRAR", height:70} 
+                        {view: "button", type: "image", image:"http://localhost:60493/img/cobrar.png", id:"btncobrar", css: { "background-color": "#9fff90", "text-align": "center" }, label: "COBRAR", height:70} 
                     ]
                 },
                 { //-------------------- SUBTOTAL IVA Y TOTAL ---------------------
@@ -72,7 +74,11 @@ export class FrmPuntoVenta extends FrmBase {
                     elements: [
                         {view:"text", id:"txtsubtotal", label:"Subtotal:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
                         {view:"text", id:"txtiva", label:"IVA:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
-                        {view:"text", id:"txttotal", label:"TOTAL:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"}     
+                        {view:"text", id:"txttotal", label:"TOTAL:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
+                        
+                        {view:"text", id:"txtsubtotaln", value: webix.i18n.numberFormat(0)},
+                        {view:"text", id:"txtivan", value: webix.i18n.numberFormat(0)},
+                        {view:"text", id:"txttotaln", value: webix.i18n.numberFormat(0)}     
                     ]
                 }
             ]}
@@ -124,10 +130,10 @@ export class FrmPuntoVenta extends FrmBase {
                                 {view:"text", id:"tipocambio", align:"right", label:"Tipo Cambio: $", labelWidth:120,  inputWidth:190}
                             ]},                     
                             {cols:[			
-                                { view: "button", id:"btnefectivo", label: "EFECTIVO MXN", height:70},
-                                { view: "button", id:"btntarjeta", label: "TARJETA MXN"},
-                                { view: "button", id:"btnefectivodls", label: "EFECTIVO DLS"},
-                                { view: "button", id:"btntarjetadls", label: "TARJETA DLS"}				
+                                { view: "button", id:"btnefectivo", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/efemxn.png", label: "EFECTIVO MXN", height:70, margin:30},
+                                { view: "button", id:"btntarjeta", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/tarmxn.png", label: "TARJETA MXN", margin:30},
+                                { view: "button", id:"btnefectivodls", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/efedll.png", label: "EFECTIVO DLS", margin:30},
+                                { view: "button", id:"btntarjetadls", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/tardll.png", label: "TARJETA DLS", margin:30,}				
                             ]
                         }]
                     }
@@ -159,8 +165,8 @@ export class FrmPuntoVenta extends FrmBase {
                                 { view: "button", id:"btnmultiplica", label: " X ", height: botonesTec}                                
                             ]},
                             {cols:[
-                                { view: "button", id:"btnpagar", label: " PAGAR ", height: botonesTec, width: WContainer*0.62 },
-                                { view: "button", id:"btnborrar", label: " <-- ", height: botonesTec, width: WContainer*0.38}
+                                { view: "button",gravity:2, type:"image", id:"btnpagar", label: " PAGAR ", css: { "background-color": "#9fff90" }, image:"http://localhost:60493/img/pagar.png", height: botonesTec, click: () => this.guardar() },
+                                { view: "button",gravity:1, type:"imageTop", label:"BORRAR", css: { "background-color": "#ffbebe" }, image:"http://localhost:60493/img/backspace.png", id:"btnborrar", height: botonesTec}
                             ]},
                         ]
                     },  
@@ -180,7 +186,8 @@ export class FrmPuntoVenta extends FrmBase {
                             { rows:[
                                 {view:"text", id:"txttotalpago", label:"Total:", align:"right", labelWidth:85, inputWidth:210, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
                                 {view:"text", id:"txtsupago", label:"Su Pago:", align:"right", labelWidth:85, inputWidth:210, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
-                                {view:"text", id:"txtsucambio", label:"Su Cambio:", align:"right", labelWidth:85, inputWidth:210, height:50, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"} 
+                                {view:"text", id:"txtsucambio", label:"Su Cambio:", align:"right", labelWidth:85, inputWidth:210, height:50, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
+                                {view:"text", id:"txtsupagon"},
                             ]}
                         ]
                     },                
@@ -206,7 +213,7 @@ export class FrmPuntoVenta extends FrmBase {
             }        
         };       
 
-        let puntodeventa = new clientes();
+        let puntodeventa = new puntoVenta();
 
         super(app, name, form, puntodeventa, id);
     }
@@ -230,11 +237,17 @@ export class FrmPuntoVenta extends FrmBase {
         gridPago.clearAll();
         gridArt.clearAll();
         gridArt.hideColumn("id");
-        
+        $$("txtsubtotaln").hide();
+        $$("txttotaln").hide();
+        $$("txtivan").hide();
+        $$("txtsupagon").hide();
+        $$("txtsupagon").setValue(0);
        
         let Carousel = $$("carousel" + this.id);
         let url = "http://localhost:60493/img/ptovta.png";
         Carousel.add({ Source: url });   
+        
+        
         
         habilitaControles(false);
         let formatofecha = webix.Date.dateToStr("%l %d %F %Y");
@@ -245,26 +258,37 @@ export class FrmPuntoVenta extends FrmBase {
                 setTimeout(function() {
                     var idart = $$("txtarticulo").getValue();
                     var item = $$("txtarticulo").getList().getItem(idart);
+                    var impArt=0;
                     
                     if (item == undefined)
                         return;
-                    let articulogrid = {
-                        id: item._id,
-                        Codigo: item.Clave,
-                        Articulo: item.Nombre,
-                        Cantidad: "1",
-                        Unidad: item.UnidadInventario.Abreviatura,
-                        Precio: item.PrecioLista,
-                        Descuento: "0",
-                        Subtotal: item.PrecioLista,
-                        Impuestos: item.Impuestos
-                    }                    
-                    gridArt.add(articulogrid);   
+
+                    let impuesto = new impuestos();
+                    impuesto.getData(item.Impuestos._id).then((realdata) => {
+                        let imp=realdata.json();            
+                        
+                        let articulogrid = {
+                            id: item._id,
+                            Codigo: item.Clave,
+                            Articulo: item.Nombre,
+                            Cantidad: "1",
+                            Unidad: item.UnidadInventario.Abreviatura,
+                            Precio: item.PrecioLista,
+                            Descuento: "0",
+                            Subtotal: item.PrecioLista,
+                            Impuestos: (item.PrecioLista*(imp.Tasa/100)),
+                            Porcentaje: imp.Tasa,
+                            ImpUnitario: (item.PrecioLista*(imp.Tasa/100))
+                        }
+                        
+                        gridArt.add(articulogrid);                        
+                        idRegArt = gridArt.getLastId();
+                    });
+
                     nart=nart+1;
-                    idRegArt = gridArt.getLastId();
                     $$("narticulos").setValue(nart + " Articulos");
-                    $$("txtarticulo").setValue("");   
-                }, 50);                
+                    $$("txtarticulo").setValue("");
+                }, 50);
             }
         });
 
@@ -342,14 +366,15 @@ export class FrmPuntoVenta extends FrmBase {
             agregaPago("TARJETA DLS");
         });
 
-        this.$$("btnpagar").attachEvent("onItemClick", function(id, e){
+        /*this.$$("btnpagar").attachEvent("onItemClick", function(id, e){
             let falta=0;
             if(totPago<total){
                 falta=total-totPago;
                 webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
                 return;
-            }            
-        });
+            }   
+            guardar();         
+        });*/
 
         this.$$("num1").attachEvent("onItemClick", function(id, e){
             BtnNumero(1);
@@ -404,12 +429,16 @@ export class FrmPuntoVenta extends FrmBase {
         });
 
         function BtnNumero(num){
-            if(estadoVta=="COBRO" && funNum==0){ //escribir numero en el txtarticulo
-                
+            
+            if(estadoVta=="COBRO" && funNum==0){ //escribir numero en el txtarticulo    
+                var list = $$("txtarticulo").getPopup().getList();
+                list.clearAll();
+                list.parse("012200006");
             }else if(estadoVta=="COBRO" && funNum==1 && num>0){ //multiplicar numero griddetalle   
                 let item = gridArt.getItem(idRegArt);
                 item["Cantidad"] = num;   
                 item["Subtotal"] = num * item.Precio;
+                item["Impuestos"] = num * (item.Precio * (item.Porcentaje/100));
                 gridArt.updateItem(idRegArt, item);
                 funNum=0;
                 $$("txtarticulo").focus();
@@ -427,15 +456,21 @@ export class FrmPuntoVenta extends FrmBase {
 
         function cuentas(){
             subtotal=0;
+            iva=0;
             total=0;
             gridArt.eachRow(function(row){ 
                 let record = gridArt.getItem(row);
                 if (record == undefined) return;
-                subtotal = subtotal + (record.Precio*record.Cantidad);                                                        
+                subtotal = subtotal + (record.Precio*record.Cantidad);
+                iva= iva + (record.Impuestos);
                 total=subtotal+iva;
             });
             $$("txtsubtotal").setValue(webix.i18n.priceFormat(subtotal));
+            $$("txtsubtotaln").setValue(subtotal);
+            $$("txtiva").setValue(webix.i18n.priceFormat(iva));
+            $$("txtivan").setValue(iva);
             $$("txttotal").setValue(webix.i18n.priceFormat(total));
+            $$("txttotaln").setValue(total);
             $$("txttotalpago").setValue(webix.i18n.priceFormat(total));
             $$("txtarticulo").focus();
         }
@@ -446,6 +481,7 @@ export class FrmPuntoVenta extends FrmBase {
                 return;
             }
             habilitaControles(true);
+            
         }
 
         function agregaPago(tipoP){
@@ -479,11 +515,12 @@ export class FrmPuntoVenta extends FrmBase {
                 totPago = totPago + (record.montotipo)*1;                                
             });
             $$("txtsupago").setValue(webix.i18n.priceFormat(totPago));
+            $$("txtsupagon").setValue(totPago);
 
             if(totPago>total)
                 $$("txtsucambio").setValue(webix.i18n.priceFormat(totPago-total));
             else
-                $$("txtsucambio").setValue(webix.i18n.priceFormat(0));
+                $$("txtsucambio").setValue(webix.i18n.priceFormat(0));            
         }
 
         function habilitaControles(valor){
@@ -506,8 +543,152 @@ export class FrmPuntoVenta extends FrmBase {
                 $$("txtarticulo").enable();
                 $$("txtarticulo").focus();
             }        
+        }        
+    } 
+    
+    guardar() {
+        let falta=0;
+        let totPago = parseFloat($$("txtsupagon").getValue());
+        let totaln = parseFloat($$("txttotaln").getValue());
+        let subtotaln =parseFloat($$("txtsubtotaln").getValue());
+        let ivan = parseFloat($$("txtivan").getValue());
+
+        if(totPago<totaln){
+            falta=totaln-totPago;
+            webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
+            return;
         }
-    }   
+        
+        let data = this.$$(this.Formulario).getValues();
+        
+        let PuntoVtaDet = [];
+        let PuntoVtaCobros = [];
+        let PuntoVtaImpuestos = [];
+
+        //campos del documento punto de venta
+        data.Caja = { _id: '5d139f0d92a3d9aa68a16620'},
+        data.TipoDocto='V';
+        data.Folio='';
+        data.Fecha=this.convertToJSONDate(new Date),
+        /*public int Ano { get; set; }
+        public int Mes { get; set; }
+        public int Dia { get; set; }*/
+        //data.Hora=this.convertToJSONTime(new Time);
+        data.Cajero= {_id: '5d2e631492a3d99448b79f9a'},
+        //data.Clientes={_id: '5d5b4015a44ae9e6936e72da'},
+        data.Almacen= {_id: '5c92a3ef7d7b30184c602277'},
+        //public int Moneda { get; set; }
+        data.ImpuestoIncluido='S',
+        //public TipodeCambio TipodeCambio { get; set; }
+        data.TipoDescuento='P',
+        data.DescuentoPorcentaje=0,
+        data.DescuentoImporte=0,
+        data.Estatus='N',
+        data.TicketEmitido='N',
+        data.Aplicado='S',
+        data.ImporteNeto=subtotaln,
+        data.TotalImpuestos=ivan,
+        data.TotalVenta=totaln,
+        data.ImporteDonativo=0;        
+        data.SistemaOrigen='PV',
+        //data.Vendedor { get; set; }
+        //data.UsuarioCreador=1;
+
+        
+        //Obtiene los valores del grid
+        $$("gridDetalle").eachRow((row) => {
+            let record = $$("gridDetalle").getItem(row);
+
+            let detvta = {                
+                Articulo: { _id: record.id },
+                Cantidad: record.Cantidad,
+                PrecioUnitario: record.Precio,
+                //PrecioUnitarioImpuesto { get; set; }
+                ImpuestoPorUnidad: 0,
+                PorcentajeDescto: (record.Descuento*100)/record.Precio,
+                PrecioTotalNeto: record.Subtotal,
+                PrecioModificado: 'P',
+                PorcentajeComision: 0,
+                Rol: 'N',
+                //public string Notas { get; set; }
+                DescuentoArt:record.Descuento,
+                DescuentoExtra:0,
+
+                PuntoVtaImpuestosDet: {
+                    //Impuesto { get; set; }
+                    IdInternoTipoImpuesto:'V',
+                    TipoCalc: 'P',
+                    ImporteImpuestoBruto: record.ImpUnitario,
+                    VentaNeta: record.Subtotal+record.Impuestos,
+                    VentaBruta: record.Subtotal,
+                    OtrosImpuestos: 0,
+                    PorcentajeImpuesto: record.Porcentaje,
+                    ImporteImpuesto: record.Impuestos,
+                    UnidadesImpuesto: 0,
+                    ImporteUnitarioImpuesto: 0
+                }
+            }
+            PuntoVtaDet.push(detvta);            
+        });
+        data.PuntoVtaDet = PuntoVtaDet;
+
+        let vtaImp = {
+            //public Impuestos Impuesto { get; set; }
+            VentaNeta: subtotaln+ivan,
+            VentaBruta: subtotaln,
+            OtrosImpuestos: 0,
+            PorcentajeImpuesto: 0,
+            ImporteImpuesto: ivan,
+            UnidadesImpuesto: 0,
+            ImporteUnitarioImpuesto: 0
+        }
+        PuntoVtaImpuestos.push(vtaImp);
+        data.PuntoVtaImpuestos = PuntoVtaImpuestos;
+
+        $$("gridPagos").eachRow((row) => {
+            let record = $$("gridPagos").getItem(row);
+
+            let detpago = {                
+                Tipo: record.tipo,
+                Importe: record.montotipo,
+                //TipodeCambio { get; set; }
+                ImporteMonedaDoc: record.montotipo
+            }
+            PuntoVtaCobros.push(detpago);            
+        });
+        data.PuntoVtaCobros = PuntoVtaCobros;
+
+        //console.log(this.$$(this.Formulario));
+        console.log(data);
+        //return;
+        super.guardar(data);      
+        //this.limpiarTodo();
+    }
+
+    save(data) {
+        let ptovta =  new puntoVenta();
+        ptovta.saveData(data).then((realdata) => {
+            this.hiddenProgressBar();
+            //$$("GridBase").$scope.refresh();
+            
+            webix.alert("Venta registrada", (result) => {
+                location.reload();
+            });
+            //webix.alert("Venta registrada");
+        }).fail((error) => {
+            webix.alert({
+                type: "alert-error",
+                text: "Error: " + error.statusText
+            });
+            this.hiddenProgressBar();
+        });
+    }
+
+    limpiarTodo(){
+        webix.delay(function(){
+            window.location.reload(true);
+        },this,[1],5000);
+    }
     
     config(){
         return {
@@ -546,5 +727,5 @@ export class FrmPuntoVenta extends FrmBase {
                 }]
             }
         };
-    }            
+    }          
 }

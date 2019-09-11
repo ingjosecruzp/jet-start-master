@@ -299,11 +299,11 @@ export default class TopView extends JetView {
         //this.FrmUnidades = this.ui(FrmUnidades);
 
         //Conecta al socket para monitorear la informacion
-<<<<<<< HEAD
-        /*socket = io.connect('http://localhost:90/', {
-=======
+
+        /*socket = io.connect('http://localhost:90/', {*/
+
         /*var socket = io.connect('http://localhost:90/', {
->>>>>>> 73be892456e45e8c04fc74a01e508ecd05ae0f35
+
             'forceNew': true,
             query: { token: localStorage.getItem("token") }
             //transport: ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']

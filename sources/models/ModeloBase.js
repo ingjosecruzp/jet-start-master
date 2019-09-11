@@ -37,10 +37,11 @@ export class ModeloBase {
         return promise;
     }
 
-    saveData(data) {
+    saveData(data) {        
         var promise = webix.ajax().headers({
             "Content-type": "application/json"
         }).post(this.url, data);
+        console.log(promise);
 
         return promise;
     }
@@ -62,7 +63,7 @@ export class ModeloBase {
     }
 
     imprimir(id) {
-        //http://localhost:60493/Servicios/Inventarios/WcfMovimientosES.svc/?searchBy=RptDocumento&id=5cc8c31948a4e21e0c44ed6d
+        //http://localhost:9090/Servicios/Inventarios/WcfMovimientosES.svc/?searchBy=RptDocumento&id=5cc8c31948a4e21e0c44ed6d
         var promise = webix.ajax(this.url + "?searchBy=RptDocumento&id="+ id);
         return promise;
     }
@@ -73,5 +74,9 @@ export class ModeloBase {
 
     searchPorCampo(campo,text) {
         return this.url + "?searchBy=getXCampo&campo="+ campo +"&busqueda=" + text;
+    }
+
+    getDataxId(id){
+        return this.url+id;
     }
 }
