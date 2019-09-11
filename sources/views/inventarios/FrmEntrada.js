@@ -78,7 +78,7 @@ export class FrmEntrada extends FrmBase {
                     select: "cell",
                     //editaction: "none",
                     columns: [
-                        { id: "Clave", header: "Clave", css: "Clave", width: 70, css: { "text-align": "center" } },
+                        { id: "Clave", header: "Clave", css: "Clave", width: 90, css: { "text-align": "center" } },
                         {
                             id: "Articulo",
                             editor: "combo",
@@ -172,7 +172,7 @@ export class FrmEntrada extends FrmBase {
                 var item = editor.getPopup().getList().getItem(state.value);
                 if (item == undefined)
                     return;
-                    console.log("row "+editor.row);
+                console.log("row " + editor.row);
                 this.getItem(editor.row)["Clave"] = item.Clave;
                 this.getItem(editor.row)["Unidad"] = item.UnidadInventario.Abreviatura;
 
