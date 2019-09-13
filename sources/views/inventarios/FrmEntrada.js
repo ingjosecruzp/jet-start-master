@@ -75,10 +75,12 @@ export class FrmEntrada extends FrmBase {
                     id: "gridArticulos" + id,
                     height: 300,
                     width: 500,
+                    resizeColumn: true,
+                    resizeRow: true,
                     select: "cell",
                     //editaction: "none",
                     columns: [
-                        { id: "Clave", header: "Clave", css: "Clave", width: 90, css: { "text-align": "center" } },
+                        { id: "Clave", header: "Clave", css: "Clave", width: 70, css: { "text-align": "center" } },
                         {
                             id: "Articulo",
                             editor: "combo",
