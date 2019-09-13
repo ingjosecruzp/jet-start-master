@@ -212,29 +212,6 @@ export class FrmEntrada extends FrmBase {
 
                         $$("gridArticulos" + self.id).refresh();
                     }, 50);
-
-
-                    /*let articulo = {
-                        Clave: element.Clave,
-                        Articulo: element._id,
-                        Cantidad: element.Cantidad,
-                        Unidad: element.UnidadInventario.Abreviatura,
-                        Costo: element.Costo,
-                        CostoTotal: element.CostoTotal,
-                    }*/
-        
-                    //$$("gridArticulos" + self.id).add(articulo);
-
-                    /*realdata.json().forEach(element => {
-                        let empresa = {
-                            _id: element._id,
-                            RFC: element.RFC,
-                            RazonSocial: element.RazonSocial,
-                            ch1: "off"
-                        }
-        
-                        $$("gridEmpresas" + this.id).add(empresa);
-                    });*/
         
                     self.hiddenProgressBar();
                 }).fail((error) => {
@@ -242,8 +219,8 @@ export class FrmEntrada extends FrmBase {
                         type: "alert-error",
                         text: "Error: " + error.statusText
                     }).then((result) => {
-                        $$(this.Ventana).close();
-                        this.hiddenProgressBar();
+                        //$$(self.Ventana).close();
+                        self.hiddenProgressBar();
                     });
                 });
             }
