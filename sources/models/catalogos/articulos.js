@@ -12,4 +12,9 @@ export class articulos extends ModeloBase {
     searchLimitIds(text,ids) {
         return this.url + "?searchBy=getXLimitIds&busqueda=" + text + "&ids=" + ids;
     }
+
+    searchArticuloCodigo(codigo) {
+        var promise = webix.ajax(this.url + "?searchBy=getXCodigo&busqueda=" + codigo);
+        return promise;
+    }
 }

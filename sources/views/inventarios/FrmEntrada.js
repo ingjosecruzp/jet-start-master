@@ -78,7 +78,7 @@ export class FrmEntrada extends FrmBase {
                     select: "cell",
                     //editaction: "none",
                     columns: [
-                        { id: "Clave", header: "Clave", css: "Clave", width: 90, css: { "text-align": "center" } },
+                        { id: "Clave", editor: "text", header: "Clave", css: "Clave", width: 90, css: { "text-align": "center" } },
                         {
                             id: "Articulo",
                             editor: "combo",
@@ -172,6 +172,7 @@ export class FrmEntrada extends FrmBase {
                 var item = editor.getPopup().getList().getItem(state.value);
                 if (item == undefined)
                     return;
+
                 console.log("row " + editor.row);
                 this.getItem(editor.row)["Clave"] = item.Clave;
                 this.getItem(editor.row)["Unidad"] = item.UnidadInventario.Abreviatura;
@@ -182,6 +183,67 @@ export class FrmEntrada extends FrmBase {
 
                 let Costo = this.getItem(editor.row)["Cantidad"] * this.getItem(editor.row)["Costo"];
                 this.getItem(editor.row)["CostoTotal"] = Costo;
+            } else if(editor.column == "Clave") {
+
+                console.log(this.getItem(editor.row)["Clave"]);
+                
+                if(this.getItem(editor.row)["Clave"]==undefined || this.getItem(editor.row)["Clave"]=="")
+                    return;
+
+                let articulo = new articulos();
+
+                self.showProgressBar();
+
+                articulo.searchArticuloCodigo(this.getItem(editor.row)["Clave"]).then((realdata) => {
+                    //console.log(realdata.json());
+
+                    let element =realdata.json();
+                    console.log(element);
+                    console.log(element.Activo);
+                    $$("gridArticulos" + self.id).config.columns[1].collection.add(element);
+
+                    setTimeout(()=>{ 
+                        console.log("entro");
+                        console.log(editor);
+                        this.getItem(editor.row)["Articulo"] = element._id;
+                        this.getItem(editor.row)["Unidad"] = element.UnidadInventario.Abreviatura;
+
+                        $$("gridArticulos" + self.id).refresh();
+                    }, 50);
+
+
+                    /*let articulo = {
+                        Clave: element.Clave,
+                        Articulo: element._id,
+                        Cantidad: element.Cantidad,
+                        Unidad: element.UnidadInventario.Abreviatura,
+                        Costo: element.Costo,
+                        CostoTotal: element.CostoTotal,
+                    }*/
+        
+                    //$$("gridArticulos" + self.id).add(articulo);
+
+                    /*realdata.json().forEach(element => {
+                        let empresa = {
+                            _id: element._id,
+                            RFC: element.RFC,
+                            RazonSocial: element.RazonSocial,
+                            ch1: "off"
+                        }
+        
+                        $$("gridEmpresas" + this.id).add(empresa);
+                    });*/
+        
+                    self.hiddenProgressBar();
+                }).fail((error) => {
+                    webix.alert({
+                        type: "alert-error",
+                        text: "Error: " + error.statusText
+                    }).then((result) => {
+                        $$(this.Ventana).close();
+                        this.hiddenProgressBar();
+                    });
+                });
             }
 
         });
@@ -225,6 +287,11 @@ export class FrmEntrada extends FrmBase {
                     }
                     if (editor.column == "Cantidad" && editor.row == grid.getLastId() && self.CostoAutomatico == "SI") {
                         grid.add({});
+                    }
+                    if(editor.column=="Clave")
+                    {
+                        grid.editCell(editor.row, "Cantidad");
+                        return;
                     }
                     grid.editNext(true, editor);
                 }, 50);
