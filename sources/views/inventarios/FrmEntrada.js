@@ -196,7 +196,10 @@ export class FrmEntrada extends FrmBase {
 
                 self.showProgressBar();
 
-                articulo.searchArticuloCodigo(this.getItem(editor.row)["Clave"]).then((realdata) => {
+                //Validacion exclusiva para clg
+                let codigo = this.getItem(editor.row)["Clave"].substring(0, 1) == "0" ? this.getItem(editor.row)["Clave"].substring(1, this.getItem(editor.row)["Clave"].length) : this.getItem(editor.row)["Clave"];
+
+                articulo.searchArticuloCodigo(codigo).then((realdata) => {
                     //console.log(realdata.json());
 
                     let element =realdata.json();
