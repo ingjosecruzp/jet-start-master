@@ -210,6 +210,7 @@ export class FrmEntrada extends FrmBase {
                     setTimeout(()=>{ 
                         console.log("entro");
                         console.log(editor);
+                        this.getItem(editor.row)["Clave"] = codigo;
                         this.getItem(editor.row)["Articulo"] = element._id;
                         this.getItem(editor.row)["Unidad"] = element.UnidadInventario.Abreviatura;
 
