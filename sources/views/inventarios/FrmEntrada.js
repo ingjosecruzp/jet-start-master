@@ -75,6 +75,8 @@ export class FrmEntrada extends FrmBase {
                     id: "gridArticulos" + id,
                     height: 300,
                     width: 500,
+                    resizeColumn: true,
+                    resizeRow: true,
                     select: "cell",
                     //editaction: "none",
                     columns: [
@@ -186,7 +188,7 @@ export class FrmEntrada extends FrmBase {
             } else if(editor.column == "Clave") {
 
                 console.log(this.getItem(editor.row)["Clave"]);
-                
+
                 if(this.getItem(editor.row)["Clave"]==undefined || this.getItem(editor.row)["Clave"]=="")
                     return;
 
