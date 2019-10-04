@@ -13,7 +13,7 @@ export class FrmBase extends JetView {
     }
     config() {
         return {
-            view: "window",            
+            view: "window",
             /*top: 200,
             left: 300,*/
             id: this.Ventana,
@@ -131,7 +131,7 @@ export class FrmBase extends JetView {
         this.Modelo.saveData(data).then((realdata) => {
             this.hiddenProgressBar();
             $$("GridBase").$scope.refresh();
-            
+
             webix.alert("Guardado con exito", (result) => {
                 $$(this.Ventana).close();
             });
@@ -195,12 +195,12 @@ export class FrmBase extends JetView {
             }
         });
     }
-    upRow(){
+    upRow() {
         $$("GridBase").moveSelection("up");
         let item = $$("GridBase").getSelectedItem();
         this.showWindow(item._id);
     }
-    downRow(){
+    downRow() {
         $$("GridBase").moveSelection("down");
         let item = $$("GridBase").getSelectedItem();
         this.showWindow(item._id);
@@ -211,7 +211,8 @@ export class FrmBase extends JetView {
 
         this.Modelo.imprimir(this._id).then((realdata) => {
             let archivo = realdata.json();
-            var win = window.open("http://localhost:60493/webReports/" + archivo, '_blank');
+            //var win = window.open("http://localhost:60493/webReports/" + archivo, '_blank');
+            var win = window.open("/webReports/" + archivo, '_blank');
             win.focus();
 
             this.hiddenProgressBar();
@@ -240,7 +241,7 @@ export class FrmBase extends JetView {
         //combo.setValue(data._id);
     }
 
-    cargarChecks(data){
+    cargarChecks(data) {
 
     }
 

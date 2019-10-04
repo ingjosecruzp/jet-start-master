@@ -537,8 +537,8 @@ export class FrmArticulos extends FrmBase {
 
         let CodigosBarra = [];
 
-        if(data.Peso=="") data.Peso=0.0;
-        if(data.Pureza=="") data.Pureza=0.0;
+        if (data.Peso == "") data.Peso = 0.0;
+        if (data.Pureza == "") data.Pureza = 0.0;
 
         //Obtiene los valores del grid
         $$("gridCodigos" + this.id).eachRow((row) => {
@@ -591,7 +591,8 @@ export class FrmArticulos extends FrmBase {
 
         let Carousel = $$("carousel" + this.id);
         data.Imagen.forEach(element => {
-            let url = "http://localhost:60493/img/" + element.Source;
+            //let url = "http://localhost:60493/img/" + element.Source;
+            let url = "/img/" + element.Source;
             Carousel.add({ Source: url });
         });
 

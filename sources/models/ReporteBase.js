@@ -2,7 +2,8 @@ import { JetView } from "webix-jet";
 
 export class ReporteBase {
     constructor(servicio) {
-        this.url = "http://localhost:60493/" + servicio;
+        //this.url = "http://localhost:60493/" + servicio;
+        this.url = servicio;
     }
 
     VerReporte(params) {
