@@ -29,6 +29,7 @@ export default class FrmLogin extends JetView {
     }
 
     init(view) {
+        //console.log(this.app.config.debug);
         view.$view.querySelector("input").focus();
         webix.extend($$("FrmLogin"), webix.ProgressBar);
 

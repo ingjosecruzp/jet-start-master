@@ -669,11 +669,33 @@ export class FrmPuntoVenta extends FrmBase {
         let ptovta =  new puntoVenta();
         ptovta.saveData(data).then((realdata) => {
             this.hiddenProgressBar();
+
+            //Genera el objecto que contiene la informacion del ticket
+            let ticket=realdata.json();  
             //$$("GridBase").$scope.refresh();
             
+            // Crea una nueva conexión.
+            const socket = new WebSocket('ws://localhost:900');
+
+            // Abre la conexión
+            socket.addEventListener('open', (event) =>{
+                //console.log(ticket);
+                let request = {
+                    opcion :"ticket",
+                    data   : JSON.stringify(ticket)
+                }
+                socket.send(JSON.stringify(request));
+            });
+
+            // Escucha por mensajes
+            socket.addEventListener('message',  (event) => {
+                console.log('Message from server', event.data);
+            });
+
             webix.alert("Venta registrada", (result) => {
                 location.reload();
             });
+
             //webix.alert("Venta registrada");
         }).fail((error) => {
             webix.alert({

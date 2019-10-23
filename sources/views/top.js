@@ -309,6 +309,14 @@ export default class TopView extends JetView {
             //transport: ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']
         });*/
 
+        /*socket = io.connect('http://localhost:90/', {*/
+
+        /*var socket = io.connect('http://localhost:900/', {
+            'forceNew': true,
+            query: { token: localStorage.getItem("token") }
+            //transport: ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']
+        });*/
+
         webix.attachEvent("onBeforeAjax",
             function(mode, url, data, request, headers, files, promise) {
                 //headers["Content-type"] = "application/json";

@@ -6,8 +6,9 @@ export class ModeloBase {
         this.skip=false;
 
         if (naturaleza) this.naturaleza = naturaleza;
-        
+        console.log(this.app);
         this.url = "http://localhost:60493/" + servicio;
+        //this.url = this.app.config.debug==true ? "http://localhost:60493/" + servicio : servicio;
         this.fields = "campos/" + campos;
     }
 
