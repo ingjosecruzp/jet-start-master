@@ -86,7 +86,7 @@ export class FrmReporteBase extends JetView {
         console.log("imprimir");
 
         if (this.$$(this.Formulario).validate({ hidden: true }) == false)
-        return;
+            return;
 
         this.showProgressBar();
         let params = this.$$(this.Formulario).getValues();
@@ -97,7 +97,8 @@ export class FrmReporteBase extends JetView {
             let archivo = realdata.json();
             console.log(archivo);
 
-            var win = window.open("http://localhost:60493/webReports/" + archivo, '_blank');
+            //var win = window.open("http://localhost:60493/webReports/" + archivo, '_blank');
+            var win = window.open("/webReports/" + archivo, '_blank');
             win.focus();
 
         }).fail((error) => {
