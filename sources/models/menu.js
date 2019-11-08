@@ -89,6 +89,12 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridMunicipios",
                     icon: "mdi mdi-grid",
                     value: "Municipios"
+                },
+
+                {
+                    id: "GridTipoProveedor",
+                    icon: "mdi mdi-account-box-outline",
+                    value: "Tipo Proveedor"
                 }
 
             ]
