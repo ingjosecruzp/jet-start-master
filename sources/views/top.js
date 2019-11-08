@@ -38,6 +38,10 @@ import { FrmRoles } from "views/administracion/FrmRoles";
 
 /*******************************************/
 
+/*********COMPRAS**************************/
+import { FrmTipoProveedor } from "view/compras/FrmTipoProveedor";
+/*******************************************/
+
 /*********REPORTES**************************/
 import { RptExistencias } from "views/reportes/RptExistencias";
 import { RptKardex } from "views/reportes/RptKardex";
@@ -213,6 +217,9 @@ export default class TopView extends JetView {
                                     //this.app.show("/FrmPuntoVenta");
                                     //this.FrmPuntoVenta = this.ui(FrmPuntoVenta);
                                     //this.FrmPuntoVenta.showWindow();
+                                } else if (this.getUrl()[1].page == "GridTipoProveedor") {
+                                    this.FrmTipoProveedor = this.ui(FrmTipoProveedor);
+                                    this.FrmTipoProveedor.showWindow();
                                 }
                             }
                         },
@@ -269,10 +276,10 @@ export default class TopView extends JetView {
                                         if (id == "RptExistencia") {
                                             this.RptExistencias = this.ui(RptExistencias);
                                             this.RptExistencias.showWindow();
-                                        } else  if (id == "RptKardex") {
+                                        } else if (id == "RptKardex") {
                                             this.RptKardex = this.ui(RptKardex);
                                             this.RptKardex.showWindow();
-                                        } else  if (id == "RptCodigosBarrras") {
+                                        } else if (id == "RptCodigosBarrras") {
                                             this.RptCodigosBarrras = this.ui(RptCodigosBarrras);
                                             this.RptCodigosBarrras.showWindow();
                                         } else {

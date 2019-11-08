@@ -7,7 +7,7 @@ export default class GridTipoProveedor extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
-            { id: "Nombre", MongoField: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 250 },
+            { id: "Nombre", MongoField: "Nombre", header: ["Nombre", { content: "textFilter" }], width: 150 },
             { id: "Clave", MongoField: "Clave", header: ["Clave", { content: "textFilter" }], fillspace: true }
         ];
 
