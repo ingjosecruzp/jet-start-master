@@ -39,7 +39,7 @@ import { FrmRoles } from "views/administracion/FrmRoles";
 /*******************************************/
 
 /*********COMPRAS**************************/
-import { FrmTipoProveedor } from "view/compras/FrmTipoProveedor";
+import { FrmTipoProveedor } from "views/compras/FrmTipoProveedor";
 /*******************************************/
 
 /*********REPORTES**************************/

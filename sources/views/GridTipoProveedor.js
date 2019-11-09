@@ -1,7 +1,7 @@
 import { JetView } from "webix-jet";
 import { tipoproveedor } from "models/compras/tipoproveedor";
 import { GridBase } from "views/GridBase";
-import { FrmTipoComponente } from "views/inventarios/FrmTipoComponente"
+import { FrmTipoProveedor } from "views/compras/FrmTipoProveedor"
 
 export default class GridTipoProveedor extends GridBase {
     constructor(app, name) {
@@ -20,8 +20,8 @@ export default class GridTipoProveedor extends GridBase {
             var item = $$(this.Grid).getItem(id);
 
             console.log("double click");
-            this.FrmTipoComponente = this.ui(FrmTipoComponente);
-            this.FrmTipoComponente.showWindow(item._id);
+            this.FrmTipoProveedor = this.ui(FrmTipoProveedor);
+            this.FrmTipoProveedor.showWindow(item._id);
         });
 
         super.init(view);
