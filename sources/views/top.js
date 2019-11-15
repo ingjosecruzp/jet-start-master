@@ -31,6 +31,7 @@ import { FrmTipoImpuesto } from "views/pventa/FrmTipoImpuesto";
 import { FrmImpuestos } from "views/pventa/FrmImpuestos";
 import { FrmPuntoVenta } from "views/FrmPuntoVenta";
 import { FrmCierreCajas } from "views/pventa/FrmCierreCajas";///////
+import { FrmAperturaCajas } from "views/pventa/FrmAperturaCajas";///////
 /*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
@@ -222,9 +223,10 @@ export default class TopView extends JetView {
                                     this.FrmTipoProveedor = this.ui(FrmTipoProveedor);
                                     this.FrmTipoProveedor.showWindow();
                                 }
-
-
-
+                                else if (this.getUrl()[1].page == "GridAperturaCajas") {
+                                    this.FrmAperturaCajas = this.ui(FrmAperturaCajas);
+                                    this.FrmAperturaCajas.showWindow();
+                                }
                                 else if (this.getUrl()[1].page == "GridCierreCajas") {
                                     this.FrmCierreCajas = this.ui(FrmCierreCajas);
                                     this.FrmCierreCajas.showWindow();
