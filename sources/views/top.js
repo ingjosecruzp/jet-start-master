@@ -40,6 +40,7 @@ import { FrmRoles } from "views/administracion/FrmRoles";
 
 /*********COMPRAS**************************/
 import { FrmTipoProveedor } from "views/compras/FrmTipoProveedor";
+import { FrmProveedor } from "views/compras/FrmProveedor";
 /*******************************************/
 
 /*********REPORTES**************************/
@@ -220,6 +221,9 @@ export default class TopView extends JetView {
                                 } else if (this.getUrl()[1].page == "GridTipoProveedor") {
                                     this.FrmTipoProveedor = this.ui(FrmTipoProveedor);
                                     this.FrmTipoProveedor.showWindow();
+                                } else if (this.getUrl()[1].page == "GridProveedor") {
+                                    this.FrmProveedor = this.ui(FrmProveedor);
+                                    this.FrmProveedor.showWindow();
                                 }
                             }
                         },

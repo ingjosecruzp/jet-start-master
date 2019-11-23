@@ -95,6 +95,12 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridTipoProveedor",
                     icon: "mdi mdi-account-box-outline",
                     value: "Tipo Proveedor"
+                },
+
+                {
+                    id: "GridProveedor",
+                    icon: "mdi mdi-account-circle",
+                    value: "Proveedor"
                 }
 
             ]
