@@ -14,6 +14,7 @@ export class FrmAperturaCajas extends FrmBase {
             width: 400,
             elements: [
                 { view: "text", name: "_id", hidden: true },
+                { view: "datepicker", id: "Fecha" + id,disabled:true, label: "Fecha", labelWidth: 140, name: "Fecha", stringResult: true, format: "%d  %M  %Y", value: new Date() },
                 {   view: "combo", 
                     name: "Cajas", 
                     id:"cmbCajas",
@@ -21,7 +22,7 @@ export class FrmAperturaCajas extends FrmBase {
                     labelWidth: 140,
                     options: {
                         body: {
-                            template: "#TipoMovto#",
+                            template: "#Nombre#",
                             dataFeed: function(text) {
                                 let caja = new cajas();
                                 this.load(caja.searchCombo(text));
