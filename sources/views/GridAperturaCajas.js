@@ -7,6 +7,7 @@ export default class GridAperturaCajas extends GridBase {
     constructor(app, name) {
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
+            { id: "TipoMovto",MongoField:"TipoMovto", header: ["Tipo de movimiento", { content: "textFilter" }], fillspace: true },
             { id: "Fecha",MongoField:"Fecha", template: (obj)=> {return this.convertToDate(obj.Fecha)}, header:["Fecha", {content: "textFilter"}]},
             { id: "FormaEmitida",MongoField:"FormaEmitida", header: ["Forma Emitida", { content: "textFilter" }], fillspace: true },
             { id: "Importe",MongoField:"Importe", header: ["Importe", { content: "textFilter" }], fillspace: true }

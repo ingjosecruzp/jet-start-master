@@ -19,7 +19,7 @@ export class FrmCierreCajas extends FrmBase {
             width: 400,
             elements: [
                 { view: "text", name: "_id", hidden: true },
-                { view: "datepicker", id: "Fecha" + id,disabled:true, label: "Fecha", labelWidth: 140, name: "Fecha", stringResult: true, format: "%d  %M  %Y", value: new Date() },
+                { view: "datepicker", id: "Fecha" + id,disabled:true, label: "Fecha", labelWidth: 140, name: "", stringResult: true, format: "%d  %M  %Y", value: new Date() },
                 //{ view: "text", name: "TipoMovto", label: "Tipo Movimiento", labelWidth: 140 },
                 {
                     view: "combo",

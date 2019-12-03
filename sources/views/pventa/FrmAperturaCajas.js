@@ -14,9 +14,9 @@ export class FrmAperturaCajas extends FrmBase {
             width: 400,
             elements: [
                 { view: "text", name: "_id", hidden: true },
-                { view: "datepicker", id: "Fecha" + id,disabled:true, label: "Fecha", labelWidth: 140, name: "Fecha", stringResult: true, format: "%d  %M  %Y", value: new Date() },
+                { view: "datepicker", id: "Fecha" + id,disabled:true, label: "Fecha", labelWidth: 140, name: "", stringResult: true, format: "%d  %M  %Y", value: new Date() },
                 {   view: "combo", 
-                    name: "Cajas", 
+                    name: "Cajas._id", 
                     id:"cmbCajas",
                     label: "Caja", 
                     labelWidth: 140,
@@ -32,7 +32,7 @@ export class FrmAperturaCajas extends FrmBase {
                 },
                 
                 {   view: "combo", 
-                    name: "Cajeros", 
+                    name: "Cajeros._id", 
                     id:"cmbCajeros",
                     label: "Cajero", 
                     labelWidth: 140,
@@ -47,7 +47,7 @@ export class FrmAperturaCajas extends FrmBase {
                     }
                 },
                 {   view: "combo", 
-                    name: "FormadeCobro", 
+                    name: "FormaCobro._id", 
                     id:"cmbFormaCobro",
                     label: "Forma de cobro", 
                     labelWidth: 140,
@@ -68,7 +68,7 @@ export class FrmAperturaCajas extends FrmBase {
 
             ],
             rules: {
-                $all: webix.rules.isNotEmpty
+               // $all: webix.rules.isNotEmpty
                // "Nombre": webix.rules.isNotEmpty
             }
         };
@@ -82,9 +82,9 @@ export class FrmAperturaCajas extends FrmBase {
     }
 
     cargarCombos(data) {
-        this.cargarCombo(this.$$("cmbTipoMovto" + this.id), data.Movtos_Cajas);
-        this.cargarCombo(this.$$("cmbCajeros" + this.id), data.cajeros);
-        this.cargarCombo(this.$$("cmbFormaCobro" + this.id), data.formacobro);
+        this.cargarCombo(this.$$("cmbTipoMovto" + this.id), data.Cajas);
+        this.cargarCombo(this.$$("cmbCajeros" + this.id), data.Cajeros);
+        this.cargarCombo(this.$$("cmbFormaCobro" + this.id), data.FormaCobro);
     }
     
 }

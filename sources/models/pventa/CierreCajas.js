@@ -4,6 +4,7 @@ import { ModeloBase } from "../ModeloBase";
 export class CierreCajas extends ModeloBase {
     constructor() {
         let servicio = "Servicios/PVenta/WcfCierreCaja.svc/";
+        //let campos = "_id,TipoMovto,Fecha,FormaEmitida,Importe";
         let campos = "_id,TipoMovto,Fecha,FormaEmitida,Importe";
 
         super(servicio, campos);
