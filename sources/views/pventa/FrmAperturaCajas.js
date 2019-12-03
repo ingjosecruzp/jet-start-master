@@ -14,7 +14,7 @@ export class FrmAperturaCajas extends FrmBase {
             width: 400,
             elements: [
                 { view: "text", name: "_id", hidden: true },
-                { view: "datepicker", id: "Fecha" + id,disabled:true, label: "Fecha", labelWidth: 140, name: "", stringResult: true, format: "%d  %M  %Y", value: new Date() },
+                { view: "datepicker", id: "Fecha" + id,disabled:true, label: "Fecha", labelWidth: 140, name: "Fecha", stringResult: true, format: "%d  %M  %Y", value: new Date() },
                 {   view: "combo", 
                     name: "Cajas._id", 
                     id:"cmbCajas",
@@ -61,9 +61,7 @@ export class FrmAperturaCajas extends FrmBase {
                         }
                     }
                 },
-               // { view: "combo", name: "Cajeros", label: "Cajeros", labelWidth: 140 },
                 { view: "text", name: "FormaEmitida", label: "Forma emitida", labelWidth: 140 },
-                //{ view: "text", name: "FormaCobro", label: "Forma de cobra", labelWidth: 140 },
                 { view: "text", name: "Importe", label: "Importe", labelWidth: 140 }
 
             ],
@@ -80,11 +78,19 @@ export class FrmAperturaCajas extends FrmBase {
     init(view) {
         webix.extend($$(this.Ventana), webix.ProgressBar);
     }
+    guardar() {
+        let data = this.$$(this.Formulario).getValues();
 
+      data.Fecha = this.convertToJSONDate(data.Fecha);
+        console.log(data);
+        super.guardar(data);
+   }
     cargarCombos(data) {
-        this.cargarCombo(this.$$("cmbTipoMovto" + this.id), data.Cajas);
-        this.cargarCombo(this.$$("cmbCajeros" + this.id), data.Cajeros);
-        this.cargarCombo(this.$$("cmbFormaCobro" + this.id), data.FormaCobro);
+        console.log(data);
+        $$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
+        this.cargarCombo(this.$$("cmbCajas" + this.id), data.Cajas);
+     //   this.cargarCombo(this.$$("cmbCajeros" + this.id), data.Cajeros);
+       // this.cargarCombo(this.$$("cmbFormaCobro" + this.id), data.FormaCobro);
     }
     
 }
