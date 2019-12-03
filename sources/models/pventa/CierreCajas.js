@@ -8,5 +8,7 @@ export class CierreCajas extends ModeloBase {
 
         super(servicio, campos);
     }
-
+    searchXGrupo(text, id) {
+        return this.url + "?searchBy=getXGrupo&_id=" + id + "&busqueda=" + text;
+    }
 }

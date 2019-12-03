@@ -6,7 +6,7 @@ import { GridBase } from "views/GridBase";
 export default class GridCierreCajas extends GridBase {
     constructor(app, name) {
         let columns = [
-            { id: "_id", hidden: true },
+            { id: "_id",fillspace: true, hidden: true },
             { id: "TipoMovto", MongoField:"TipoMovto",header: ["TipoMovto", { content: "textFilter" }], fillspace: true },
             { id: "Fecha", MongoField:"Fecha",template: (obj) => { return this.convertToDate(obj.Fecha) }, header: ["Fecha", { content: "textFilter" }] },
             { id: "FormaEmitida", MongoField:"FormaEmitida",header: ["Forma Emitida", { content: "textFilter" }], width: 180 },
