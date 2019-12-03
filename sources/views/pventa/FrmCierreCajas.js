@@ -14,6 +14,7 @@ import { formacobro } from "models/pventa/formacobro";
 export class FrmCierreCajas extends FrmBase {
 	 constructor(app, name) {
         let id = new Date().getTime();
+        
         let form = {
             title: "Cierre Cajas",
             width: 400,
@@ -85,17 +86,23 @@ export class FrmCierreCajas extends FrmBase {
         };
 
         let CierreCaja = new CierreCajas();
-
         super(app, name, form, CierreCaja, id);
     }
     init(view) {
         webix.extend($$(this.Ventana), webix.ProgressBar);
     }
+    guardar() {
+         let data = this.$$(this.Formulario).getValues();
+
+       data.Fecha = this.convertToJSONDate(data.Fecha);
+         console.log(data);
+         super.guardar(data);
+    }
     cargarCombos(data) {
         console.log(data);
-        //$$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
+        $$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
         this.cargarCombo(this.$$("cmbCajas" + this.id), data.Cajas);
-        this.cargarCombos(this.$$("cmbformacobro" + this.id), data.formacobro);
-        this.cargarCombao(this.$$("cmbCajeros" + this.id), data.Cajeros);
+        this.cargarCombo(this.$$("cmbformacobro" + this.id), data.FormaCobro);
+        this.cargarCombo(this.$$("cmbCajeros" + this.id), data.Cajeros);
     }
 }
