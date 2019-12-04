@@ -17,7 +17,7 @@ export class FrmAperturaCajas extends FrmBase {
                 { view: "datepicker", id: "Fecha" + id,disabled:true, label: "Fecha", labelWidth: 140, name: "Fecha", stringResult: true, format: "%d  %M  %Y", value: new Date() },
                 {   view: "combo", 
                     name: "Cajas._id", 
-                    id:"cmbCajas",
+                    id:"cmbCajas" + id,
                     label: "Caja", 
                     labelWidth: 140,
                     options: {
@@ -33,7 +33,7 @@ export class FrmAperturaCajas extends FrmBase {
                 
                 {   view: "combo", 
                     name: "Cajeros._id", 
-                    id:"cmbCajeros",
+                    id:"cmbCajeros" + id,
                     label: "Cajero", 
                     labelWidth: 140,
                     options: {
@@ -48,7 +48,7 @@ export class FrmAperturaCajas extends FrmBase {
                 },
                 {   view: "combo", 
                     name: "FormaCobro._id", 
-                    id:"cmbFormaCobro",
+                    id:"cmbFormaCobro" + id,
                     label: "Forma de cobro", 
                     labelWidth: 140,
                     options: {
@@ -89,8 +89,8 @@ export class FrmAperturaCajas extends FrmBase {
         console.log(data);
         $$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
         this.cargarCombo(this.$$("cmbCajas" + this.id), data.Cajas);
-     //   this.cargarCombo(this.$$("cmbCajeros" + this.id), data.Cajeros);
-       // this.cargarCombo(this.$$("cmbFormaCobro" + this.id), data.FormaCobro);
+        this.cargarCombo(this.$$("cmbCajeros" + this.id), data.Cajeros);
+        this.cargarCombo(this.$$("cmbFormaCobro" + this.id), data.FormaCobro);
     }
     
 }
