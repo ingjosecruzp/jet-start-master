@@ -25,7 +25,7 @@ export class FrmAperturaCajas extends FrmBase {
                             template: "#Nombre#",
                             dataFeed: function(text) {
                                 let caja = new cajas();
-                                this.load(caja.searchCombo(text));
+                                this.load(caja.searchXCajasAbiertas(text));
                             }
                         }
                     }

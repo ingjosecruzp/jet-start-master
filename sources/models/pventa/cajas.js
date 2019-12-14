@@ -8,5 +8,9 @@ export class cajas extends ModeloBase {
 
         super(servicio, campos);
     }
+    
+    searchXCajasAbiertas(text) {
+        return this.url + "?searchBy=getXCajasAbiertas&Nombrebusqueda="+text;
+    }
 
 }
