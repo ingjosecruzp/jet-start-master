@@ -61,7 +61,7 @@ export class FrmAperturaCajas extends FrmBase {
                         }
                     }
                 },
-                { view: "text", name: "FormaEmitida", label: "Forma emitida", labelWidth: 140 },
+                //{ view: "text", name: "FormaEmitida", label: "Forma emitida", labelWidth: 140 },
                 { view: "text", name: "Importe", label: "Importe", labelWidth: 140 }
 
             ],

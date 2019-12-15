@@ -12,5 +12,8 @@ export class cajas extends ModeloBase {
     searchXCajasAbiertas(text) {
         return this.url + "?searchBy=getXCajasAbiertas&Nombrebusqueda="+text;
     }
+    searchXCajasCerradas(text) {
+        return this.url + "?searchBy=getXCajasCerradas&Nombrebusqueda="+text;
+    }
 
 }
