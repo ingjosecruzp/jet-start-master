@@ -99,7 +99,6 @@ export class FrmBase extends JetView {
         this.getRoot().show();
     }
     guardar(data) {
-
         if (this.$$(this.Formulario).validate({ hidden: true }) == false)
             return;
 

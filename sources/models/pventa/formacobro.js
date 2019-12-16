@@ -4,7 +4,7 @@ import { ModeloBase } from "../ModeloBase";
 export class formacobro extends ModeloBase {
     constructor() {
         let servicio = "Servicios/PVenta/WcfFormadeCobro.svc/";
-        let campos = "_id,Nombre,DiasTransito,ClaveFiscal,ValorPredeterminado";
+        let campos = "_id,Nombre,DiasTransito,ClaveFiscal,ValorPredeterminado,Moneda";
         super(servicio, campos);
     }
 

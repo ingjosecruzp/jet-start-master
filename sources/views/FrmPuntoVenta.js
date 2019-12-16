@@ -3,6 +3,7 @@ import { clientes } from "models/catalogos/clientes";
 import { articulos } from "models/catalogos/articulos";
 import { puntoVenta } from "models/pventa/puntoVenta";
 import { impuestos } from "models/pventa/impuestos";
+import { vendedor } from "../models/pventa/vendedor";
 
 export class FrmPuntoVenta extends FrmBase {
     constructor(app, name) {
@@ -91,8 +92,11 @@ export class FrmPuntoVenta extends FrmBase {
                 { view: "form", container: "datosGral", width: areaCte, height: 90 , paddingY: 1,
                     elements: [
                         {cols:[
-                            {view:"label", id:"vendedor", label:"Nombre del VENDEDOR", align:"left"},
-                            {view:"label", id:"fecha", align:"right"}                            
+                            {view:"label", id:"vendedor", label:"Vendedor:", align:"left"},
+                            {view:"icon", type:"icon", icon:"mdi mdi-account", id:"btn_vendedor", width:80, click: () => this.btn_vendedor()},
+                            {view:"label", id:"fecha", align:"right"},      
+                            
+                            {view:"text", id:"txtVendedorid", value: ""},
                         ]},
                         {cols:[
                             /*{ view: "combo", name: "cmbcliente._id",id:"cmbcliente", label: "Cliente",
@@ -213,6 +217,14 @@ export class FrmPuntoVenta extends FrmBase {
             }        
         };       
 
+        let vendedorModal = webix.ui({
+            view:"window",
+            head:"My Window",
+            body:{
+                template:"Some text"
+            }
+        });
+
         let puntodeventa = new puntoVenta();
 
         super(app, name, form, puntodeventa, id);
@@ -242,6 +254,7 @@ export class FrmPuntoVenta extends FrmBase {
         $$("txtivan").hide();
         $$("txtsupagon").hide();
         $$("txtsupagon").setValue(0);
+        $$("txtVendedorid").hide();
        
         let Carousel = $$("carousel" + this.id);
         let url = "http://localhost:60493/img/ptovta.png";
@@ -546,6 +559,71 @@ export class FrmPuntoVenta extends FrmBase {
         }        
     } 
     
+    btn_vendedor(){
+        $$("btn_vendedor").disable();
+
+        var form1 = [
+            { view:"text", value:'', label:"Clave del vendedor",  id:"input_vendedor", labelPosition:"top"},
+            { view:"label", label:"", id:"textError_vendedor", labelPosition:"top", css:"status_error" }
+          ];
+
+        webix.ui({
+            view:"window",
+            id:"win",
+            height:250,
+            width:300,
+            position:"center",
+            move:true,
+            head:{
+                view:"toolbar", cols:[
+                    { width:4 },
+                    { view:"label", label: "Verdedor" },
+                    { view:"icon", icon:"wxi-close", width: 40, align: 'right', click: 
+                        function(){ 
+                            $$('win').close();  
+                            $$("btn_vendedor").enable();
+                            $$("txtVendedorid").setValue("");
+                        }
+                    }
+                ]
+            },
+            body: {view:"form", elements:form1}
+        }).show();
+        $$("input_vendedor").focus();
+
+        $$("input_vendedor").attachEvent("onEnter",function(ev){
+            var text = $$('input_vendedor').getValue()
+            if(text.length == 0){
+                $$("textError_vendedor").setValue("Favor de introducir una clave")
+                return;
+            }
+            $$("textError_vendedor").setValue("")
+            
+            let vendedorA = new vendedor();
+            console.log(text);
+                        
+            vendedorA.getAllData().then((realdata) => {
+                let ven=realdata.json();            
+                console.log(ven)
+                var i = -1;
+                for (let index = 0; index < ven.length; index++) {
+                    const element = ven[index];
+                    if(element.Clave == text){
+                        i = index;
+                        break;
+                    }
+                }
+                if(i == -1){
+                    $$("textError_vendedor").setValue("No se encontró el vendedor")
+                }else{
+                    $$("txtVendedorid").setValue(ven[i]._id);
+                    $$("vendedor").setValue("Vendedor: " + ven[i].Nombre);
+                    $$('win').close();
+                }
+            });
+        });
+    }
+
     guardar() {
         let falta=0;
         let totPago = parseFloat($$("txtsupagon").getValue());
@@ -553,12 +631,19 @@ export class FrmPuntoVenta extends FrmBase {
         let subtotaln =parseFloat($$("txtsubtotaln").getValue());
         let ivan = parseFloat($$("txtivan").getValue());
 
+        let vendedor = $$("txtVendedorid").getValue();
+
         if(totPago<totaln){
             falta=totaln-totPago;
             webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
             return;
         }
         
+        if(vendedor.length == 0){
+            webix.message({type:"error", text:"NO SE HA SELECCIONADO UN VENDEDOR."});
+            return;
+        }
+
         let data = this.$$(this.Formulario).getValues();
         
         let PuntoVtaDet = [];
@@ -591,6 +676,7 @@ export class FrmPuntoVenta extends FrmBase {
         data.TotalVenta=totaln,
         data.ImporteDonativo=0;        
         data.SistemaOrigen='PV',
+        data.Vendedor = {_id: vendedor},
         //data.Vendedor { get; set; }
         //data.UsuarioCreador=1;
 

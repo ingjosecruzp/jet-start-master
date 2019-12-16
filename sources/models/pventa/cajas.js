@@ -8,5 +8,6 @@ export class cajas extends ModeloBase {
 
         super(servicio, campos);
     }
+    
 
 }
