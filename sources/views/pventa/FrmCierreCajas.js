@@ -37,7 +37,7 @@ export class FrmCierreCajas extends FrmBase {
                             view:"list",
                             dataFeed: function(text) {
                                 let caja = new cajas();
-                                this.load(caja.searchCombo(text));
+                                this.load(caja.searchXCajasCerradas(text));
                             }
                         }
                     }, 

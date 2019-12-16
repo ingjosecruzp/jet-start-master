@@ -25,7 +25,7 @@ export class FrmAperturaCajas extends FrmBase {
                             template: "#Nombre#",
                             dataFeed: function(text) {
                                 let caja = new cajas();
-                                this.load(caja.searchCombo(text));
+                                this.load(caja.searchXCajasAbiertas(text));
                             }
                         }
                     }
@@ -61,7 +61,7 @@ export class FrmAperturaCajas extends FrmBase {
                         }
                     }
                 },
-                { view: "text", name: "FormaEmitida", label: "Forma emitida", labelWidth: 140 },
+                //{ view: "text", name: "FormaEmitida", label: "Forma emitida", labelWidth: 140 },
                 { view: "text", name: "Importe", label: "Importe", labelWidth: 140 }
 
             ],
