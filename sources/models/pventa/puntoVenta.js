@@ -22,4 +22,9 @@ export class puntoVenta extends ModeloBase {
 
         return promise;
     }
+
+    validarApertura() {
+        var promise = webix.ajax(this.url +  "?searchBy=validarApertura");
+        return promise;
+    }
 }

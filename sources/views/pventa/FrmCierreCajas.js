@@ -19,7 +19,7 @@ export class FrmCierreCajas extends FrmBase {
             title: "Cierre Cajas",
             width: 500,
             elements: [
-                { view: "text", name: "_id", hidden: true },
+                { view: "text", id: "idC", name: "_id", hidden: true },
                 {cols: [
                     { view: "datepicker", id: "Fecha" + id, disabled:true, label: "Fecha", labelWidth: 50, inputWidth: 200, name: "Fecha", stringResult: true, format: "%d  %M  %Y", value: new Date() },
                     { view: "datepicker", id: "Hora" + id, disabled:true, label: "Hora", labelWidth: 50, inputWidth: 200, name: "Hora", stringResult: true, format: "%h:%m:%s %A", value: new Date() },
@@ -89,6 +89,7 @@ export class FrmCierreCajas extends FrmBase {
                       { id:"id", css:"rank"},
                       { id:"cobro", header:"Forma de cobro", width:225},
                       { id:"moneda", header:"Moneda", width:130},
+                      { id:"id_Moneda", header:"id_Moneda", width:130},
                       { id:"importe", editor:"text", header:"Importe", width:100}
                     ],
                     data: [
@@ -98,7 +99,7 @@ export class FrmCierreCajas extends FrmBase {
 
             ],
             rules: {
-                $all: webix.rules.isNotEmpty,
+                // $all: webix.rules.isNotEmpty,
                 //"TipoMovto": webix.rules.isNotEmpty
                 //"Simbolo": webix.rules.isNotEmpty,
                 //"ClaveFiscal": webix.rules.isNotEmpty,
@@ -110,26 +111,36 @@ export class FrmCierreCajas extends FrmBase {
         super(app, name, form, CierreCaja, id);
     }
     init(view) {
+        $$("cmbCajas"+this.id).enable();  
+        $$("gridCierre" + this.id).clearAll();
         webix.extend($$(this.Ventana), webix.ProgressBar);
         
-        $$("gridCierre" + this.id).clearAll();
-
-        let formadecobro = new formacobro();
-        formadecobro.getAllData().then((realdata) => {
-            var data = realdata.json();
-            console.log(data);
-            for (let index = 0; index < data.length; index++) {
-                const element = data[index];
-                let forma = {
-                    id: element.id,
-                    cobro: element.Nombre,
-                    moneda: element.Moneda.Simbolo,
-                    importe: 0.00
+        if($$("idC").getValue() == ""){ 
+            let formadecobro = new formacobro();
+            formadecobro.getAllData().then((realdata) => {
+                var data = realdata.json();
+                for (let index = 0; index < data.length; index++) {
+                    
+                    const element = data[index];
+                    let forma = {
+                        id: element.id,
+                        cobro: element.Nombre,
+                        moneda: element.Moneda.Simbolo,
+                        id_Moneda: element.Moneda._id,
+                        importe: 0.00
+                    }
+                    $$("gridCierre" + this.id).add(forma);
                 }
-                $$("gridCierre" + this.id).add(forma);
-            }
+            });
+        }
+
+        this.$$("gridCierre" + this.id).attachEvent("onBeforeEditStart", function(change, editor) {
+            if($$("idC").getValue() == ""){ return true;}
+            return false;
         });
+
         $$("gridCierre" + this.id).hideColumn("id");
+        $$("gridCierre" + this.id).hideColumn("id_Moneda");
     }
     guardar() {
         let dataF = {};
@@ -142,36 +153,52 @@ export class FrmCierreCajas extends FrmBase {
 
         let Detalles_ES = [];
 
+        let importeT = 0;
         //Obtiene los valores del grid
         $$("gridCierre" + this.id).eachRow((row) => {
             let record = $$("gridCierre" + this.id).getItem(row);
 
             //Se crea el objecto articulo el cual se añadira al movimiento
-            if (record.importe != undefined && record.importe != 0) {
-                let forma = {
-                    _id: record.id,
-                    Nombre: record.cobro,
-                    importe: record.importe
-                };
-                Detalles_ES.push(forma);
-            }
+            let forma = {
+                _id: record.id,
+                Nombre: record.cobro,
+                Importe: record.importe,
+                Moneda: {
+                    _id: record.id_Moneda
+                }
+            };
+            Detalles_ES.push(forma);
+            importeT += parseFloat(record.importe);
         });
 
         if(Detalles_ES.length == 0){
-            webix.message({type:"error", text:"NO SE HA COLOCADO IMPORTE EN LAS FORMAS DE COBRO"});
+            webix.message({type:"error", text:"NO SE ENCONTRARON FORMAS DE PAGO"});
             return;
         }
 
-        dataF.FormasCobro = Detalles_ES;
+        dataF.FormaCobroCierre = Detalles_ES;
+        dataF.Importe = importeT;
 
         console.log(dataF);
-        super.guardar(data);
+        super.guardar(dataF);
     }
     cargarCombos(data) {
-        console.log(data);
+        $$("cmbCajas"+this.id).disable();
         $$("Fecha" + this.id).setValue(this.convertToDate(data.Fecha));
+        $$("Hora" + this.id).setValue(this.convertToDate(data.Fecha));
         this.cargarCombo(this.$$("cmbCajas" + this.id), data.Cajas);
-        // this.cargarCombo(this.$$("cmbformacobro" + this.id), data.FormaCobro);
-        this.cargarCombo(this.$$("cmbCajeros" + this.id), data.Cajeros);
+
+        $$("gridCierre" + this.id).clearAll();
+        $$("gridCierre" + this.id).editCancel()
+        data.FormaCobroCierre.forEach(element => {
+            let forma = {
+                id: element.id,
+                cobro: element.Nombre,
+                moneda: element.Moneda.Simbolo,
+                importe: element.Importe
+            };
+
+            $$("gridCierre" + this.id).add(forma);
+        });
     }
 }

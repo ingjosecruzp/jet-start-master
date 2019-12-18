@@ -5,8 +5,10 @@ import { puntoVenta } from "models/pventa/puntoVenta";
 import { impuestos } from "models/pventa/impuestos";
 import { vendedor } from "../models/pventa/vendedor";
 
+let apertura = null;
 export class FrmPuntoVenta extends FrmBase {
     constructor(app, name) {
+        
         //Genera un idetificador unico para la ventana con el 
         //objetivo de poder generar varias instancias
        // console.log("Form 1")
@@ -226,6 +228,7 @@ export class FrmPuntoVenta extends FrmBase {
         });
 
         let puntodeventa = new puntoVenta();
+       
 
         super(app, name, form, puntodeventa, id);
     }
@@ -441,6 +444,7 @@ export class FrmPuntoVenta extends FrmBase {
             }
         });
 
+
         function BtnNumero(num){
             
             if(estadoVta=="COBRO" && funNum==0){ //escribir numero en el txtarticulo    
@@ -600,11 +604,8 @@ export class FrmPuntoVenta extends FrmBase {
             $$("textError_vendedor").setValue("")
             
             let vendedorA = new vendedor();
-            console.log(text);
-                        
             vendedorA.getAllData().then((realdata) => {
                 let ven=realdata.json();            
-                console.log(ven)
                 var i = -1;
                 for (let index = 0; index < ven.length; index++) {
                     const element = ven[index];
@@ -614,10 +615,12 @@ export class FrmPuntoVenta extends FrmBase {
                     }
                 }
                 if(i == -1){
+                    $$('input_vendedor').setValue("")
                     $$("textError_vendedor").setValue("No se encontró el vendedor")
                 }else{
                     $$("txtVendedorid").setValue(ven[i]._id);
                     $$("vendedor").setValue("Vendedor: " + ven[i].Nombre);
+                    $$("btn_vendedor").enable();
                     $$('win').close();
                 }
             });
@@ -625,6 +628,11 @@ export class FrmPuntoVenta extends FrmBase {
     }
 
     guardar() {
+        if(!apertura){
+            webix.message({type:"error", text:"NO SE HA ENCONTRADO UNA APERTURA DE CAJA"});
+            return;
+        }
+
         let falta=0;
         let totPago = parseFloat($$("txtsupagon").getValue());
         let totaln = parseFloat($$("txttotaln").getValue());
@@ -743,6 +751,7 @@ export class FrmPuntoVenta extends FrmBase {
             PuntoVtaCobros.push(detpago);            
         });
         data.PuntoVtaCobros = PuntoVtaCobros;
+        data.Apertura = apertura;
 
         //console.log(this.$$(this.Formulario));
         console.log(data);
@@ -835,5 +844,9 @@ export class FrmPuntoVenta extends FrmBase {
                 }]
             }
         };
-    }          
+    }      
+    
+    setApertura(data){
+        apertura = data;
+    }
 }

@@ -13,7 +13,7 @@ export class cajas extends ModeloBase {
         return this.url + "?searchBy=getXCajasAbiertas&Nombrebusqueda="+text;
     }
     searchXCajasCerradas(text) {
-        return this.url + "?searchBy=getXCajasCerradas&Nombrebusqueda="+text;
+        return this.url + "?searchBy=getXCajasCerradas&tipoMovimiento=ABIERTA&Nombrebusqueda="+text;
     }
 
 }
