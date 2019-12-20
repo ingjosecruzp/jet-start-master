@@ -77,8 +77,6 @@ export class GridBase extends JetView {
             let id = grid.getFirstId();
             grid.select(id);
         });
-
-
     }
     convertToJSONDate(strDate) {
         var dt = new Date(strDate);

@@ -4,6 +4,7 @@ import { articulos } from "models/catalogos/articulos";
 import { puntoVenta } from "models/pventa/puntoVenta";
 import { impuestos } from "models/pventa/impuestos";
 import { vendedor } from "../models/pventa/vendedor";
+import { tipodecambio } from "../models/pventa/tipodecambio";
 
 let apertura = null;
 export class FrmPuntoVenta extends FrmBase {
@@ -73,11 +74,13 @@ export class FrmPuntoVenta extends FrmBase {
                     ]
                 },
                 { //-------------------- SUBTOTAL IVA Y TOTAL ---------------------
-                    view: "form", container: "totales", width: WContainer, height: 140, paddingY: 5,
+                    view: "form", container: "totales", width: WContainer, height: 200, paddingY: 5,
                     elements: [
                         {view:"text", id:"txtsubtotal", label:"Subtotal:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
                         {view:"text", id:"txtiva", label:"IVA:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
                         {view:"text", id:"txttotal", label:"TOTAL:", align:"right", width:200, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
+                        {view:"text", id:"txttotalmxn", hidden:true, label:"TOTAL MXN:", align:"right", labelWidth:100, width:220, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
+                        {view:"text", id:"txttotaldls", hidden:true, label:"TOTAL DLS:", align:"right", labelWidth:100, width:220, readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
                         
                         {view:"text", id:"txtsubtotaln", value: webix.i18n.numberFormat(0)},
                         {view:"text", id:"txtivan", value: webix.i18n.numberFormat(0)},
@@ -133,7 +136,7 @@ export class FrmPuntoVenta extends FrmBase {
                         rows: [{
                             cols:[	
                                 {view:"label", id:"montopaga", align:"left"},		
-                                {view:"text", id:"tipocambio", align:"right", label:"Tipo Cambio: $", labelWidth:120,  inputWidth:190}
+                                {view:"text", id:"tipocambio", align:"right", hidden:true, label:"Tipo Cambio: $", labelWidth:120,  inputWidth:190}
                             ]},                     
                             {cols:[			
                                 { view: "button", id:"btnefectivo", type: "imageTop", css: { "background-color": "#caedfe" }, image:"http://localhost:60493/img/efemxn.png", label: "EFECTIVO MXN", height:70, margin:30},
@@ -219,21 +222,39 @@ export class FrmPuntoVenta extends FrmBase {
             }        
         };       
 
-        let vendedorModal = webix.ui({
-            view:"window",
-            head:"My Window",
-            body:{
-                template:"Some text"
-            }
-        });
-
-        let puntodeventa = new puntoVenta();
-       
+        let puntodeventa = new puntoVenta();       
 
         super(app, name, form, puntodeventa, id);
     }
 
     init(view) {
+        let cambio = new tipodecambio();
+        let tipocambio;
+        cambio.getAllData().then((realdata) => {   
+            let data = realdata.json();
+            console.log(data);
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                console.log(element.TipoCambio);
+                if(element.TipoCambio != "1"){
+                    $$("tipocambio").setValue(element.TipoCambio);
+                    tipocambio = element;
+                    console.log(tipocambio);
+                    if(element.Nombre == "MX"){
+                        $$("txttotalmxn").show();
+                    }else{
+                        $$("txttotaldls").show();
+                    }
+                    return;
+                }
+            }
+        }).fail((error) => {
+            webix.alert({
+                type: "alert-error",
+                text: "Error: " + error.statusText
+            });
+        });
+
         webix.extend($$(this.Ventana), webix.ProgressBar);
         let nart=0;        
         let subtotal=0;
@@ -261,9 +282,7 @@ export class FrmPuntoVenta extends FrmBase {
        
         let Carousel = $$("carousel" + this.id);
         let url = "http://localhost:60493/img/ptovta.png";
-        Carousel.add({ Source: url });   
-        
-        
+        Carousel.add({ Source: url });  
         
         habilitaControles(false);
         let formatofecha = webix.Date.dateToStr("%l %d %F %Y");
@@ -357,28 +376,28 @@ export class FrmPuntoVenta extends FrmBase {
         });  
         
         this.$$("btnefectivo").attachEvent("onItemClick", function(id, e){
+            let tc = $$("tipocambio").getValue();
+            if(tc=="" || tc=="0"){
+                webix.message({type:"error", text:"NO SE ENCONTRÓ UN TIPO DE CAMBIO"});
+                return;
+            }
             agregaPago("EFECTIVO");
         });
 
         this.$$("btntarjeta").attachEvent("onItemClick", function(id, e){
+            let tc = $$("tipocambio").getValue();
+            if(tc=="" || tc=="0"){
+                webix.message({type:"error", text:"NO SE ENCONTRÓ UN TIPO DE CAMBIO"});
+                return;
+            }
             agregaPago("TARJETA");
         });
 
         this.$$("btnefectivodls").attachEvent("onItemClick", function(id, e){
-            let tc = $$("tipocambio").getValue();
-            if(tc=="" || tc=="0"){
-                webix.message({type:"error", text:"INDIQUE EL TIPO DE CAMBIO!!"});
-                return;
-            }
             agregaPago("EFECTIVO DLS");
         });
 
         this.$$("btntarjetadls").attachEvent("onItemClick", function(id, e){
-            let tc = $$("tipocambio").getValue();
-            if(tc=="" || tc=="0"){
-                webix.message({type:"error", text:"INDIQUE EL TIPO DE CAMBIO!!"});
-                return;
-            }
             agregaPago("TARJETA DLS");
         });
 
@@ -487,6 +506,10 @@ export class FrmPuntoVenta extends FrmBase {
             $$("txtiva").setValue(webix.i18n.priceFormat(iva));
             $$("txtivan").setValue(iva);
             $$("txttotal").setValue(webix.i18n.priceFormat(total));
+
+            $$("txttotalmxn").setValue(webix.i18n.priceFormat(total/$$("tipocambio").getValue()));
+            $$("txttotaldls").setValue(webix.i18n.priceFormat(total/$$("tipocambio").getValue()));
+            
             $$("txttotaln").setValue(total);
             $$("txttotalpago").setValue(webix.i18n.priceFormat(total));
             $$("txtarticulo").focus();
@@ -509,9 +532,16 @@ export class FrmPuntoVenta extends FrmBase {
                 return;
             }            
 
-            if(tipoP=="EFECTIVO DLS" || tipoP=="TARJETA DLS"){
-                montop=$$("tipocambio").getValue()*montop;
+            if(tipocambio.Nombre == "MX"){
+                if(tipoP=="EFECTIVO" || tipoP=="TARJETA"){
+                    montop=$$("tipocambio").getValue()*montop;
+                }
+            }else{
+                if(tipoP=="EFECTIVO DLS" || tipoP=="TARJETA DLS"){
+                    montop=$$("tipocambio").getValue()*montop;
+                }
             }
+            
 
             let itemPago = {
                 tipo: tipoP,
@@ -567,7 +597,7 @@ export class FrmPuntoVenta extends FrmBase {
         $$("btn_vendedor").disable();
 
         var form1 = [
-            { view:"text", value:'', label:"Clave del vendedor",  id:"input_vendedor", labelPosition:"top"},
+            { view:"text", value:'',  id:"input_vendedor", labelPosition:"top"},
             { view:"label", label:"", id:"textError_vendedor", labelPosition:"top", css:"status_error" }
           ];
 
@@ -581,7 +611,7 @@ export class FrmPuntoVenta extends FrmBase {
             head:{
                 view:"toolbar", cols:[
                     { width:4 },
-                    { view:"label", label: "Verdedor" },
+                    { view:"label", label: "Vendedor" },
                     { view:"icon", icon:"wxi-close", width: 40, align: 'right', click: 
                         function(){ 
                             $$('win').close();  
@@ -591,7 +621,16 @@ export class FrmPuntoVenta extends FrmBase {
                     }
                 ]
             },
-            body: {view:"form", elements:form1}
+            body: {
+                view:"form", 
+                elements:[
+                    {
+                        view:"fieldset", 
+                        label:"Clave del vendedor",
+                        body: {rows:form1}
+                    }
+                ]
+            }
         }).show();
         $$("input_vendedor").focus();
 
@@ -660,16 +699,24 @@ export class FrmPuntoVenta extends FrmBase {
 
         //campos del documento punto de venta
         data.Caja = { _id: '5d139f0d92a3d9aa68a16620'},
+        data.Caja = { _id: apertura.Cajas._id},
+
         data.TipoDocto='V';
         data.Folio='';
-        data.Fecha=this.convertToJSONDate(new Date),
+        data.Fecha = this.convertToJSONDate(new Date),
         /*public int Ano { get; set; }
         public int Mes { get; set; }
         public int Dia { get; set; }*/
         //data.Hora=this.convertToJSONTime(new Time);
+
         data.Cajero= {_id: '5d2e631492a3d99448b79f9a'},
+        data.Cajero= {_id: apertura.Cajeros._id},
+
         //data.Clientes={_id: '5d5b4015a44ae9e6936e72da'},
+        
         data.Almacen= {_id: '5c92a3ef7d7b30184c602277'},
+        data.Almacen= {_id: apertura.Cajas.Almacen._id},
+
         //public int Moneda { get; set; }
         data.ImpuestoIncluido='S',
         //public TipodeCambio TipodeCambio { get; set; }
@@ -788,6 +835,7 @@ export class FrmPuntoVenta extends FrmBase {
             });
 
             webix.alert("Venta registrada", (result) => {
+                // this.init()
                 location.reload();
             });
 

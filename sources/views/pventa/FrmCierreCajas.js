@@ -87,9 +87,9 @@ export class FrmCierreCajas extends FrmBase {
                     editable: true,
                     columns:[
                       { id:"id", css:"rank"},
-                      { id:"cobro", header:"Forma de cobro", width:225},
-                      { id:"moneda", header:"Moneda", width:130},
-                      { id:"id_Moneda", header:"id_Moneda", width:130},
+                      { id:"cobro", header:"Forma de cobro",fillspace: true},
+                      { id:"moneda", header:"Moneda", width:100},
+                      { id:"id_Moneda", header:"id_Moneda"},
                       { id:"importe", editor:"text", header:"Importe", width:100}
                     ],
                     data: [
@@ -120,7 +120,6 @@ export class FrmCierreCajas extends FrmBase {
             formadecobro.getAllData().then((realdata) => {
                 var data = realdata.json();
                 for (let index = 0; index < data.length; index++) {
-                    
                     const element = data[index];
                     let forma = {
                         id: element.id,

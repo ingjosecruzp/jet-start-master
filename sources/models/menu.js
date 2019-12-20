@@ -131,7 +131,9 @@ export const menu_data_multi = new webix.DataCollection({
                 { id: "GridTipoImpuesto", icon: "mdi mdi-sitemap", value: "Tipo de Impuesto" },
                 { id: "GridImpuestos", icon: "mdi mdi-checkbox-multiple-blank-circle-outline", value: "Impuestos" },
                 { id: "GridAperturaCajas", icon: "mdi mdi-cash-multiple", value: "Apertura Cajas" },
-                { id: "GridCierreCajas", icon: "mdi mdi-cash-multiple", value: "Cierre Cajas" }
+                { id: "GridCierreCajas", icon: "mdi mdi-cash-multiple", value: "Cierre Cajas" },
+                { id: "GridDevolucion", icon: "mdi mdi-keyboard-return", value: "Devolución" },
+                { id: "GridCancelaciones", icon: "mdi mdi-cancel", value: "Cancelaciones" }
             ]
         },
         {

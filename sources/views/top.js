@@ -32,6 +32,7 @@ import { FrmImpuestos } from "views/pventa/FrmImpuestos";
 import { FrmPuntoVenta } from "views/FrmPuntoVenta";
 import { FrmCierreCajas } from "views/pventa/FrmCierreCajas";///////
 import { FrmAperturaCajas } from "views/pventa/FrmAperturaCajas";///////
+import { GridCancelaciones } from "views/cancelaciones/GridCancelaciones";///////
 /*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
@@ -235,6 +236,7 @@ export default class TopView extends JetView {
                                     this.FrmCierreCajas = this.ui(FrmCierreCajas);
                                     this.FrmCierreCajas.showWindow();
                                 }
+                                
                             }
                         },
                         {
@@ -284,7 +286,7 @@ export default class TopView extends JetView {
                                 data: menu_data_multi,
                                 on: {
                                     onAfterSelect: (id) => {
-                                        //webix.message("Selected: " + this.getItem(id).value);
+                                        // webix.message("Selected: " + this.getItem(id).value);
                                         //webix.message("Selected: " + this.getItem(id).url);
                                         //RptKardex
                                         if (id == "RptExistencia") {
@@ -296,6 +298,9 @@ export default class TopView extends JetView {
                                         } else if (id == "RptCodigosBarrras") {
                                             this.RptCodigosBarrras = this.ui(RptCodigosBarrras);
                                             this.RptCodigosBarrras.showWindow();
+                                        }  else if (id == "GridCancelaciones") {
+                                            this.GridCancelaciones = this.ui(GridCancelaciones);
+                                            this.GridCancelaciones.showWindow();
                                         } else {
                                             // Se abre el grid seleccionado
                                             this.app.show("/top/" + id);
