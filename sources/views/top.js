@@ -38,6 +38,8 @@ import { GridCancelaciones } from "views/cancelaciones/GridCancelaciones";//////
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
 import { FrmUsuarios } from "views/administracion/FrmUsuarios";
 import { FrmRoles } from "views/administracion/FrmRoles";
+import { FrmModulos } from "views/administracion/FrmModulos";
+import { FrmVista } from "views/administracion/FrmVista";
 
 /*******************************************/
 
@@ -52,6 +54,7 @@ import { RptKardex } from "views/reportes/RptKardex";
 import { RptCodigosBarrras } from "views/reportes/RptCodigosBarrras";
 /*******************************************/
 
+import { menu } from "models/administracion/menu";
 
 export default class TopView extends JetView {
     config() {
@@ -236,7 +239,14 @@ export default class TopView extends JetView {
                                     this.FrmCierreCajas = this.ui(FrmCierreCajas);
                                     this.FrmCierreCajas.showWindow();
                                 }
-                                
+                                else if (this.getUrl()[1].page == "GridModulo") {
+                                    this.FrmModulos = this.ui(FrmModulos);
+                                    this.FrmModulos.showWindow();
+                                }
+                                else if (this.getUrl()[1].page == "GridVistas") {
+                                    this.FrmVista = this.ui(FrmVista);
+                                    this.FrmVista.showWindow();
+                                }
                             }
                         },
                         {
@@ -282,8 +292,9 @@ export default class TopView extends JetView {
                                 css: "webix_dark",
                                 name: "sidebar1",
                                 scroll: "auto",
+                                id: "sidebar1",
                                 width: 300,
-                                data: menu_data_multi,
+                                //data: menu_data_multi,
                                 on: {
                                     onAfterSelect: (id) => {
                                         // webix.message("Selected: " + this.getItem(id).value);
@@ -303,7 +314,8 @@ export default class TopView extends JetView {
                                             this.GridCancelaciones.showWindow();
                                         } else {
                                             // Se abre el grid seleccionado
-                                            this.app.show("/top/" + id);
+                                            let grid = id.split("_") //Limpiar la cadena para elminar el timestamp
+                                            this.app.show("/top/" + grid[0]);
                                         }
                                     }
                                 }
@@ -357,6 +369,28 @@ export default class TopView extends JetView {
                 node.firstChild.innerHTML = total <= 1 ? total + " registro" : total + " registros";
             }
         }, webix.ui.datafilter.summColumn);
+
+        webix.UIManager.addHotKey("esc", function(view){
+            console.log(view);
+            return;
+            if (view){
+              var top = view.getTopParentView();
+              if (top && top.setPosition)
+                top.hide();
+            }
+          });
+
+          let Menu = new menu();
+          Menu.getMenuUsuario().then((realdata) => {
+              $$("sidebar1").parse(realdata.json());
+          }).fail((error) => {
+              webix.alert({
+                  type: "alert-error",
+                  text: "Error: " + error.statusText
+              }).then((result) => {
+                  //this.hiddenProgressBar();
+              });
+          });
 
         //Formatea la fecha para que solo se obtenga la misma y no fecha y hora
         //webix.i18n.parseFormat = "%Y-%m-%d";

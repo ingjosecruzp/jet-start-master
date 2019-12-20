@@ -83,7 +83,6 @@ export class FrmBase extends JetView {
                     socket.emit("liberar", this._id);
                 });
 
-
             }).fail((error) => {
                 console.log(error);
                 webix.alert({
@@ -130,7 +129,7 @@ export class FrmBase extends JetView {
         this.Modelo.saveData(data).then((realdata) => {
             this.hiddenProgressBar();
             $$("GridBase").$scope.refresh();
-
+            console.log("save");
             webix.alert("Guardado con exito", (result) => {
                 $$(this.Ventana).close();
             });
@@ -147,7 +146,7 @@ export class FrmBase extends JetView {
         this.Modelo.updateData(data).then((realdata) => {
             this.hiddenProgressBar();
             $$("GridBase").$scope.refresh();
-
+            console.log("update");
             webix.alert("Guardado con exito", (result) => {
                 $$(this.Ventana).close();
             });

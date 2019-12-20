@@ -6,7 +6,7 @@ export const menu_data_multi = new webix.DataCollection({
             data: [{
                     id: "GridUsuarios",
                     icon: "mdi mdi-account",
-                    value: "Usarios"
+                    value: "Usuarios"
                 },
                 {
                     id: "GridRoles",
@@ -18,6 +18,16 @@ export const menu_data_multi = new webix.DataCollection({
                     icon: "mdi mdi-factory",
                     value: "Empresas"
                 },
+                {
+                    id: "GridModulo",
+                    icon: "mdi mdi-view-module",
+                    value: "Modulos"
+                },
+                {
+                    id: "GridVistas",
+                    icon: "mdi mdi-checkbox-blank",
+                    value: "Vistas"
+                }
             ]
         },
         {
@@ -101,6 +111,11 @@ export const menu_data_multi = new webix.DataCollection({
                     id: "GridProveedor",
                     icon: "mdi mdi-account-circle",
                     value: "Proveedor"
+                },
+                {
+                    id: "GridUsuarios_2",
+                    icon: "mdi mdi-account",
+                    value: "Usuarios"
                 }
 
             ]
