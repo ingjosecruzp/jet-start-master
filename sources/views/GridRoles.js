@@ -19,7 +19,6 @@ export default class GridRoles extends GridBase {
         this.$$(this.Grid).attachEvent("onItemDblClick", (id, e, node) => {
             var item = $$(this.Grid).getItem(id);
 
-            console.log("double click");
             this.FrmRoles = this.ui(FrmRoles);
             this.FrmRoles.showWindow(item._id);
         });
