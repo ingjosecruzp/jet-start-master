@@ -44,31 +44,57 @@ export class FrmModulos extends FrmBase {
     init(view) {
         webix.extend($$(this.Ventana), webix.ProgressBar);
 
-        let Vista = new vista();
-
         this.showProgressBar();
 
-        Vista.getAllData().then((realdata) => {
+        $$(this.Ventana).attachEvent("onShow", () => {
+            if(this._id == undefined)
+            {
+                this.loadVistas();
+            }
+        });
 
-            realdata.json().forEach(element => {
-                let vistaFrm = {
-                    _id: element._id,
-                    Vista: element.Nombre,
-                    ch1: "off",
-                    modIcon : element.icon
-                }
+    }
+    loadVistas() {
+        let promise = new Promise((resolve, reject) => {
+            let Vista = new vista();
 
-                $$("gridVistas" + this.id).add(vistaFrm);
-            });
-            this.hiddenProgressBar();
+            Vista.getAllData().then((realdata) => {
 
-        }).fail((error) => {
-            webix.alert({
-                type: "alert-error",
-                text: "Error: " + error.statusText
-            }).then((result) => {
-                $$(this.Ventana).close();
+                realdata.json().forEach(element => {
+                    let vistaFrm = {
+                        _id: element._id,
+                        Vista: element.Nombre,
+                        ch1: "off",
+                        modIcon : element.icon
+                    }
+
+                    $$("gridVistas" + this.id).add(vistaFrm);
+                });
+                resolve("Cargado Vistas");
                 this.hiddenProgressBar();
+
+            }).fail((error) => {
+                webix.alert({
+                    type: "alert-error",
+                    text: "Error: " + error.statusText
+                }).then((result) => {
+                    $$(this.Ventana).close();
+                    this.hiddenProgressBar();
+                });
+            });
+        });
+
+        return promise;
+    }
+    loadVistasWS(data){
+        //Busca que vistas vienen activas
+        data.Vistas.forEach(element => {
+            $$("gridVistas" + this.id).eachRow((row) => {
+                let record = $$("gridVistas" + this.id).getItem(row);
+                if (element._id == record._id) {
+                    $$("gridVistas" + this.id).updateItem(row, { chk: 1 });
+                    record.ch1 = "on";
+                }
             });
         });
     }
@@ -95,17 +121,8 @@ export class FrmModulos extends FrmBase {
         super.guardar(data);
     }  
     cargarCombos(data) {
-        setTimeout(() => {
-            //Busca que empresas vienen activas
-            data.Vistas.forEach(element => {
-                $$("gridVistas" + this.id).eachRow((row) => {
-                    let record = $$("gridVistas" + this.id).getItem(row);
-                    if (element._id == record._id) {
-                        $$("gridVistas" + this.id).updateItem(row, { chk: 1 });
-                        record.ch1 = "on";
-                    }
-                });
-            });
-        }, 200);
+        this.loadVistas().then((successMessage) => {
+            this.loadVistasWS(data);
+        });
     }
 }
