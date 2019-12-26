@@ -115,7 +115,12 @@ export class FrmPuntoVenta extends FrmBase {
                                 }
                             },*/
                             {view:"text", id:"cmbcliente", label:"Cliente", value: "PUBLICO GENERAL", inputAlign:"left"},
-                            {view: "label", id:"puntos", label:"PUNTOS: 0", align:"right", width: 200}
+
+                            {view:"label", id:"operador", label:"Operador:", align:"left", width: 150},
+                            {view:"icon", type:"icon", icon:"mdi mdi-bus", id:"btn_operador", width:80},
+                            {view:"text", id:"txtOperadorid", value: ""},
+                            
+                            {view: "label", id:"puntos", label:"PUNTOS: 0", align:"right", width: 90}
                         ]}
                     ]
                 },  
@@ -279,6 +284,7 @@ export class FrmPuntoVenta extends FrmBase {
         $$("txtsupagon").hide();
         $$("txtsupagon").setValue(0);
         $$("txtVendedorid").hide();
+        $$("txtOperadorid").hide();
        
         let Carousel = $$("carousel" + this.id);
         let url = "http://localhost:60493/img/ptovta.png";
@@ -364,7 +370,9 @@ export class FrmPuntoVenta extends FrmBase {
                 cuentaPagos();
             }else if(estadoVta == "VENDEDOR"){ //borra el codigo del vendedor escrito
                 $$("input_vendedor").setValue("");
-            }  
+            }else if(estadoVta == "NAVE"){ //borra el codigo de la operador escrito
+                $$("input_operador").setValue("");
+            }    
         });
         
         this.$$("btncobrar").attachEvent("onItemClick", function(id, e){
@@ -491,7 +499,10 @@ export class FrmPuntoVenta extends FrmBase {
             }else if(estadoVta == "VENDEDOR"){
                 let codigo = $$("input_vendedor").getValue() + num;
                 $$("input_vendedor").setValue(codigo);
-            }            
+            }else if(estadoVta == "NAVE"){
+                let codigo = $$("input_operador").getValue() + num;
+                $$("input_operador").setValue(codigo);
+            }              
         }
 
         function cuentas(){
@@ -675,6 +686,87 @@ export class FrmPuntoVenta extends FrmBase {
                 });
             });
         })
+
+        this.$$("btn_operador").attachEvent("onItemClick", function(id, e){
+            let anteriorEstado = estadoVta;
+            estadoVta = "NAVE"
+            $$("btn_operador").disable();
+    
+            var form1 = [
+                { cols:[
+                    { view:"text", value:'',  id:"input_operador", labelPosition:"top" },
+                    { view:"icon", type:"icon", icon:"mdi mdi-account-search", id:"btn_aceptar_operador", width:50 },
+                  ]
+                },
+                { view:"label", label:"", id:"textError_operador", labelPosition:"top", css:"status_error" }
+              ];
+    
+            webix.ui({
+                view:"window",
+                id:"win",
+                height:250,
+                width:300,
+                position:"top",
+                move:true,
+                head:{
+                    view:"toolbar", cols:[
+                        { width:4 },
+                        { view:"label", label: "Operador" },
+                        { view:"icon", icon:"wxi-close", width: 40, align: 'right', click: 
+                            function(){ 
+                                $$("btn_operador").enable();
+                                $$("txtOperadorid").setValue("");
+                                estadoVta = anteriorEstado;
+                                $$('win').close();  
+                            }
+                        }
+                    ]
+                },
+                body: {
+                    view:"form", 
+                    elements:[
+                        {
+                            view:"fieldset", 
+                            label:"Clave del operador",
+                            body: {rows:form1}
+                        }
+                    ]
+                }
+            }).show();
+            $$("input_operador").focus();
+    
+            $$("btn_aceptar_operador").attachEvent("onItemClick",function(ev){
+                $$("btn_operador").css("color","green");
+                var text = $$('input_operador').getValue()
+                if(text.length == 0){
+                    $$("textError_operador").setValue("Favor de introducir una clave")
+                    return;
+                }
+                $$("textError_operador").setValue("")
+                
+                let OperadorA = new vendedor();
+                OperadorA.getAllData().then((realdata) => {
+                    let ven=realdata.json();            
+                    var i = -1;
+                    for (let index = 0; index < ven.length; index++) {
+                        const element = ven[index];
+                        if(element.Clave == text){
+                            i = index;
+                            break;
+                        }
+                    }
+                    if(i == -1){
+                        $$('input_operador').setValue("")
+                        $$("textError_operador").setValue("No se encontró el vendedor")
+                    }else{
+                        $$("txtOperadorid").setValue(ven[i]._id);
+                        $$("btn_operador").enable();
+                        $$('win').close();
+                        estadoVta = anteriorEstado;
+                    }
+                });
+            });
+        })
     } 
     
     guardar() {
@@ -690,6 +782,7 @@ export class FrmPuntoVenta extends FrmBase {
         let ivan = parseFloat($$("txtivan").getValue());
 
         let vendedor = $$("txtVendedorid").getValue();
+        let operador = $$("txtOperadorid").getValue();
 
         if(totPago<totaln){
             falta=totaln-totPago;
@@ -743,6 +836,7 @@ export class FrmPuntoVenta extends FrmBase {
         data.ImporteDonativo=0;        
         data.SistemaOrigen='PV',
         data.Vendedor = {_id: vendedor},
+        data.Operador = {_id: operador},
         //data.Vendedor { get; set; }
         //data.UsuarioCreador=1;
 
