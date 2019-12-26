@@ -2,6 +2,7 @@ import { JetView } from "webix-jet";
 import { puntoVenta } from "models/pventa/puntoVenta";
 import { GridBase } from "views/GridBase";
 import { FrmDevolucion } from "views/pventa/FrmDevolucion"
+import { FrmCancelacionNormal } from "views/cancelaciones/FrmCancelacionNormal"
 
 export default class GridDevolucion extends GridBase {
     constructor(app, name) {          
@@ -24,7 +25,7 @@ export default class GridDevolucion extends GridBase {
         //Se crea el context Menu
         var menu = this.ui({
             view:"contextmenu",
-            data:["Aplicar Devolución"],
+            data:["Aplicar Devolución",{ $template:"Separator" }, "Cancelar ticket"],
             on:{
               onItemClick:function(id){
                 //webix.message(this.getItem(id).value);
@@ -33,21 +34,54 @@ export default class GridDevolucion extends GridBase {
                 let idToma = context.obj.getItem(context.id)._id;
                 let folio  = context.obj.getItem(context.id).Folio;
 
-                webix.confirm({
-                    title: "Devolución",
-                    ok: "Si",
-                    cancel: "No",
-                    text: "¿Estas seguro de aplicar la devolución de la compra con folio: "+ folio +"?",
-                    callback: (result) => {
-                        if (result == false)
-                            return;
-    
-                        self.FrmDevolucion = self.ui(FrmDevolucion);
-                        self.FrmDevolucion.showWindow(idToma);
-                            
-                        return false; //here it blocks default behavior
-                    }
-                });
+                if(this.getItem(id).value == "Cancelar ticket"){
+                    webix.confirm({
+                        title: "Cancelación",
+                        ok: "Si",
+                        cancel: "No",
+                        text: "¿Estas seguro de cancelar la compra con folio: "+ folio +"?",
+                        callback: (result) => {
+                            if (result == false)
+                                return;
+        
+                            self.FrmCancelacionNormal = self.ui(FrmCancelacionNormal);
+                            self.FrmCancelacionNormal.showWindow(idToma);
+                                
+                            return false; //here it blocks default behavior
+                        }
+                    });
+                }else{
+                    webix.confirm({
+                        title: "Devolución",
+                        ok: "Si",
+                        cancel: "No",
+                        text: "¿Estas seguro de aplicar la devolución de la compra con folio: "+ folio +"?",
+                        callback: (result) => {
+                            if (result == false)
+                                return;
+        
+                            self.FrmDevolucion = self.ui(FrmDevolucion);
+                            self.FrmDevolucion.showWindow(idToma);
+                                
+                            return false; //here it blocks default behavior
+                        }
+                    });
+                }
+              }
+            }
+        }, 
+        {
+            view:"contextmenu",
+            data:["Cancelar ticket"],
+            on:{
+              onItemClick:function(id){
+                //webix.message(this.getItem(id).value);
+                var context = this.getContext();
+
+                let idToma = context.obj.getItem(context.id)._id;
+                let folio  = context.obj.getItem(context.id).Folio;
+
+                
               }
             }
         });

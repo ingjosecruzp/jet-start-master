@@ -51,15 +51,31 @@ export class GridCancelaciones extends GridCancelacionesBase {
                 node.firstChild.innerHTML = "TOTAL: " + webix.i18n.priceFormat(result);
             }
           }, webix.ui.datafilter.summColumn);
+
+          webix.ui.datafilter.serverDateRangeFilter = webix.extend({
+            $server:true
+          }, webix.ui.datafilter.dateRangeFilter);
     }
     init(view) {
         let self = this;
         webix.extend($$(this.Ventana), webix.ProgressBar);
+        $$("gridVentas" + this.id).getFilter("Fecha").attachEvent("onChange", (newv, oldv) => {
+            if(newv.end != null && newv.start != null){
+                $$("gridVentas" + this.id).clearAll();
+                this.cargarVentas(newv);
+            }
+        });
+    }
+
+    cargarVentas(date){
+        let self = this;
+        let start = this.convertToJSONDate(date.start);
+        let end = this.convertToJSONDate(date.end);
+
         this.showProgressBar();
         let puntoventa = new puntoVenta();
-        puntoventa.getACancelar().then((realdata) => {
+        puntoventa.getACancelar(start, end).then((realdata) => {
             let data = realdata.json();
-            
             for (let index = 0; index < data.length; index++) {
                 let element = data[index];
                 $$("gridVentas" + this.id).add({
@@ -82,28 +98,46 @@ export class GridCancelaciones extends GridCancelacionesBase {
         });
     }
 
+
     guardar(){
         let data = {};
-        let BDVentas = [];
+        let PuntoVenta_Documentos = [];
         $$("gridVentas" + this.id).eachRow((row) => {
             let record = $$("gridVentas" + this.id).getItem(row);
             if (record.ch1 == "on") {
-                BDVentas.push({
+                PuntoVenta_Documentos.push({
                     _id: record._id,
                     Folio: record.Folio
                 });
             }
         });
 
-        if(BDVentas.length == 0){
+        if(data.length == 0){
             webix.alert({
                 type: "alert-error",
                 text: "Se debe de seleccionar al menos una venta."
             });
             return;
         }
-        
-        data.BDVentas = BDVentas;
+        data.PuntoVenta_Documentos = PuntoVenta_Documentos;
         super.guardar(data);
+    }
+
+    save(data) {
+        let self = this;
+        let pventa = new puntoVenta();
+        pventa.saveCancelacion(data).then((realdata) => {
+            this.hiddenProgressBar();
+            webix.alert("Guardado con exito", (result) => {
+                $$("gridVentas" + this.id).clearAll();
+                $$("gridVentas" + self.id).getFilter("Fecha").setValue(null);
+            });
+        }).fail((error) => {
+            webix.alert({
+                type: "alert-error",
+                text: "Error: " + error.statusText
+            });
+            this.hiddenProgressBar();
+        });
     }
 }

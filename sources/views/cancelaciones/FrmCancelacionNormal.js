@@ -5,7 +5,7 @@ import { articulos } from "models/catalogos/articulos";
 import { almacenes } from "models/catalogos/almacenes";
 import { puntoVenta } from "models/pventa/puntoVenta";
 
-export class FrmDevolucion extends FrmBase {
+export class FrmCancelacionNormal extends FrmBase {
     constructor(app, name) {
         //Genera un idetificador unico para la ventana con el 
         //objetivo de poder generar varias instancias
@@ -16,7 +16,7 @@ export class FrmDevolucion extends FrmBase {
         });
 
         let form = {
-            title: "Devolución de compra",
+            title: "Cancelación de compra",
             width: 750,
             elements: [
                 { view: "text", name: "_id", hidden: true },
@@ -153,7 +153,7 @@ export class FrmDevolucion extends FrmBase {
         console.log(data);
         data.Fecha = this.convertToJSONDate(data.Fecha);
         let ptovta =  new puntoVenta();
-        ptovta.saveDevolucion(data).then((realdata) => {
+        ptovta.saveCancelacionN(data).then((realdata) => {
             $$("GridBase").$scope.refresh();
             this.hiddenProgressBar();
 

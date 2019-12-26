@@ -98,7 +98,7 @@ export class FrmPuntoVenta extends FrmBase {
                     elements: [
                         {cols:[
                             {view:"label", id:"vendedor", label:"Vendedor:", align:"left"},
-                            {view:"icon", type:"icon", icon:"mdi mdi-account", id:"btn_vendedor", width:80, click: () => this.btn_vendedor()},
+                            {view:"icon", type:"icon", icon:"mdi mdi-account", id:"btn_vendedor", width:80},
                             {view:"label", id:"fecha", align:"right"},      
                             
                             {view:"text", id:"txtVendedorid", value: ""},
@@ -362,7 +362,9 @@ export class FrmPuntoVenta extends FrmBase {
                 gridPago.remove(idPago);                
                 funNum=2;
                 cuentaPagos();
-            }
+            }else if(estadoVta == "VENDEDOR"){ //borra el codigo del vendedor escrito
+                $$("input_vendedor").setValue("");
+            }  
         });
         
         this.$$("btncobrar").attachEvent("onItemClick", function(id, e){
@@ -465,7 +467,6 @@ export class FrmPuntoVenta extends FrmBase {
 
 
         function BtnNumero(num){
-            
             if(estadoVta=="COBRO" && funNum==0){ //escribir numero en el txtarticulo    
                 var list = $$("txtarticulo").getPopup().getList();
                 list.clearAll();
@@ -487,6 +488,9 @@ export class FrmPuntoVenta extends FrmBase {
                 let monto=$$("montopaga").getValue()+num;
                 $$("montopaga").setValue(monto);
                 funNum=2;
+            }else if(estadoVta == "VENDEDOR"){
+                let codigo = $$("input_vendedor").getValue() + num;
+                $$("input_vendedor").setValue(codigo);
             }            
         }
 
@@ -521,7 +525,6 @@ export class FrmPuntoVenta extends FrmBase {
                 return;
             }
             habilitaControles(true);
-            
         }
 
         function agregaPago(tipoP){
@@ -591,81 +594,89 @@ export class FrmPuntoVenta extends FrmBase {
                 $$("txtarticulo").focus();
             }        
         }        
-    } 
+        
+        this.$$("btn_vendedor").attachEvent("onItemClick", function(id, e){
+            let anteriorEstado = estadoVta;
+            estadoVta = "VENDEDOR"
+            $$("btn_vendedor").disable();
     
-    btn_vendedor(){
-        $$("btn_vendedor").disable();
-
-        var form1 = [
-            { view:"text", value:'',  id:"input_vendedor", labelPosition:"top"},
-            { view:"label", label:"", id:"textError_vendedor", labelPosition:"top", css:"status_error" }
-          ];
-
-        webix.ui({
-            view:"window",
-            id:"win",
-            height:250,
-            width:300,
-            position:"center",
-            move:true,
-            head:{
-                view:"toolbar", cols:[
-                    { width:4 },
-                    { view:"label", label: "Vendedor" },
-                    { view:"icon", icon:"wxi-close", width: 40, align: 'right', click: 
-                        function(){ 
-                            $$('win').close();  
-                            $$("btn_vendedor").enable();
-                            $$("txtVendedorid").setValue("");
+            var form1 = [
+                { cols:[
+                    { view:"text", value:'',  id:"input_vendedor", labelPosition:"top" },
+                    { view:"icon", type:"icon", icon:"mdi mdi-account-search", id:"btn_aceptar_vendedor", width:50 },
+                  ]
+                },
+                { view:"label", label:"", id:"textError_vendedor", labelPosition:"top", css:"status_error" }
+              ];
+    
+            webix.ui({
+                view:"window",
+                id:"win",
+                height:250,
+                width:300,
+                position:"top",
+                move:true,
+                head:{
+                    view:"toolbar", cols:[
+                        { width:4 },
+                        { view:"label", label: "Vendedor" },
+                        { view:"icon", icon:"wxi-close", width: 40, align: 'right', click: 
+                            function(){ 
+                                $$("btn_vendedor").enable();
+                                $$("txtVendedorid").setValue("");
+                                estadoVta = anteriorEstado;
+                                $$('win').close();  
+                            }
+                        }
+                    ]
+                },
+                body: {
+                    view:"form", 
+                    elements:[
+                        {
+                            view:"fieldset", 
+                            label:"Clave del vendedor",
+                            body: {rows:form1}
+                        }
+                    ]
+                }
+            }).show();
+            $$("input_vendedor").focus();
+    
+            $$("btn_aceptar_vendedor").attachEvent("onItemClick",function(ev){
+                var text = $$('input_vendedor').getValue()
+                if(text.length == 0){
+                    $$("textError_vendedor").setValue("Favor de introducir una clave")
+                    return;
+                }
+                $$("textError_vendedor").setValue("")
+                
+                let vendedorA = new vendedor();
+                vendedorA.getAllData().then((realdata) => {
+                    let ven=realdata.json();            
+                    var i = -1;
+                    for (let index = 0; index < ven.length; index++) {
+                        const element = ven[index];
+                        if(element.Clave == text){
+                            i = index;
+                            break;
                         }
                     }
-                ]
-            },
-            body: {
-                view:"form", 
-                elements:[
-                    {
-                        view:"fieldset", 
-                        label:"Clave del vendedor",
-                        body: {rows:form1}
+                    if(i == -1){
+                        $$('input_vendedor').setValue("")
+                        $$("textError_vendedor").setValue("No se encontró el vendedor")
+                    }else{
+                        $$("txtVendedorid").setValue(ven[i]._id);
+                        $$("vendedor").setValue("Vendedor: " + ven[i].Nombre);
+                        $$("btn_vendedor").enable();
+                        $$('win').close();
+                        estadoVta = anteriorEstado;
                     }
-                ]
-            }
-        }).show();
-        $$("input_vendedor").focus();
-
-        $$("input_vendedor").attachEvent("onEnter",function(ev){
-            var text = $$('input_vendedor').getValue()
-            if(text.length == 0){
-                $$("textError_vendedor").setValue("Favor de introducir una clave")
-                return;
-            }
-            $$("textError_vendedor").setValue("")
-            
-            let vendedorA = new vendedor();
-            vendedorA.getAllData().then((realdata) => {
-                let ven=realdata.json();            
-                var i = -1;
-                for (let index = 0; index < ven.length; index++) {
-                    const element = ven[index];
-                    if(element.Clave == text){
-                        i = index;
-                        break;
-                    }
-                }
-                if(i == -1){
-                    $$('input_vendedor').setValue("")
-                    $$("textError_vendedor").setValue("No se encontró el vendedor")
-                }else{
-                    $$("txtVendedorid").setValue(ven[i]._id);
-                    $$("vendedor").setValue("Vendedor: " + ven[i].Nombre);
-                    $$("btn_vendedor").enable();
-                    $$('win').close();
-                }
+                });
             });
-        });
-    }
-
+        })
+    } 
+    
     guardar() {
         if(!apertura){
             webix.message({type:"error", text:"NO SE HA ENCONTRADO UNA APERTURA DE CAJA"});

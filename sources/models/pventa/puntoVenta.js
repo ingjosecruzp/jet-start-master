@@ -23,10 +23,17 @@ export class puntoVenta extends ModeloBase {
         return promise;
     }
 
-    saveDevolucion(data) {        
+    saveDevolucion(data) {  
         var promise = webix.ajax().headers({
             "Content-type": "application/json"
-        }).post(this.url + "?searchBy=devolucionCompra", data);
+        }).post(this.url + "?searchBy=crearDevolucion", data);
+        return promise;
+    }
+
+    saveCancelacionN(data) {        
+        var promise = webix.ajax().headers({
+            "Content-type": "application/json"
+        }).post(this.url + "?searchBy=crearCancelacion", data);
         return promise;
     }
 
@@ -36,9 +43,15 @@ export class puntoVenta extends ModeloBase {
         }).post(this.url + "?searchBy=cancelacionCompra", data);
         return promise;
     }
-
-    getACancelar() {        
-        var promise = webix.ajax(this.url +  "?searchBy=comprasACancelar&cadena="+this.fields+"&skip=0");
+    
+    getACancelar(start, end) {  
+        var data = {
+            Inicio: start, 
+            Fin: end
+        };      
+        var promise = webix.ajax().headers({
+            "Content-type": "application/json"
+        }).post(this.url +  "?searchBy=comprasACancelar&cadena="+this.fields, data);
         return promise;
     }
 
