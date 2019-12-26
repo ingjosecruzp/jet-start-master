@@ -33,6 +33,7 @@ import { FrmPuntoVenta } from "views/FrmPuntoVenta";
 import { FrmCierreCajas } from "views/pventa/FrmCierreCajas";///////
 import { FrmAperturaCajas } from "views/pventa/FrmAperturaCajas";///////
 import { GridCancelaciones } from "views/cancelaciones/GridCancelaciones";///////
+import { FrmOperador } from "views/pventa/FrmOperador";///////
 /*******************************************/
 /*********ADMINISTRACION******************/
 import { FrmEmpresa } from "views/administracion/FrmEmpresa";
@@ -246,6 +247,10 @@ export default class TopView extends JetView {
                                 else if (this.getUrl()[1].page == "GridVistas") {
                                     this.FrmVista = this.ui(FrmVista);
                                     this.FrmVista.showWindow();
+                                }
+                                else if (this.getUrl()[1].page == "GridOperadores") {
+                                    this.FrmOperador = this.ui(FrmOperador);
+                                    this.FrmOperador.showWindow();
                                 }
                             }
                         },
