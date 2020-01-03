@@ -17,6 +17,7 @@ export class FrmUsuarios extends FrmBase {
                 { view: "text", name: "Nombre", labelWidth: 100, label: "Usuario" },
                 { view: "text", name: "NombreCompleto", labelWidth: 100, label: "Nombre" },
                 { view: "text", type: "password", name: "Contrasena", labelWidth: 100, label: "Contraseña" },
+                { view: "text", type: "password", name: "Clave", labelWidth: 100, label: "Clave" },
                 { view: "combo", name: "Status", labelWidth: 100, label: "Estatus", options: getEstatus() },
                 {
                     view: "multicombo",

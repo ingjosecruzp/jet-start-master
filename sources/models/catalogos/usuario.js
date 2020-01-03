@@ -8,4 +8,11 @@ export class usuario extends ModeloBase {
 
         super(servicio, campos);
     }
+
+    validarDescuento(data) {        
+        var promise = webix.ajax().headers({
+            "Content-type": "application/json"
+        }).post(this.url + "?searchBy=validarDescuento", data);
+        return promise;
+    }
 }
