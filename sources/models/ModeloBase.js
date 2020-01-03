@@ -1,32 +1,31 @@
 import { JetView } from "webix-jet";
 
 export class ModeloBase {
-    
+
     constructor(servicio, campos, naturaleza) {
-        this.skip=false;
+        this.skip = false;
 
         if (naturaleza) this.naturaleza = naturaleza;
         //console.log(this.app);
         this.url = "http://localhost:60493/" + servicio;
+        //this.url = "http://192.168.0.22/" + servicio;
         //this.url = this.app.config.debug==true ? "http://localhost:60493/" + servicio : servicio;
         this.fields = "campos/" + campos;
     }
 
     //Metodo para activar el LazyLoading
     lazyLoading(status) {
-        this.skip=status;
+        this.skip = status;
     }
 
-    getAllData(skipValue,filters) {
+    getAllData(skipValue, filters) {
         //console.log(skipValue);
 
-        if(this.skip==false)
-        {
+        if (this.skip == false) {
             return webix.ajax(this.url + this.fields);
-        }
-        else
-        {   skipValue = skipValue==undefined ? 0 : skipValue;
-            if(filters === undefined || filters==="")
+        } else {
+            skipValue = skipValue == undefined ? 0 : skipValue;
+            if (filters === undefined || filters === "")
                 return webix.ajax(this.url + this.fields + "/" + skipValue);
             else
                 return webix.ajax(this.url + this.fields + "/" + skipValue + "/" + filters);
@@ -38,7 +37,7 @@ export class ModeloBase {
         return promise;
     }
 
-    saveData(data) {        
+    saveData(data) {
         var promise = webix.ajax().headers({
             "Content-type": "application/json"
         }).post(this.url, data);
@@ -65,7 +64,7 @@ export class ModeloBase {
 
     imprimir(id) {
         //http://localhost:9090/Servicios/Inventarios/WcfMovimientosES.svc/?searchBy=RptDocumento&id=5cc8c31948a4e21e0c44ed6d
-        var promise = webix.ajax(this.url + "?searchBy=RptDocumento&id="+ id);
+        var promise = webix.ajax(this.url + "?searchBy=RptDocumento&id=" + id);
         return promise;
     }
 
@@ -73,11 +72,11 @@ export class ModeloBase {
         return this.url + "?searchBy=getXNombre&busqueda=" + text;
     }
 
-    searchPorCampo(campo,text) {
-        return this.url + "?searchBy=getXCampo&campo="+ campo +"&busqueda=" + text;
+    searchPorCampo(campo, text) {
+        return this.url + "?searchBy=getXCampo&campo=" + campo + "&busqueda=" + text;
     }
 
-    getDataxId(id){
-        return this.url+id;
+    getDataxId(id) {
+        return this.url + id;
     }
 }
