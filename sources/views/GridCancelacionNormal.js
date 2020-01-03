@@ -1,9 +1,9 @@
 import { JetView } from "webix-jet";
 import { puntoVenta } from "models/pventa/puntoVenta";
 import { GridBase } from "views/GridBase";
-import { FrmDevolucion } from "views/pventa/FrmDevolucion"
+import { FrmCancelacionNormal } from "views/cancelaciones/FrmCancelacionNormal"
 
-export default class GridDevolucion extends GridBase {
+export default class GridCancelacionNormal extends GridBase {
     constructor(app, name) {          
         let columns = [
             { id: "_id", fillspace: true, hidden: true },
@@ -24,24 +24,26 @@ export default class GridDevolucion extends GridBase {
         //Se crea el context Menu
         var menu = this.ui({
             view:"contextmenu",
-            data:["Aplicar Devolución"],
+            data:["Cancelar ticket"],
             on:{
               onItemClick:function(id){
+                //webix.message(this.getItem(id).value);
                 var context = this.getContext();
+
                 let idToma = context.obj.getItem(context.id)._id;
                 let folio  = context.obj.getItem(context.id).Folio;
 
                 webix.confirm({
-                    title: "Devolución",
+                    title: "Cancelación",
                     ok: "Si",
                     cancel: "No",
-                    text: "¿Estas seguro de aplicar la devolución de la compra con folio: "+ folio +"?",
+                    text: "¿Estas seguro de cancelar la compra con folio: "+ folio +"?",
                     callback: (result) => {
                         if (result == false)
                             return;
     
-                        self.FrmDevolucion = self.ui(FrmDevolucion);
-                        self.FrmDevolucion.showWindow(idToma);
+                        self.FrmCancelacionNormal = self.ui(FrmCancelacionNormal);
+                        self.FrmCancelacionNormal.showWindow(idToma);
                             
                         return false; //here it blocks default behavior
                     }

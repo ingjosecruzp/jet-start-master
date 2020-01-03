@@ -4,9 +4,14 @@ import { articulos } from "models/catalogos/articulos";
 import { puntoVenta } from "models/pventa/puntoVenta";
 import { impuestos } from "models/pventa/impuestos";
 import { vendedor } from "../models/pventa/vendedor";
+import { operador } from "../models/pventa/operador";
+import { usuario } from "models/catalogos/usuario";
 import { tipodecambio } from "../models/pventa/tipodecambio";
 
 let apertura = null;
+let aprobacionDesc = "NO";
+let banTecladoClave = false;
+let tipocambio;
 export class FrmPuntoVenta extends FrmBase {
     constructor(app, name) {
         
@@ -70,6 +75,7 @@ export class FrmPuntoVenta extends FrmBase {
                     view: "form", container: "descuento", width: WContainer, height: 140,
                     elements: [
                         {view:"text", id:"txtdescuento", label:"Descto.", align:"left", readonly:true, value: webix.i18n.priceFormat("0.00"), inputAlign:"right"},
+                        {view:"text", id:"txtdescuenton", hidden: true},
                         {view: "button", type: "image", image:"http://localhost:60493/img/cobrar.png", id:"btncobrar", css: { "background-color": "#9fff90", "text-align": "center" }, label: "COBRAR", height:70} 
                     ]
                 },
@@ -114,13 +120,13 @@ export class FrmPuntoVenta extends FrmBase {
                                     }
                                 }
                             },*/
-                            {view:"text", id:"cmbcliente", label:"Cliente", value: "PUBLICO GENERAL", inputAlign:"left"},
+                            {view:"text", id:"cmbcliente", label:"Cliente:", value: "PUBLICO GENERAL", inputAlign:"left", labelWidth: 60, },
 
-                            {view:"label", id:"operador", label:"Operador:", align:"left", width: 150},
-                            {view:"icon", type:"icon", icon:"mdi mdi-bus", id:"btn_operador", width:80},
+                            {view:"label", id:"operador", label:"Operador:", align:"left", width: 200},
+                            {view:"icon", type:"icon", icon:"mdi mdi-bus", id:"btn_operador", width:80, align:"right"},
                             {view:"text", id:"txtOperadorid", value: ""},
                             
-                            {view: "label", id:"puntos", label:"PUNTOS: 0", align:"right", width: 90}
+                            // {view: "label", id:"puntos", label:"PUNTOS: 0", align:"right", width: 90}
                         ]}
                     ]
                 },  
@@ -234,7 +240,6 @@ export class FrmPuntoVenta extends FrmBase {
 
     init(view) {
         let cambio = new tipodecambio();
-        let tipocambio;
         cambio.getAllData().then((realdata) => {   
             let data = realdata.json();
             console.log(data);
@@ -272,6 +277,7 @@ export class FrmPuntoVenta extends FrmBase {
         let tienePunto=false;
         let numDecimal=0;
         let estadoVta="COBRO";
+        let estadoTipoDes = "PORCENTAJE"
         let gridPago = $$("gridPagos");        
         let gridArt = $$("gridDetalle");
         
@@ -355,7 +361,12 @@ export class FrmPuntoVenta extends FrmBase {
             funNum=3;
         });
         
-        this.$$("btnborrar").attachEvent("onFocus", function(current_view, prev_view){            
+        this.$$("btnborrar").attachEvent("onFocus", function(current_view, prev_view){        
+            if(banTecladoClave){
+                $$("input_clave").setValue("");
+                return;
+            }
+
             if(estadoVta=="COBRO" && prev_view.$view.id==""){ //borrar caracter del txtarticulo
                 
             }else if(estadoVta=="COBRO" && prev_view.$view.id!=""){ //borrar registro del grid detalle
@@ -372,6 +383,18 @@ export class FrmPuntoVenta extends FrmBase {
                 $$("input_vendedor").setValue("");
             }else if(estadoVta == "NAVE"){ //borra el codigo de la operador escrito
                 $$("input_operador").setValue("");
+            }else if(estadoVta == "DESCUENTO"){ //borra el codigo de la operador escrito
+                let cant = 0;
+                if(estadoTipoDes == "PORCENTAJE"){
+                    cant = cant + "%";
+                }else if(estadoTipoDes == "CANTIDAD"){
+                    cant = webix.i18n.priceFormat(cant)
+                }
+
+                $$("input_desc").setValue(cant);
+                $$("input_descSF").setValue("");
+                tienePunto=false;
+                numDecimal = 0
             }    
         });
         
@@ -471,10 +494,22 @@ export class FrmPuntoVenta extends FrmBase {
                 $$("montopaga").setValue(monto);
                 tienePunto=true;
             }
+
+            if(estadoVta=="DESCUENTO" && tienePunto==false){//escribir punto
+                let monto=$$("input_descSF").getValue()+".";
+                $$("input_descSF").setValue(monto);
+                tienePunto=true;
+            }
         });
 
 
         function BtnNumero(num){
+            if(banTecladoClave){
+                let codigo = $$("input_clave").getValue() + num;
+                $$("input_clave").setValue(codigo);
+                return;
+            }
+
             if(estadoVta=="COBRO" && funNum==0){ //escribir numero en el txtarticulo    
                 var list = $$("txtarticulo").getPopup().getList();
                 list.clearAll();
@@ -502,7 +537,24 @@ export class FrmPuntoVenta extends FrmBase {
             }else if(estadoVta == "NAVE"){
                 let codigo = $$("input_operador").getValue() + num;
                 $$("input_operador").setValue(codigo);
-            }              
+            } else if(estadoVta == "DESCUENTO"){
+                if(tienePunto){
+                    numDecimal=numDecimal+1;
+                    if(numDecimal>2)
+                        return;
+                }
+                let cant = $$("input_descSF").getValue() + num;
+                $$("input_descSF").setValue(cant);
+                if(cant > 0){
+                    if(estadoTipoDes == "PORCENTAJE"){
+                        cant = webix.i18n.numberFormat(cant) + "%";
+                    }else if(estadoTipoDes == "CANTIDAD"){
+                        cant = webix.i18n.priceFormat(cant)
+                    }
+                }
+                
+                $$("input_desc").setValue(cant);
+            }         
         }
 
         function cuentas(){
@@ -516,16 +568,55 @@ export class FrmPuntoVenta extends FrmBase {
                 iva= iva + (record.Impuestos);
                 total=subtotal+iva;
             });
-            $$("txtsubtotal").setValue(webix.i18n.priceFormat(subtotal));
-            $$("txtsubtotaln").setValue(subtotal);
+            
+            
             $$("txtiva").setValue(webix.i18n.priceFormat(iva));
             $$("txtivan").setValue(iva);
+            
+            //descuento
+            let descuento = subtotal == 0 ? 0 : $$("txtdescuenton").getValue();
+            let porcentaje = descuento;
+            descuento = (subtotal * descuento) / 100;
+            console.log(descuento);
+            console.log(tipocambio);
+
+            if(descuento != 0){
+                //VALIDACIÓN PARA COMPRAS MAYORES A $1,000 DLS
+                if(tipocambio.Nombre == "MX"){
+                    //PESOS - o sea, si el sistema está en DLS
+    
+                    //REQUERIR AUTORIZACIÓN PARA VALIDAR EL DESCUENTO
+                    if(subtotal < 100){
+                        webix.message({type:"error", text:"EL DESCUENTO REQUIERE AUTORIZACIÓN DLS"});
+                        // $$("txtdescuenton").setValue(0);
+                        // $$("txtdescuento").setValue(webix.i18n.priceFormat(0));
+                    }else if(porcentaje > 15){
+                        webix.message({type:"error", text:"EL DESCUENTO REQUIERE AUTORIZACIÓN, ES MAYOR AL 15% DLS"});
+                    }
+                }else{
+                    //DLS - o sea, si el sistema está en pesos
+                    let totalTemp = subtotal/$$("tipocambio").getValue();
+                     //REQUERIR AUTORIZACIÓN PARA VALIDAR EL DESCUENTO
+                     if(totalTemp < 100){
+                        webix.message({type:"error", text:"EL DESCUENTO REQUIERE AUTORIZACIÓN MX"});
+                        // $$("txtdescuenton").setValue(0);
+                        // $$("txtdescuento").setValue(webix.i18n.priceFormat(0));
+                    }else if(porcentaje > 15){
+                        webix.message({type:"error", text:"EL DESCUENTO REQUIERE AUTORIZACIÓN, ES MAYOR AL 15% MX"});
+                    }
+                }
+            }
+            
+            $$("txtsubtotaln").setValue(subtotal);
+            $$("txttotaln").setValue(total);
+            
+            $$("txtsubtotal").setValue(webix.i18n.priceFormat(subtotal - descuento));
+            total = total - descuento;
             $$("txttotal").setValue(webix.i18n.priceFormat(total));
 
             $$("txttotalmxn").setValue(webix.i18n.priceFormat(total/$$("tipocambio").getValue()));
             $$("txttotaldls").setValue(webix.i18n.priceFormat(total/$$("tipocambio").getValue()));
             
-            $$("txttotaln").setValue(total);
             $$("txttotalpago").setValue(webix.i18n.priceFormat(total));
             $$("txtarticulo").focus();
         }
@@ -586,6 +677,7 @@ export class FrmPuntoVenta extends FrmBase {
 
         function habilitaControles(valor){
             if(valor==true){
+                $$("txtdescuento").enable();
                 $$("btnpagar").enable();
                 $$("btnefectivo").enable();
                 $$("btntarjeta").enable();
@@ -595,6 +687,7 @@ export class FrmPuntoVenta extends FrmBase {
                 $$("btnmultiplica").disable();
                 $$("txtarticulo").disable();
             }else{
+                $$("txtdescuento").disable();
                 $$("btnpagar").disable();
                 $$("btnefectivo").disable();
                 $$("btntarjeta").disable();
@@ -736,7 +829,6 @@ export class FrmPuntoVenta extends FrmBase {
             $$("input_operador").focus();
     
             $$("btn_aceptar_operador").attachEvent("onItemClick",function(ev){
-                $$("btn_operador").css("color","green");
                 var text = $$('input_operador').getValue()
                 if(text.length == 0){
                     $$("textError_operador").setValue("Favor de introducir una clave")
@@ -744,9 +836,11 @@ export class FrmPuntoVenta extends FrmBase {
                 }
                 $$("textError_operador").setValue("")
                 
-                let OperadorA = new vendedor();
+                let OperadorA = new operador();
                 OperadorA.getAllData().then((realdata) => {
                     let ven=realdata.json();            
+                    console.log(ven);
+                    
                     var i = -1;
                     for (let index = 0; index < ven.length; index++) {
                         const element = ven[index];
@@ -757,14 +851,130 @@ export class FrmPuntoVenta extends FrmBase {
                     }
                     if(i == -1){
                         $$('input_operador').setValue("")
-                        $$("textError_operador").setValue("No se encontró el vendedor")
+                        $$("textError_operador").setValue("No se encontró el operador")
                     }else{
                         $$("txtOperadorid").setValue(ven[i]._id);
+                        $$("operador").setValue("Operador: "+ven[i].Nombre);
                         $$("btn_operador").enable();
                         $$('win').close();
                         estadoVta = anteriorEstado;
                     }
                 });
+            });
+        })
+
+        this.$$("txtdescuento").attachEvent("onItemClick", function(id, e){
+            let anteriorEstado = estadoVta;
+            estadoVta = "DESCUENTO"
+            estadoTipoDes = "PORCENTAJE"
+            $$("txtdescuento").disable();
+    
+            var form1 = [
+                { 
+                    cols:[
+                        { view:"text", value:'',  id:"input_desc", labelPosition:"top", value: webix.i18n.numberFormat(0) + "%"},
+                        { view:"text", value:'',  id:"input_descSF", labelPosition:"top", hidden:true},
+                        { view:"icon", type:"icon", icon:"mdi mdi-check", id:"btn_aceptar_desc", width:50 },
+                    ]
+                },
+                { view:"label", label:"", id:"textError_operador", labelPosition:"top", css:"status_error" },
+                {
+                    cols:[
+                        { view: "button", id:"btnPorcentaje", type: "imageTop", /*css: { "background-color": "#F4F5F9" },*/ image:"http://localhost:60493/img/percentage.png", label: "PORCENTAJE", height:70, margin:30},
+                        { view: "button", id:"btnCantidad", type: "imageTop", /*css: { "background-color": "#F4F5F9" },*/ image:"http://localhost:60493/img/coin.png", label: "CANTIDAD", height:70, margin:30},
+                    ]
+                },
+              ];
+    
+            webix.ui({
+                view:"window",
+                id:"win",
+                height:250,
+                width:400,
+                position:"top",
+                move:true,
+                head:{
+                    view:"toolbar", cols:[
+                        { width:4 },
+                        { view:"label", label: "Descuento" },
+                        { view:"icon", icon:"wxi-close", width: 40, align: 'right', click: 
+                            function(){ 
+                                $$("txtdescuento").enable();
+                                $$("txtOperadorid").setValue("");
+                                estadoVta = anteriorEstado;
+                                $$('win').close();  
+                            }
+                        }
+                    ]
+                },
+                body: {
+                    view:"form", 
+                    elements:[
+                        {
+                            view:"fieldset", 
+                            label:"Cantidad",
+                            margin:10,
+                            body: {rows:form1}
+                        }
+                    ]
+                }
+            }).show();
+            // $$("input_desc").focus();
+            $$("btnPorcentaje").attachEvent("onItemClick",function(ev){
+                let cant = $$("input_descSF").getValue();
+                if(cant.length == 0){
+                    cant = 0;
+                }else if(estadoTipoDes == "CANTIDAD" && $$("txtsubtotaln").getValue() > 0){
+                    let total = $$("txtsubtotaln").getValue();
+                    cant = (cant * 100) / total;
+                }
+
+                $$("input_descSF").setValue(cant)
+                cant = webix.i18n.numberFormat(cant) + "%";
+                $$("input_desc").setValue(cant);
+                estadoTipoDes = "PORCENTAJE";
+            })
+
+            $$("btnCantidad").attachEvent("onItemClick",function(ev){
+                let cant = $$("input_descSF").getValue();
+                if(cant.length == 0){
+                    cant = 0;
+                }else if(estadoTipoDes == "PORCENTAJE" && $$("txtsubtotaln").getValue() > 0){
+                    let total = $$("txtsubtotaln").getValue();
+                    cant = (cant * total) / 100;
+                }
+                    
+                $$("input_descSF").setValue(cant)
+                cant = webix.i18n.priceFormat(cant)
+                $$("input_desc").setValue(cant);
+                estadoTipoDes = "CANTIDAD"; 
+            })
+
+            $$("btn_aceptar_desc").attachEvent("onItemClick",function(ev){
+                let cant = $$('input_descSF').getValue()
+                let total = $$("txtsubtotaln").getValue();
+
+                if(total == 0){
+                    $$("textError_operador").setValue("El descuento no se puede calcular.")
+                    return;
+                }
+
+                //pasar el descuento a la caja y hacer los calculos necesarios
+                $$("textError_operador").setValue("")
+                if(estadoTipoDes == "PORCENTAJE"){
+                    $$("txtdescuenton").setValue(cant)
+                    cant = (cant * total) / 100;
+                }else if(estadoTipoDes == "CANTIDAD"){
+                    let temp = (cant * 100) / total;
+                    $$("txtdescuenton").setValue(temp)
+                }
+                
+                cant = webix.i18n.priceFormat(cant)
+                $$("txtdescuento").setValue(cant);
+                $$("txtdescuento").enable();
+                estadoVta = anteriorEstado;
+                cuentas()
+                $$('win').close();
             });
         })
     } 
@@ -785,13 +995,27 @@ export class FrmPuntoVenta extends FrmBase {
         let operador = $$("txtOperadorid").getValue();
 
         if(totPago<totaln){
-            falta=totaln-totPago;
-            webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
-            return;
+            //descuento
+            let descuento = subtotaln == 0 ? 0 : $$("txtdescuenton").getValue();
+            descuento = (subtotaln * descuento) / 100;
+
+            let totalTem = totaln - descuento;
+            if(totPago < totalTem){
+                falta=totalTem-totPago;
+                webix.message({type:"error", text:"AUN FALTA " + webix.i18n.priceFormat(falta) + " POR COBRAR!!"});
+                return;
+            }
         }
         
         if(vendedor.length == 0){
             webix.message({type:"error", text:"NO SE HA SELECCIONADO UN VENDEDOR."});
+            return;
+        }
+
+        //Función para validar el descuento
+        console.log(aprobacionDesc);
+        if($$("txtdescuenton").getValue().length > 0 && aprobacionDesc == "NO"){
+            this.validarDescuento()
             return;
         }
 
@@ -802,42 +1026,42 @@ export class FrmPuntoVenta extends FrmBase {
         let PuntoVtaImpuestos = [];
 
         //campos del documento punto de venta
-        data.Caja = { _id: '5d139f0d92a3d9aa68a16620'},
-        data.Caja = { _id: apertura.Cajas._id},
+        data.Caja = { _id: '5d139f0d92a3d9aa68a16620'};
+        data.Caja = { _id: apertura.Cajas._id};
 
         data.TipoDocto='V';
         data.Folio='';
-        data.Fecha = this.convertToJSONDate(new Date),
+        data.Fecha = this.convertToJSONDate(new Date);
         /*public int Ano { get; set; }
         public int Mes { get; set; }
         public int Dia { get; set; }*/
         //data.Hora=this.convertToJSONTime(new Time);
 
-        data.Cajero= {_id: '5d2e631492a3d99448b79f9a'},
-        data.Cajero= {_id: apertura.Cajeros._id},
+        data.Cajero= {_id: '5d2e631492a3d99448b79f9a'};
+        data.Cajero= {_id: apertura.Cajeros._id};
 
-        //data.Clientes={_id: '5d5b4015a44ae9e6936e72da'},
+        //data.Clientes={_id: '5d5b4015a44ae9e6936e72da'};
         
-        data.Almacen= {_id: '5c92a3ef7d7b30184c602277'},
-        data.Almacen= {_id: apertura.Cajas.Almacen._id},
+        data.Almacen= {_id: '5c92a3ef7d7b30184c602277'};
+        data.Almacen= {_id: apertura.Cajas.Almacen._id};
 
         //public int Moneda { get; set; }
-        data.ImpuestoIncluido='S',
+        data.ImpuestoIncluido='S';
         //public TipodeCambio TipodeCambio { get; set; }
-        data.TipoDescuento='P',
-        data.DescuentoPorcentaje=0,
-        data.DescuentoImporte=0,
-        data.Estatus='N',
-        data.TicketEmitido='N',
-        data.Aplicado='S',
-        data.ImporteNeto=subtotaln,
-        data.TotalImpuestos=ivan,
-        data.TotalVenta=totaln,
-        data.ImporteDonativo=0;        
-        data.SistemaOrigen='PV',
-        data.Vendedor = {_id: vendedor},
-        data.Operador = {_id: operador},
-        //data.Vendedor { get; set; }
+        data.TipoDescuento='P';
+        data.DescuentoPorcentaje = $$("txtdescuenton").getValue() == 0 ? 0 : parseFloat($$("txtdescuenton").getValue());
+        data.DescuentoImporte = data.DescuentoPorcentaje == 0 ? 0 : (data.DescuentoPorcentaje / 100) * subtotaln;
+        data.Estatus='N';
+        data.TicketEmitido='N';
+        data.Aplicado='S';
+        data.ImporteNeto=subtotaln;
+        data.TotalImpuestos=ivan;
+        data.TotalVenta=totaln;
+        data.ImporteDonativo=0;
+        data.SistemaOrigen='PV';
+        data.Vendedor = {_id: vendedor};
+        operador.length != 0 ? data.Operador = {_id: operador} : "";
+
         //data.UsuarioCreador=1;
 
         
@@ -910,6 +1134,154 @@ export class FrmPuntoVenta extends FrmBase {
         //return;
         super.guardar(data);      
         //this.limpiarTodo();
+    }
+
+    validarDescuento(){
+        let self = this;
+        if($$("txtdescuenton").getValue().length > 0 && aprobacionDesc == "NO"){
+            //validación
+            let subtotal = $$("txtsubtotaln").getValue();
+            let descuento = subtotal == 0 ? 0 : $$("txtdescuenton").getValue();
+            let porcentaje = descuento;
+            descuento = (subtotal * descuento) / 100;
+            console.log(descuento);
+            console.log(tipocambio);
+            
+            var form1 = [
+                { 
+                    cols:
+                    [
+                        { view:"text", type: "password", value:'',  id:"input_clave", labelPosition:"top" },
+                        { view:"icon", type:"icon", icon:"mdi mdi-check", id:"btn_aceptar_clave", width:50 },
+                    ]
+                },
+                { view:"label", label:"", id:"textError_clave", labelPosition:"top", css:"status_error" }
+            ];
+
+            let ventana = {
+                view:"window",
+                id:"win",
+                height:250,
+                width:400,
+                position:"top",
+                move:true,
+                head:{
+                    view:"toolbar", cols:[
+                        { width:4 },
+                        { view:"label", label: "Autorización de descuento" },
+                        { view:"icon", icon:"wxi-close", width: 40, align: 'right', click: 
+                            function(){ 
+                                aprobacionDesc = "NO";
+                                banTecladoClave = false;
+                                $$('win').close();  
+                            }
+                        }
+                    ]
+                },
+                body: {
+                    view:"form", 
+                    elements:[
+                        {
+                            view:"fieldset", 
+                            label:"Clave de autorización",
+                            margin:10,
+                            body: {rows:form1}
+                        }
+                    ]
+                }
+            };
+    
+            if(descuento != 0){
+                if(tipocambio.Nombre == "MX"){
+                    //PESOS - o sea, si el sistema está en DLS
+    
+                    //Válido si es mayor a 100 dls y menor a 15%
+                    if(subtotal >= 100 && porcentaje <= 15){
+                        aprobacionDesc = "SI";
+                        self.guardar();
+                        return;
+                    }
+
+                    //REQUERIR AUTORIZACIÓN PARA VALIDAR EL DESCUENTO
+                    if(subtotal < 100 || porcentaje > 15){
+                        if(porcentaje > 15){
+                            webix.message({type:"error", text:"ES MAYOR AL 15% DLS"});
+                        }
+                        if(subtotal < 100){
+                            webix.message({type:"error", text:"ES MAYOR DE 100 DLS"});
+                        }
+                        //VENTANA PARA VALIDAR
+                        banTecladoClave = true;
+                        webix.ui(ventana).show();
+                    }else{
+                        aprobacionDesc = "SI";
+                        self.guardar();
+                    }
+                }else{
+                    //DLS - o sea, si el sistema está en pesos
+                    let totalTemp = subtotal/$$("tipocambio").getValue();
+
+                    //Válido si es mayor a 100 dls y menor a 15%
+                    if(totalTemp >= 100 && porcentaje <= 15){
+                        aprobacionDesc = "SI";
+                        self.guardar();
+                        return;
+                    }
+                    
+                    //REQUERIR AUTORIZACIÓN PARA VALIDAR EL DESCUENTO
+                    if(totalTemp < 100 || porcentaje > 15){
+                        if(porcentaje > 15){
+                            webix.message({type:"error", text:"ES MAYOR AL 15% MX"});
+                        }  
+                        if(subtotal < 100){
+                            webix.message({type:"error", text:"ES MAYOY DE 100 DLS MX"});
+                        }
+                        //VENTANA PARA VALIDAR
+                        banTecladoClave = true;
+                        webix.ui(ventana).show();
+                    }else{
+                        aprobacionDesc = "SI";
+                        self.guardar();
+                        return;
+                    }
+                }
+
+                $$("btn_aceptar_clave").attachEvent("onItemClick", function(ev){
+                    var clave = $$('input_clave').getValue()
+                    if(clave.length == 0){
+                        $$("textError_clave").setValue("Favor de introducir una clave")
+                        return;
+                    }
+                    $$("textError_clave").setValue("")
+                    
+                    let user = new usuario();
+                    let data = {Clave: clave};
+                    user.validarDescuento(data).then((realdata) => {
+                        let resp = realdata.json();            
+                        console.log(resp);
+                        if(resp == "ok"){
+                            aprobacionDesc = "SI";
+                            $$('win').close();
+                            banTecladoClave = false;
+                            self.guardar();
+                            return;
+                        }
+                    }).fail((error) => {
+                        webix.alert({
+                            type: "alert-error",
+                            text: "Error: " + error.statusText
+                        });
+                    });
+                })
+            }else{
+                aprobacionDesc = "SI";
+                self.guardar();
+                return;
+            }
+        }else{
+            self.guardar();
+            return;
+        }
     }
 
     save(data) {

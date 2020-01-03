@@ -11,8 +11,7 @@ export class GridCancelaciones extends GridCancelacionesBase {
             title: "Cancelaciones",
             width: 750,
             elements: [{
-                    cols: [
-                        {
+                        cols: [{
                             view: "datatable",
                             footer:true,
                             id: "gridVentas" + id,
@@ -30,7 +29,6 @@ export class GridCancelaciones extends GridCancelacionesBase {
                             ]
                         }
                     ]
-
                 }
             ],
             rules: {
